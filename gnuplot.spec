@@ -1,11 +1,11 @@
 Summary: A program for plotting mathematical expressions and data.
 Name: gnuplot
-Version: 3.7.3
-Release: 6
+Version: 4.0.0
+Release: 1
 License: Redistributable, with restrictions
 Group: Applications/Engineering
-Source: http://prdownloads.sourceforge.net/gnuplot/gnuplot-3.7.3.tar.gz
-BuildPrereq: libpng-devel, tetex-latex, zlib-devel, XFree86-devel
+Source: http://prdownloads.sourceforge.net/gnuplot/gnuplot-4.0.0.tar.gz
+BuildPrereq: libpng-devel, tetex-latex, zlib-devel, xorg-x11-devel, emacs
 Requires: libpng
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 URL: http://www.gnuplot.info/
@@ -19,41 +19,75 @@ dimensions and in many different formats.
 Install gnuplot if you need a graphics package for scientific data
 representation.
 
+%package emacs
+Group: Applications/Engineering
+Summary: Emacs bindings for the gnuplot main application
+Requires: %{name} = %{version}-%{release}
+
+%description emacs
+The gnuplot-emacs package contains the emacs related .el files so that gnuplot
+nicely interacts and integrates into emacs.
+
 %prep
 %setup -q
 
 %build
 %configure --with-readline=gnu --with-png --without-linux-vga \
- --without-gd
+ --without-gd --enable-history-file
 
 make RPM_OPT_FLAGS="$RPM_OPT_FLAGS"
 
 cd docs
-make doc2html
-./doc2html gnuplot.doc > gnuplot.html
-cd latextut
+make html
 PATH=$RPM_BUILD_DIR/gnuplot-%{version}:$PATH make
 
 
 %install
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
+rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 
-# remove unpackaged files from the buildroot
-rm -rf $RPM_BUILD_ROOT%{_infodir}
+%post 
+if [ "$1" = "1" ] ; then  # first install
+ if [ -x /sbin/install-info ]; then
+   /sbin/install-info %{_infodir}/gnuplot.info.gz %{_infodir}/dir
+ fi
+fi
+
+%preun
+if [ "$1" = "0" ] ; then # last uninstall
+ if [ -x /sbin/install-info ]; then
+   /sbin/install-info --delete %{_infodir}/gnuplot.info.gz %{_infodir}/dir
+ir
+ fi
+fi
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-%doc docs/gnuplot.html docs/psdoc docs/latextut/tutorial.dvi demo
-/usr/bin/gnuplot_x11
-/usr/bin/gnuplot
-%{_mandir}/man1/gnuplot.*
-/usr/share/gnuplot.gih
+%doc docs/gnuplot.html docs/psdoc tutorial/tutorial.dvi demo
+%{_libexecdir}/gnuplot/4.0/gnuplot_x11
+%{_bindir}/gnuplot
+%{_mandir}/man1/gnuplot.1.gz
+%{_datadir}/gnuplot/4.0/gnuplot.gih
+%{_infodir}/gnuplot.info.gz
+
+%files emacs
+%{_datadir}/emacs/site-lisp/gnuplot-gui.el
+%{_datadir}/emacs/site-lisp/gnuplot-gui.elc
+%{_datadir}/emacs/site-lisp/gnuplot.el
+%{_datadir}/emacs/site-lisp/gnuplot.elc
+%{_datadir}/emacs/site-lisp/info-look.20.2.el
+%{_datadir}/emacs/site-lisp/info-look.20.3.el
+
 
 %changelog
+* Thu Aug 12 2004 Phil Knirsch <pknirsch@redhat.com> 4.0.0-1
+- Update to gnuplot-4.0.0
+- Split off emacs files into new subpackage
+
 * Tue Jun 15 2004 Elliot Lee <sopwith@redhat.com>
 - rebuilt
 
