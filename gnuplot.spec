@@ -1,16 +1,15 @@
 Summary: A program for plotting mathematical expressions and data.
 Name: gnuplot
-Version: 3.7.1
-Release: 19
+Version: 3.7.2
+Release: 1
 License: GPL
 Group: Applications/Engineering
-Source: ftp://ftp.gnuplot.vt.edu/pub/gnuplot/gnuplot-%{version}.tar.bz2
-Patch0: gnuplot-3.7.1-gd-1.8.patch
-Patch1: gnuplot-21341.patch
+Source: http://prdownloads.sourceforge.net/gnuplot/gnuplot-3.7.2.tar.gz
+Patch0: gnuplot-3.7.2-gd-1.8.patch
 Patch2: gnuplot-3.7.1-round.patch
 BuildPrereq: gd-devel >= 1.8.2, libpng-devel, tetex-latex, zlib-devel
 Requires: gd >= 1.8.2, libpng
-BuildRoot: %{_tmppath}/%{name}-root
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 URL: http://www.gnuplot.org/
 
 %description
@@ -25,7 +24,6 @@ representation.
 %prep
 %setup -q
 %patch -p1 -b .gd-1.8
-%patch1 -p1 -b .21341
 %patch2 -p1 -b .round
 
 %build
@@ -42,13 +40,7 @@ PATH=$RPM_BUILD_DIR/gnuplot-%{version}:$PATH make
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr/{bin,share/gnuplot}
-mkdir -p $RPM_BUILD_ROOT%{_mandir}/man1
-
-install -m 755 -s gnuplot_x11 $RPM_BUILD_ROOT/usr/bin/gnuplot_x11
-install -m 755 -s gnuplot $RPM_BUILD_ROOT/usr/bin/gnuplot
-install -m 644 docs/gnuplot.1 $RPM_BUILD_ROOT%{_mandir}/man1
-install -m 644 docs/gnuplot.gih $RPM_BUILD_ROOT/usr/share/gnuplot.gih
+make install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -62,6 +54,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/gnuplot.gih
 
 %changelog
+* Thu Jul 18 2002 Bill Nottingham <notting@redhat.com> 3.7.2-1
+- update to 3.7.2
+
 * Fri Jun 21 2002 Tim Powers <timp@redhat.com>
 - automated rebuild
 
