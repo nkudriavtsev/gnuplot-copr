@@ -1,15 +1,15 @@
 Summary: A program for plotting mathematical expressions and data.
 Name: gnuplot
 Version: 3.7.1
-Release: 13
-License: distributable
+Release: 13.1
+License: GPL
 Group: Applications/Engineering
-Source: ftp://ftp.gnuplot.vt.edu/pub/gnuplot/gnuplot-%{version}.tar.gz
+Source: ftp://ftp.gnuplot.vt.edu/pub/gnuplot/gnuplot-%{version}.tar.bz2
 Patch0: gnuplot-3.7.1-gd-1.8.patch
 BuildPrereq: gd-devel >= 1.8.2, libpng-devel, tetex-latex, zlib-devel
 Requires: gd >= 1.8.2, libpng
 BuildRoot: %{_tmppath}/%{name}-root
-URL: http://www.gnuplot.vt.edu/
+URL: http://www.gnuplot.org/
 
 %description
 Gnuplot is a command-line driven, interactive function plotting
@@ -61,6 +61,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/gnuplot.gih
 
 %changelog
+* Fri May 11 2001 Bernhard Rosenkraenzer <bero@redhat.com> 3.7.1-13
+- rebuild with new readline
+- Fix up License: and URL: tags in specfile
+
 * Tue Aug 22 2000 Bill Nottingham <notting@redhat.com>
 - remove zlib-devel requirement (#16718)
 
