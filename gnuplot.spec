@@ -1,16 +1,14 @@
 Summary: A program for plotting mathematical expressions and data.
 Name: gnuplot
-Version: 3.7.2
-Release: 1
+Version: 3.7.3
+Release: 2
 License: GPL
 Group: Applications/Engineering
-Source: http://prdownloads.sourceforge.net/gnuplot/gnuplot-3.7.2.tar.gz
-Patch0: gnuplot-3.7.2-gd-1.8.patch
-Patch2: gnuplot-3.7.1-round.patch
-BuildPrereq: gd-devel >= 1.8.2, libpng-devel, tetex-latex, zlib-devel
-Requires: gd >= 1.8.2, libpng
+Source: http://prdownloads.sourceforge.net/gnuplot/gnuplot-3.7.3.tar.gz
+BuildPrereq: libpng-devel, tetex-latex, zlib-devel
+Requires: libpng
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
-URL: http://www.gnuplot.org/
+URL: http://www.gnuplot.info/
 
 %description
 Gnuplot is a command-line driven, interactive function plotting
@@ -23,11 +21,10 @@ representation.
 
 %prep
 %setup -q
-%patch -p1 -b .gd-1.8
-%patch2 -p1 -b .round
 
 %build
-%configure --with-readline=gnu --with-png --without-linux-vga
+%configure --with-readline=gnu --with-png --without-linux-vga \
+ --without-gd
 
 make RPM_OPT_FLAGS="$RPM_OPT_FLAGS"
 
@@ -42,6 +39,9 @@ PATH=$RPM_BUILD_DIR/gnuplot-%{version}:$PATH make
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 
+# remove unpackaged files from the buildroot
+rm -rf $RPM_BUILD_ROOT%{_infodir}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -54,6 +54,17 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/gnuplot.gih
 
 %changelog
+* Wed Jan 22 2003 Tim Powers <timp@redhat.com>
+- rebuilt
+
+* Tue Jan 21 2003 Bill Nottingham <notting@redhat.com> 3.7.3-1
+- update to 3.7.3
+- don't bother patching it to do jpegs with gd instead of gifs,
+  as we haven't been building it with gd support anyway
+
+* Fri Nov 29 2002 Tim Powers <timp@redhat.com> 3.7.2-2
+- remove unpackaged files from the buildroot
+
 * Thu Jul 18 2002 Bill Nottingham <notting@redhat.com> 3.7.2-1
 - update to 3.7.2
 
