@@ -1,8 +1,8 @@
 Summary: A program for plotting mathematical expressions and data.
 Name: gnuplot
 Version: 3.7.3
-Release: 2
-License: GPL
+Release: 4
+License: Redistributable, with restrictions
 Group: Applications/Engineering
 Source: http://prdownloads.sourceforge.net/gnuplot/gnuplot-3.7.3.tar.gz
 BuildPrereq: libpng-devel, tetex-latex, zlib-devel
@@ -54,6 +54,12 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/gnuplot.gih
 
 %changelog
+* Wed Jul 02 2003 Bill Nottingham <notting@redhat.com> 3.7.3-4
+- fix license (#98449)
+
+* Wed Jun 04 2003 Elliot Lee <sopwith@redhat.com>
+- rebuilt
+
 * Wed Jan 22 2003 Tim Powers <timp@redhat.com>
 - rebuilt
 
