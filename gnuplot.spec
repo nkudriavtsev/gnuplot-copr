@@ -1,11 +1,13 @@
 Summary: A program for plotting mathematical expressions and data.
 Name: gnuplot
 Version: 3.7.1
-Release: 13.1
+Release: 17
 License: GPL
 Group: Applications/Engineering
 Source: ftp://ftp.gnuplot.vt.edu/pub/gnuplot/gnuplot-%{version}.tar.bz2
 Patch0: gnuplot-3.7.1-gd-1.8.patch
+Patch1: gnuplot-21341.patch
+Patch2: gnuplot-3.7.1-round.patch
 BuildPrereq: gd-devel >= 1.8.2, libpng-devel, tetex-latex, zlib-devel
 Requires: gd >= 1.8.2, libpng
 BuildRoot: %{_tmppath}/%{name}-root
@@ -23,11 +25,10 @@ representation.
 %prep
 %setup -q
 %patch -p1 -b .gd-1.8
+%patch1 -p1 -b .21341
+%patch2 -p1 -b .round
 
 %build
-%ifarch alpha
-%define optflags -O0
-%endif
 %configure --with-readline=gnu --with-png --without-linux-vga
 
 make RPM_OPT_FLAGS="$RPM_OPT_FLAGS"
@@ -61,6 +62,18 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/gnuplot.gih
 
 %changelog
+* Thu Feb 21 2002 Bill Nottingham <notting@redhat.com>
+- rebuild
+
+* Wed Jan 23 2002 Bill Nottingham <notting@redhat.com> 3.7.1-16
+- fix bug #43620 (<broeker@physik.rwth-aachen.de>)
+
+* Tue Jan 22 2002 Bill Nottingham <notting@redhat.com> 3.7.1-15
+- fix bug #21341 (<wtcorrea@cs.princeton.edu>)
+
+* Wed Jan 09 2002 Tim Powers <timp@redhat.com>
+- automated rebuild
+
 * Fri May 11 2001 Bernhard Rosenkraenzer <bero@redhat.com> 3.7.1-13
 - rebuild with new readline
 - Fix up License: and URL: tags in specfile
