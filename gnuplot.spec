@@ -1,7 +1,7 @@
 Summary: A program for plotting mathematical expressions and data.
 Name: gnuplot
 Version: 4.0.0
-Release: 2
+Release: 3
 License: Redistributable, with restrictions
 Group: Applications/Engineering
 Source: http://prdownloads.sourceforge.net/gnuplot/gnuplot-4.0.0.tar.gz
@@ -58,7 +58,6 @@ fi
 if [ "$1" = "0" ] ; then # last uninstall
  if [ -x /sbin/install-info ]; then
    /sbin/install-info --delete %{_infodir}/gnuplot.info.gz %{_infodir}/dir
-ir
  fi
 fi
 
@@ -85,6 +84,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Sep 07 2004 Karsten Hopp <karsten@redhat.de> 4.0.0-3 
+- fix typo in preun script
+
 * Thu Sep  2 2004 Bill Nottingham <notting@redhat.com> 4.0.0-2
 - %%defattr fixes (#131640)
 
