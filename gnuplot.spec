@@ -1,7 +1,7 @@
 Summary: A program for plotting mathematical expressions and data.
 Name: gnuplot
 Version: 4.0.0
-Release: 6
+Release: 7
 License: Redistributable, with restrictions
 Group: Applications/Engineering
 Source: http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
@@ -85,6 +85,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Mar 02 2005 Phil Knirsch <pknirsch@redhat.com> 4.0.0-7
+- bump release and rebuild with gcc 4
+
 * Wed Jan 12 2005 Tim Waugh <twaugh@redhat.com> 4.0.0-6
 - Rebuilt for new readline.
 
