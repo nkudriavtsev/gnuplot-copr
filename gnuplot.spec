@@ -1,7 +1,7 @@
 Summary: A program for plotting mathematical expressions and data.
 Name: gnuplot
 Version: 4.0.0
-Release: 1
+Release: 2
 License: Redistributable, with restrictions
 Group: Applications/Engineering
 Source: http://prdownloads.sourceforge.net/gnuplot/gnuplot-4.0.0.tar.gz
@@ -75,6 +75,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_infodir}/gnuplot.info.gz
 
 %files emacs
+%defattr(-,root,root)
 %{_datadir}/emacs/site-lisp/gnuplot-gui.el
 %{_datadir}/emacs/site-lisp/gnuplot-gui.elc
 %{_datadir}/emacs/site-lisp/gnuplot.el
@@ -84,6 +85,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Sep  2 2004 Bill Nottingham <notting@redhat.com> 4.0.0-2
+- %%defattr fixes (#131640)
+
 * Thu Aug 12 2004 Phil Knirsch <pknirsch@redhat.com> 4.0.0-1
 - Update to gnuplot-4.0.0
 - Split off emacs files into new subpackage
