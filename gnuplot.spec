@@ -1,10 +1,10 @@
 Summary: A program for plotting mathematical expressions and data.
 Name: gnuplot
 Version: 4.0.0
-Release: 4
+Release: 5
 License: Redistributable, with restrictions
 Group: Applications/Engineering
-Source: http://prdownloads.sourceforge.net/gnuplot/gnuplot-4.0.0.tar.gz
+Source: http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 BuildPrereq: libpng-devel, tetex-latex, zlib-devel, xorg-x11-devel, emacs
 BuildRequires: texinfo, readline-devel
 Requires: libpng
@@ -67,7 +67,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-%doc docs/gnuplot.html docs/psdoc tutorial/tutorial.dvi demo
+%doc BUGS ChangeLog Copyright FAQ NEWS README TODO docs/gnuplot.html docs/psdoc tutorial/tutorial.dvi demo
 %{_libexecdir}/gnuplot/4.0/gnuplot_x11
 %{_bindir}/gnuplot
 %{_mandir}/man1/gnuplot.1.gz
@@ -85,8 +85,11 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Dec 23 2004 Phil Knirsch <pknirsch@redhat.com> 4.0.0-5
+- Added BUGS ChangeLog Copyright FAQ NEWS README TODO to docs (#139070)
+
 * Mon Oct 11 2004 Tim Waugh <twaugh@redhat.com> 4.0.0-4
-- Build requires texinfo and readline-devel (bug #134922).
+- Build requires texinfo and readline-devel (bug #134922)
 
 * Tue Sep 07 2004 Karsten Hopp <karsten@redhat.de> 4.0.0-3 
 - fix typo in preun script
