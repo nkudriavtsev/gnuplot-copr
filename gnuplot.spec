@@ -1,7 +1,7 @@
 Summary: A program for plotting mathematical expressions and data.
 Name: gnuplot
 Version: 3.7.1
-Release: 12
+Release: 13
 License: distributable
 Group: Applications/Engineering
 Source: ftp://ftp.gnuplot.vt.edu/pub/gnuplot/gnuplot-%{version}.tar.gz
