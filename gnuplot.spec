@@ -1,7 +1,7 @@
 Summary: A program for plotting mathematical expressions and data.
 Name: gnuplot
 Version: 3.7.1
-Release: 17
+Release: 19
 License: GPL
 Group: Applications/Engineering
 Source: ftp://ftp.gnuplot.vt.edu/pub/gnuplot/gnuplot-%{version}.tar.bz2
@@ -62,6 +62,12 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/gnuplot.gih
 
 %changelog
+* Fri Jun 21 2002 Tim Powers <timp@redhat.com>
+- automated rebuild
+
+* Thu May 23 2002 Tim Powers <timp@redhat.com>
+- automated rebuild
+
 * Thu Feb 21 2002 Bill Nottingham <notting@redhat.com>
 - rebuild
 
