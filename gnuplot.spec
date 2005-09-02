@@ -1,10 +1,11 @@
 Summary: A program for plotting mathematical expressions and data.
 Name: gnuplot
 Version: 4.0.0
-Release: 7
+Release: 8
 License: Redistributable, with restrictions
 Group: Applications/Engineering
 Source: http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+Source2: gnuplot-init.el
 BuildPrereq: libpng-devel, tetex-latex, zlib-devel, xorg-x11-devel, emacs
 BuildRequires: texinfo, readline-devel
 Requires: libpng
@@ -23,7 +24,7 @@ representation.
 %package emacs
 Group: Applications/Engineering
 Summary: Emacs bindings for the gnuplot main application
-Requires: %{name} = %{version}-%{release}
+Requires: %{name} = %{version}-%{release}, emacs
 
 %description emacs
 The gnuplot-emacs package contains the emacs related .el files so that gnuplot
@@ -46,6 +47,8 @@ PATH=$RPM_BUILD_DIR/gnuplot-%{version}:$PATH make
 %install
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
+install -d ${RPM_BUILD_ROOT}%{_datadir}/emacs/site-lisp/site-start.d/
+install -m 644 %SOURCE2 ${RPM_BUILD_ROOT}%{_datadir}/emacs/site-lisp/site-start.d/gnuplot-init.el
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 
 %post 
@@ -82,9 +85,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/emacs/site-lisp/gnuplot.elc
 %{_datadir}/emacs/site-lisp/info-look.20.2.el
 %{_datadir}/emacs/site-lisp/info-look.20.3.el
+%{_datadir}/emacs/site-lisp/site-start.d/gnuplot-init.el
 
 
 %changelog
+* Fri Sep 02 2005 Phil Knirsch <pknirsch@redhat.com> 4.0.0-8
+- Fixed missing Requires: emacs for the gnuplot-emacs package
+- Added a gnuplot-init.el file for startup (#151122)
+
 * Wed Mar 02 2005 Phil Knirsch <pknirsch@redhat.com> 4.0.0-7
 - bump release and rebuild with gcc 4
 
