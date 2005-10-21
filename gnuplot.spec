@@ -78,6 +78,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/gnuplot.1.gz
 %{_datadir}/gnuplot/4.0/gnuplot.gih
 %{_infodir}/gnuplot.info.gz
+%dir %{_datadir}/gnuplot
 
 %files emacs
 %defattr(-,root,root)
@@ -93,6 +94,7 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Fri Oct 21 2005 Phil Knirsch <pknirsch@redhat.com> 4.0.0-9
 - Fixed 64bit problem with x11 display (#167508)
+- Added missing file ownage of /usr/share/gnuplot (#169333)
 
 * Fri Sep 02 2005 Phil Knirsch <pknirsch@redhat.com> 4.0.0-8
 - Fixed missing Requires: emacs for the gnuplot-emacs package
