@@ -1,0 +1,12 @@
+diff -uNr gnuplot-4.0.0.orig/src/gplt_x11.c gnuplot-4.0.0/src/gplt_x11.c
+--- gnuplot-4.0.0.orig/src/gplt_x11.c	2004-04-13 19:23:53.000000000 +0200
++++ gnuplot-4.0.0/src/gplt_x11.c	2005-10-15 19:23:38.000000000 +0200
+@@ -1104,7 +1104,7 @@
+ read_input()
+ {
+     static int rdbuf_size = 10 * Nbuf;
+-    static char rdbuf[10 * Nbuf - 1];
++    static char rdbuf[10 * Nbuf];
+     static int total_chars;
+     static int rdbuf_offset;
+     static int buf_offset;
