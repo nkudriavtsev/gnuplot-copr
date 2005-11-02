@@ -7,7 +7,7 @@ Group: Applications/Engineering
 Source: http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source2: gnuplot-init.el
 Patch0: gnuplot-4.0.0-x11segv.patch
-BuildPrereq: libpng-devel, tetex-latex, zlib-devel, libx11-devel, emacs
+BuildPrereq: libpng-devel, tetex-latex, zlib-devel, libX11-devel, emacs
 BuildRequires: texinfo, readline-devel
 Requires: libpng
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
