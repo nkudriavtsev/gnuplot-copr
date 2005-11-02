@@ -1,13 +1,13 @@
 Summary: A program for plotting mathematical expressions and data.
 Name: gnuplot
 Version: 4.0.0
-Release: 9
+Release: 10
 License: Redistributable, with restrictions
 Group: Applications/Engineering
 Source: http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source2: gnuplot-init.el
 Patch0: gnuplot-4.0.0-x11segv.patch
-BuildPrereq: libpng-devel, tetex-latex, zlib-devel, xorg-x11-devel, emacs
+BuildPrereq: libpng-devel, tetex-latex, zlib-devel, libx11-devel, emacs
 BuildRequires: texinfo, readline-devel
 Requires: libpng
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
@@ -92,6 +92,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Nov 02 2005 Phil Knirsch <pknirsch@redhat.com> 4.0.0-10
+- Switched BuildPreReqs and Requires to modular xorg-x11 style
+
 * Fri Oct 21 2005 Phil Knirsch <pknirsch@redhat.com> 4.0.0-9
 - Fixed 64bit problem with x11 display (#167508)
 - Added missing file ownage of /usr/share/gnuplot (#169333)
