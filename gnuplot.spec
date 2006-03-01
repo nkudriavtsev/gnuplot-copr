@@ -1,14 +1,14 @@
 Summary: A program for plotting mathematical expressions and data.
 Name: gnuplot
 Version: 4.0.0
-Release: 10.2.1
+Release: 11
 License: Redistributable, with restrictions
 Group: Applications/Engineering
 Source: http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source2: gnuplot-init.el
 Patch0: gnuplot-4.0.0-x11segv.patch
 BuildPrereq: libpng-devel, tetex-latex, zlib-devel, libX11-devel, emacs
-BuildRequires: texinfo, readline-devel
+BuildRequires: texinfo, readline-devel, libXt-devel
 Requires: libpng
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 URL: http://www.gnuplot.info/
@@ -92,6 +92,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Mar 01 2006 Karsten Hopp <karsten@redhat.de> 4.0.0-11
+- BuildRequires: libXt-devel
+
 * Fri Feb 10 2006 Jesse Keating <jkeating@redhat.com> - 4.0.0-10.2.1
 - bump again for double-long bug on ppc(64)
 
