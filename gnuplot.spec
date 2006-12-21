@@ -1,14 +1,14 @@
-Summary: A program for plotting mathematical expressions and data.
+Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: 4.0.0
-Release: 13
+Release: 14%{?dist}
 License: Redistributable, with restrictions
 Group: Applications/Engineering
 Source: http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source2: gnuplot-init.el
 Patch0: gnuplot-4.0.0-x11segv.patch
-BuildPrereq: libpng-devel, tetex-latex, zlib-devel, libX11-devel, emacs
-BuildRequires: texinfo, readline-devel, libXt-devel
+BuildRequires: libpng-devel, tetex-latex, zlib-devel, libX11-devel, emacs
+BuildRequires: texinfo, readline-devel, libXt-devel, gd-devel
 Requires: libpng
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 URL: http://www.gnuplot.info/
@@ -37,7 +37,7 @@ nicely interacts and integrates into emacs.
 
 %build
 %configure --with-readline=gnu --with-png --without-linux-vga \
- --without-gd --enable-history-file
+ --enable-history-file
 
 make RPM_OPT_FLAGS="$RPM_OPT_FLAGS"
 
@@ -92,6 +92,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Dec 21 2006 Ivana Varekova <varekova@redhat.com> -4.0.0-14
+- remove --without-gd options (#173922, #172565)
+- spec file cleanup
+
 * Fri Dec  1 2006 Ivana Varekova <varekova@redhat.com> - 4.0.0-13
 - rebuild against libncurses
 
@@ -194,7 +198,7 @@ rm -rf $RPM_BUILD_ROOT
 * Tue Aug 22 2000 Bill Nottingham <notting@redhat.com>
 - remove zlib-devel requirement (#16718)
 
-* Wed Aug 02 2000 Trond Eivind Glomsrød <teg@redhat.com>
+* Wed Aug 02 2000 Trond Eivind GlomsrÃ¸d <teg@redhat.com>
 - rebuild with libpng 1.0.8
 
 * Thu Jul 13 2000 Prospector <bugzilla@redhat.com>
