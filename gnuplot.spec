@@ -1,12 +1,13 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: 4.0.0
-Release: 14%{?dist}
+Release: 15%{?dist}
 License: Redistributable, with restrictions
 Group: Applications/Engineering
 Source: http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source2: gnuplot-init.el
 Patch0: gnuplot-4.0.0-x11segv.patch
+Patch1: gnuplot-4.0.0-refers_to.patch
 BuildRequires: libpng-devel, tetex-latex, zlib-devel, libX11-devel, emacs
 BuildRequires: texinfo, readline-devel, libXt-devel, gd-devel
 Requires: libpng
@@ -34,6 +35,7 @@ nicely interacts and integrates into emacs.
 %prep
 %setup -q
 %patch0 -p 1 -b .x11segv
+%patch1 -p1 -b .refto
 
 %build
 %configure --with-readline=gnu --with-png --without-linux-vga \
@@ -92,7 +94,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Tue Dec 21 2006 Ivana Varekova <varekova@redhat.com> -4.0.0-14
+* Fri Dec 22 2006 Ivana Varekova <varekova@redhat.com> - 4.0.0-15
+- Resolves: 173752 - gnuplot refers to /usr/X11R6/lib/fonts/Type1
+
+* Tue Dec 21 2006 Ivana Varekova <varekova@redhat.com> - 4.0.0-14
 - remove --without-gd options (#173922, #172565)
 - spec file cleanup
 
