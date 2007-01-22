@@ -1,7 +1,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: 4.0.0
-Release: 15%{?dist}
+Release: 16%{?dist}
 License: Redistributable, with restrictions
 Group: Applications/Engineering
 Source: http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
@@ -58,14 +58,14 @@ rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 %post 
 if [ "$1" = "1" ] ; then  # first install
  if [ -x /sbin/install-info ]; then
-   /sbin/install-info %{_infodir}/gnuplot.info.gz %{_infodir}/dir
+   /sbin/install-info %{_infodir}/gnuplot.info.gz %{_infodir}/dir || :
  fi
 fi
 
 %preun
 if [ "$1" = "0" ] ; then # last uninstall
  if [ -x /sbin/install-info ]; then
-   /sbin/install-info --delete %{_infodir}/gnuplot.info.gz %{_infodir}/dir
+   /sbin/install-info --delete %{_infodir}/gnuplot.info.gz %{_infodir}/dir || :
  fi
 fi
 
@@ -94,8 +94,13 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Jan 22 2007 Ivana Varekova <varekova@redhat.com> - 4.0.0-16
+- Resolves: 223693  
+  fix non-failsafe install-info problem
+
 * Fri Dec 22 2006 Ivana Varekova <varekova@redhat.com> - 4.0.0-15
-- Resolves: 173752 - gnuplot refers to /usr/X11R6/lib/fonts/Type1
+- Resolves: 173752
+  gnuplot refers to /usr/X11R6/lib/fonts/Type1
 
 * Tue Dec 21 2006 Ivana Varekova <varekova@redhat.com> - 4.0.0-14
 - remove --without-gd options (#173922, #172565)
