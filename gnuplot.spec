@@ -1,8 +1,9 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: 4.0.0
-Release: 16%{?dist}
-License: Redistributable, with restrictions
+Release: 17%{?dist}
+License: distributable
+# Modifications are to be distributed as patches to the released version.
 Group: Applications/Engineering
 Source: http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source2: gnuplot-init.el
@@ -10,8 +11,7 @@ Patch0: gnuplot-4.0.0-x11segv.patch
 Patch1: gnuplot-4.0.0-refers_to.patch
 BuildRequires: libpng-devel, tetex-latex, zlib-devel, libX11-devel, emacs
 BuildRequires: texinfo, readline-devel, libXt-devel, gd-devel
-Requires: libpng
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 URL: http://www.gnuplot.info/
 
 %description
@@ -41,12 +41,13 @@ nicely interacts and integrates into emacs.
 %configure --with-readline=gnu --with-png --without-linux-vga \
  --enable-history-file
 
-make RPM_OPT_FLAGS="$RPM_OPT_FLAGS"
+make %{?_smp_mflags}
 
+rm demo/webify.pl
 cd docs
 make html
-PATH=$RPM_BUILD_DIR/gnuplot-%{version}:$PATH make
-
+cd psdoc
+make 
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -56,25 +57,20 @@ install -m 644 %SOURCE2 ${RPM_BUILD_ROOT}%{_datadir}/emacs/site-lisp/site-start.
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 
 %post 
-if [ "$1" = "1" ] ; then  # first install
- if [ -x /sbin/install-info ]; then
-   /sbin/install-info %{_infodir}/gnuplot.info.gz %{_infodir}/dir || :
- fi
-fi
+/sbin/install-info --quiet %{_infodir}/gnuplot.info.gz %{_infodir}/dir || :
 
 %preun
 if [ "$1" = "0" ] ; then # last uninstall
- if [ -x /sbin/install-info ]; then
    /sbin/install-info --delete %{_infodir}/gnuplot.info.gz %{_infodir}/dir || :
- fi
 fi
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-,root,root)
-%doc BUGS ChangeLog Copyright FAQ NEWS README TODO docs/gnuplot.html docs/psdoc tutorial/tutorial.dvi demo
+%defattr(-,root,root,-)
+%doc BUGS ChangeLog Copyright FAQ NEWS README TODO docs/gnuplot.html 
+%doc docs/psdoc/ps_guide.ps docs/psdoc/ps_symbols.gpi tutorial/tutorial.dvi demo
 %{_libexecdir}/gnuplot/4.0/gnuplot_x11
 %{_bindir}/gnuplot
 %{_mandir}/man1/gnuplot.1.gz
@@ -83,7 +79,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/gnuplot
 
 %files emacs
-%defattr(-,root,root)
+%defattr(-,root,root,-)
 %{_datadir}/emacs/site-lisp/gnuplot-gui.el
 %{_datadir}/emacs/site-lisp/gnuplot-gui.elc
 %{_datadir}/emacs/site-lisp/gnuplot.el
@@ -94,6 +90,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Mar 15 2007 Ivana Varekova <varekova@redhat.com> - 4.0.0-17
+- incorporate the package review feedback
+
 * Mon Jan 22 2007 Ivana Varekova <varekova@redhat.com> - 4.0.0-16
 - Resolves: 223693  
   fix non-failsafe install-info problem
