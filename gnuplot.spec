@@ -1,7 +1,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: 4.0.0
-Release: 17%{?dist}
+Release: 18%{?dist}
 License: distributable
 # Modifications are to be distributed as patches to the released version.
 Group: Applications/Engineering
@@ -71,12 +71,15 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %doc BUGS ChangeLog Copyright FAQ NEWS README TODO docs/gnuplot.html 
 %doc docs/psdoc/ps_guide.ps docs/psdoc/ps_symbols.gpi tutorial/tutorial.dvi demo
+%dir %{_libexecdir}/gnuplot
+%dir %{_libexecdir}/gnuplot/4.0
 %{_libexecdir}/gnuplot/4.0/gnuplot_x11
 %{_bindir}/gnuplot
 %{_mandir}/man1/gnuplot.1.gz
+%dir %{_datadir}/gnuplot
+%dir %{_datadir}/gnuplot/4.0
 %{_datadir}/gnuplot/4.0/gnuplot.gih
 %{_infodir}/gnuplot.info.gz
-%dir %{_datadir}/gnuplot
 
 %files emacs
 %defattr(-,root,root,-)
@@ -90,6 +93,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Mar 26 2007 Ivana Varekova <varekova@redhat.com> - 4.0.0-18
+- add missing directories (#233838)
+
 * Thu Mar 15 2007 Ivana Varekova <varekova@redhat.com> - 4.0.0-17
 - incorporate the package review feedback
 
