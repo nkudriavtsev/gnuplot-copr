@@ -15,7 +15,7 @@ Patch1: gnuplot-4.0.0-refers_to.patch
 Patch2: gnuplot-4.2.0-ver.patch
 BuildRequires: libpng-devel, tetex-latex, zlib-devel, libX11-devel, emacs
 BuildRequires: texinfo, readline-devel, libXt-devel, gd-devel
-BuildRequires: latex2html
+BuildRequires: latex2html, gnuplot
 Requires: libpng
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 URL: http://www.gnuplot.info/
