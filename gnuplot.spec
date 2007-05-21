@@ -1,16 +1,21 @@
+%define major 4
+%define minor 2
+%define patchlevel 0
+
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
-Version: 4.0.0
-Release: 18%{?dist}
+Version: %{major}.%{minor}.%{patchlevel}
+Release: 1%{?dist}
 License: distributable
 # Modifications are to be distributed as patches to the released version.
 Group: Applications/Engineering
-Source: http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+Source: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source2: gnuplot-init.el
-Patch0: gnuplot-4.0.0-x11segv.patch
 Patch1: gnuplot-4.0.0-refers_to.patch
+Patch2: gnuplot-4.2.0-ver.patch
 BuildRequires: libpng-devel, tetex-latex, zlib-devel, libX11-devel, emacs
 BuildRequires: texinfo, readline-devel, libXt-devel, gd-devel
+Requires: latex2html
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 URL: http://www.gnuplot.info/
 
@@ -34,16 +39,15 @@ nicely interacts and integrates into emacs.
 
 %prep
 %setup -q
-%patch0 -p 1 -b .x11segv
 %patch1 -p1 -b .refto
+%patch2 -p1 -b .ver
 
 %build
 %configure --with-readline=gnu --with-png --without-linux-vga \
  --enable-history-file
 
-make %{?_smp_mflags}
+make %{?_smp_mflags} RPM_OPT_FLAGS="$RPM_OPT_FLAGS"
 
-rm demo/webify.pl
 cd docs
 make html
 cd psdoc
@@ -69,16 +73,21 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%doc BUGS ChangeLog Copyright FAQ NEWS README TODO docs/gnuplot.html 
+%doc BUGS ChangeLog Copyright FAQ NEWS README TODO 
+#docs/gnuplot.html 
 %doc docs/psdoc/ps_guide.ps docs/psdoc/ps_symbols.gpi tutorial/tutorial.dvi demo
 %dir %{_libexecdir}/gnuplot
-%dir %{_libexecdir}/gnuplot/4.0
-%{_libexecdir}/gnuplot/4.0/gnuplot_x11
+%dir %{_libexecdir}/gnuplot/%{major}.%{minor}
+%{_libexecdir}/gnuplot/%{major}.%{minor}/gnuplot_x11
 %{_bindir}/gnuplot
 %{_mandir}/man1/gnuplot.1.gz
 %dir %{_datadir}/gnuplot
-%dir %{_datadir}/gnuplot/4.0
-%{_datadir}/gnuplot/4.0/gnuplot.gih
+%dir %{_datadir}/gnuplot/%{major}.%{minor}
+%dir %{_datadir}/gnuplot/%{major}.%{minor}/PostScript
+%{_datadir}/gnuplot/%{major}.%{minor}/PostScript/*.ps
+%{_datadir}/gnuplot/%{major}.%{minor}/gnuplot.gih
+%{_datadir}/texmf/tex/latex/gnuplot/gnuplot.cfg
+%{_libdir}/X11/app-defaults/Gnuplot.app-defaults
 %{_infodir}/gnuplot.info.gz
 
 %files emacs
@@ -93,6 +102,11 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon May 21 2007 Ivana Varekova <varekova@redhat.com> - 4.2.0-1
+- Resolves: #231205
+  update to 4.2.0
+  spec changes from Tim Orling  
+
 * Mon Mar 26 2007 Ivana Varekova <varekova@redhat.com> - 4.0.0-18
 - add missing directories (#233838)
 
