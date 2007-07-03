@@ -5,7 +5,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: distributable
 # Modifications are to be distributed as patches to the released version.
 Group: Applications/Engineering
@@ -60,6 +60,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 install -d ${RPM_BUILD_ROOT}%{_datadir}/emacs/site-lisp/site-start.d/
 install -m 644 %SOURCE2 ${RPM_BUILD_ROOT}%{_datadir}/emacs/site-lisp/site-start.d/gnuplot-init.el
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
+rm -f $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/info-look.20.{2,3}.el
 
 %post 
 /sbin/install-info --quiet %{_infodir}/gnuplot.info.gz %{_infodir}/dir || :
@@ -97,12 +98,16 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/emacs/site-lisp/gnuplot-gui.elc
 %{_datadir}/emacs/site-lisp/gnuplot.el
 %{_datadir}/emacs/site-lisp/gnuplot.elc
-%{_datadir}/emacs/site-lisp/info-look.20.2.el
-%{_datadir}/emacs/site-lisp/info-look.20.3.el
+#%{_datadir}/emacs/site-lisp/info-look.20.2.el
+#%{_datadir}/emacs/site-lisp/info-look.20.3.el
 %{_datadir}/emacs/site-lisp/site-start.d/gnuplot-init.el
 
 
 %changelog
+* Tue Jul  3 2007 Ivana Varekova <varekova@redhat.com> - 4.2.0-2
+- Resolves: #246316
+  remove info-look.20.{2,3}.el
+
 * Mon May 21 2007 Ivana Varekova <varekova@redhat.com> - 4.2.0-1
 - Resolves: #231205
   update to 4.2.0
