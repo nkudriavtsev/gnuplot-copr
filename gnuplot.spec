@@ -6,8 +6,8 @@ Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
 Release: 2%{?dist}
-License: distributable
 # Modifications are to be distributed as patches to the released version.
+License: gnuplot and GPLv2
 Group: Applications/Engineering
 Source: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source2: gnuplot-init.el
