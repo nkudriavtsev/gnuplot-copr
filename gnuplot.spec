@@ -5,7 +5,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 2%{?dist}
+Release: 3%{?dist}
 # Modifications are to be distributed as patches to the released version.
 License: gnuplot and GPLv2
 Group: Applications/Engineering
@@ -104,6 +104,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Aug 28 2007 Fedora Release Engineering <rel-eng at fedoraproject dot org> - 4.2.0-3
+- Rebuild for selinux ppc32 issue.
+
 * Tue Jul  3 2007 Ivana Varekova <varekova@redhat.com> - 4.2.0-2
 - Resolves: #246316
   remove info-look.20.{2,3}.el
