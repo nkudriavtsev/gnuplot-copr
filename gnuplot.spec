@@ -60,8 +60,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 install -d ${RPM_BUILD_ROOT}%{_datadir}/emacs/site-lisp/site-start.d/
 install -m 644 %SOURCE2 ${RPM_BUILD_ROOT}%{_datadir}/emacs/site-lisp/site-start.d/gnuplot-init.el
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
-rm -f $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/info-look.20.{2,3}.el
-
+rm -f $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/info-look*.el*
 %post 
 /sbin/install-info --quiet %{_infodir}/gnuplot.info.gz %{_infodir}/dir || :
 
@@ -104,8 +103,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Tue Aug 28 2007 Fedora Release Engineering <rel-eng at fedoraproject dot org> - 4.2.0-3
+* Tue Aug 28 2007 Ivana Varekova <varekova@redhat.com> - 4.2.0-3
 - Rebuild for selinux ppc32 issue.
+- Remove obsolete file
 
 * Tue Jul  3 2007 Ivana Varekova <varekova@redhat.com> - 4.2.0-2
 - Resolves: #246316
