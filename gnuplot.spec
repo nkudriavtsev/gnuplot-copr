@@ -5,13 +5,13 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 3%{?dist}
+Release: 4%{?dist}
 # Modifications are to be distributed as patches to the released version.
 License: gnuplot and GPLv2
 Group: Applications/Engineering
 Source: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source2: gnuplot-init.el
-Patch1: gnuplot-4.0.0-refers_to.patch
+Patch1: gnuplot-4.2.0-refers_to.patch
 Patch2: gnuplot-4.2.0-ver.patch
 BuildRequires: libpng-devel, tetex-latex, zlib-devel, libX11-devel, emacs
 BuildRequires: texinfo, readline-devel, libXt-devel, gd-devel
@@ -53,6 +53,7 @@ cd docs
 make html
 cd psdoc
 make 
+make ps_symbols.ps ps_fontfile_doc.pdf
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -75,8 +76,8 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %doc BUGS ChangeLog Copyright FAQ NEWS README TODO 
-#docs/gnuplot.html 
-%doc docs/psdoc/ps_guide.ps docs/psdoc/ps_symbols.gpi tutorial/tutorial.dvi demo
+%doc docs/psdoc/ps_guide.ps docs/psdoc/ps_symbols.ps tutorial/tutorial.dvi demo docs/psdoc/ps_file.doc 
+%doc docs/psdoc/ps_fontfile_doc.pdf
 %dir %{_libexecdir}/gnuplot
 %dir %{_libexecdir}/gnuplot/%{major}.%{minor}
 %{_libexecdir}/gnuplot/%{major}.%{minor}/gnuplot_x11
@@ -97,12 +98,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/emacs/site-lisp/gnuplot-gui.elc
 %{_datadir}/emacs/site-lisp/gnuplot.el
 %{_datadir}/emacs/site-lisp/gnuplot.elc
-#%{_datadir}/emacs/site-lisp/info-look.20.2.el
-#%{_datadir}/emacs/site-lisp/info-look.20.3.el
 %{_datadir}/emacs/site-lisp/site-start.d/gnuplot-init.el
 
 
 %changelog
+* Thu Sep  6 2007 Ivana Varekova <varekova@redhat.com> - 4.2.0-4
+- change font paths, change documenatation
+
 * Tue Aug 28 2007 Ivana Varekova <varekova@redhat.com> - 4.2.0-3
 - Rebuild for selinux ppc32 issue.
 - Remove obsolete file
