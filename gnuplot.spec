@@ -5,7 +5,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 4%{?dist}
+Release: 5%{?dist}
 # Modifications are to be distributed as patches to the released version.
 License: gnuplot and GPLv2
 Group: Applications/Engineering
@@ -62,6 +62,10 @@ install -d ${RPM_BUILD_ROOT}%{_datadir}/emacs/site-lisp/site-start.d/
 install -m 644 %SOURCE2 ${RPM_BUILD_ROOT}%{_datadir}/emacs/site-lisp/site-start.d/gnuplot-init.el
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 rm -f $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/info-look*.el*
+install -d ${RPM_BUILD_ROOT}%{_datadir}/emacs/site-lisp/gnuplot
+mv $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/gnuplot.el{,c} $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/gnuplot
+mv $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/gnuplot-gui.el{,c} $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/gnuplot
+
 %post 
 /sbin/install-info --quiet %{_infodir}/gnuplot.info.gz %{_infodir}/dir || :
 
@@ -94,14 +98,16 @@ rm -rf $RPM_BUILD_ROOT
 
 %files emacs
 %defattr(-,root,root,-)
-%{_datadir}/emacs/site-lisp/gnuplot-gui.el
-%{_datadir}/emacs/site-lisp/gnuplot-gui.elc
-%{_datadir}/emacs/site-lisp/gnuplot.el
-%{_datadir}/emacs/site-lisp/gnuplot.elc
+%{_datadir}/emacs/site-lisp/gnuplot/gnuplot-gui.el
+%{_datadir}/emacs/site-lisp/gnuplot/gnuplot-gui.elc
+%{_datadir}/emacs/site-lisp/gnuplot/gnuplot.el
+%{_datadir}/emacs/site-lisp/gnuplot/gnuplot.elc
 %{_datadir}/emacs/site-lisp/site-start.d/gnuplot-init.el
 
-
 %changelog
+* Fri Sep  7 2007 Ivana Varekova <varekova@redhat.com> - 4.2.0-5
+- move emacs files to */site-lisp/gnuplot subdirectory
+
 * Thu Sep  6 2007 Ivana Varekova <varekova@redhat.com> - 4.2.0-4
 - change font paths, change documenatation
 
