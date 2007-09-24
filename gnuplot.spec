@@ -2,21 +2,24 @@
 %define minor 2
 %define patchlevel 0
 
+%define x11_app_defaults_dir %{_datadir}/X11/app-defaults
+
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 5%{?dist}
+Release: 6%{?dist}
 # Modifications are to be distributed as patches to the released version.
 License: gnuplot and GPLv2
 Group: Applications/Engineering
 Source: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source2: gnuplot-init.el
 Patch1: gnuplot-4.2.0-refers_to.patch
-Patch2: gnuplot-4.2.0-ver.patch
 BuildRequires: libpng-devel, tetex-latex, zlib-devel, libX11-devel, emacs
 BuildRequires: texinfo, readline-devel, libXt-devel, gd-devel
-BuildRequires: latex2html, gnuplot
+BuildRequires: latex2html
 Requires: libpng
+Requires(post): /sbin/install-info
+Requires(preun): /sbin/install-info
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 URL: http://www.gnuplot.info/
 
@@ -41,7 +44,7 @@ nicely interacts and integrates into emacs.
 %prep
 %setup -q
 %patch1 -p1 -b .refto
-%patch2 -p1 -b .ver
+sed -i -e 's:"/usr/lib/X11/app-defaults":"%{x11_app_defaults_dir}":' src/gplt_x11.c
 
 %build
 %configure --with-readline=gnu --with-png --without-linux-vga \
@@ -52,26 +55,30 @@ make %{?_smp_mflags} RPM_OPT_FLAGS="$RPM_OPT_FLAGS"
 cd docs
 make html
 cd psdoc
-make 
+export GNUPLOT_PS_DIR=../../term/PostScript
 make ps_symbols.ps ps_fontfile_doc.pdf
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT INSTALL='install -p'
 install -d ${RPM_BUILD_ROOT}%{_datadir}/emacs/site-lisp/site-start.d/
-install -m 644 %SOURCE2 ${RPM_BUILD_ROOT}%{_datadir}/emacs/site-lisp/site-start.d/gnuplot-init.el
+install -p -m 644 %SOURCE2 ${RPM_BUILD_ROOT}%{_datadir}/emacs/site-lisp/site-start.d/gnuplot-init.el
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 rm -f $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/info-look*.el*
 install -d ${RPM_BUILD_ROOT}%{_datadir}/emacs/site-lisp/gnuplot
 mv $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/gnuplot.el{,c} $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/gnuplot
 mv $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/gnuplot-gui.el{,c} $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/gnuplot
 
+mkdir -p $RPM_BUILD_ROOT%{x11_app_defaults_dir}
+mv $RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/Gnuplot.app-defaults $RPM_BUILD_ROOT%{x11_app_defaults_dir}/Gnuplot
+rm -rf $RPM_BUILD_ROOT%{_libdir}/
+
 %post 
-/sbin/install-info --quiet %{_infodir}/gnuplot.info.gz %{_infodir}/dir || :
+/sbin/install-info %{_infodir}/gnuplot.info %{_infodir}/dir || :
 
 %preun
 if [ "$1" = "0" ] ; then # last uninstall
-   /sbin/install-info --delete %{_infodir}/gnuplot.info.gz %{_infodir}/dir || :
+   /sbin/install-info --delete %{_infodir}/gnuplot.info %{_infodir}/dir || :
 fi
 
 %clean
@@ -81,7 +88,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %doc BUGS ChangeLog Copyright FAQ NEWS README TODO 
 %doc docs/psdoc/ps_guide.ps docs/psdoc/ps_symbols.ps tutorial/tutorial.dvi demo docs/psdoc/ps_file.doc 
-%doc docs/psdoc/ps_fontfile_doc.pdf
+%doc docs/psdoc/ps_fontfile_doc.pdf docs/htmldocs
 %dir %{_libexecdir}/gnuplot
 %dir %{_libexecdir}/gnuplot/%{major}.%{minor}
 %{_libexecdir}/gnuplot/%{major}.%{minor}/gnuplot_x11
@@ -92,8 +99,12 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/gnuplot/%{major}.%{minor}/PostScript
 %{_datadir}/gnuplot/%{major}.%{minor}/PostScript/*.ps
 %{_datadir}/gnuplot/%{major}.%{minor}/gnuplot.gih
+%dir %{_datadir}/texmf
+%dir %{_datadir}/texmf/tex
+%dir %{_datadir}/texmf/tex/latex
+%dir %{_datadir}/texmf/tex/latex/gnuplot
 %{_datadir}/texmf/tex/latex/gnuplot/gnuplot.cfg
-%{_libdir}/X11/app-defaults/Gnuplot.app-defaults
+%{x11_app_defaults_dir}/Gnuplot
 %{_infodir}/gnuplot.info.gz
 
 %files emacs
@@ -105,6 +116,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/emacs/site-lisp/site-start.d/gnuplot-init.el
 
 %changelog
+* Mon Sep 24 2007 Ivana Varekova <varekova@redhat.com> - 4.2.0-6
+- spec file cleanup
+
 * Fri Sep  7 2007 Ivana Varekova <varekova@redhat.com> - 4.2.0-5
 - move emacs files to */site-lisp/gnuplot subdirectory
 
