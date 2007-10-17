@@ -7,10 +7,11 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 6%{?dist}
+Release: 7%{?dist}
 # Modifications are to be distributed as patches to the released version.
 License: gnuplot and GPLv2
 Group: Applications/Engineering
+URL: http://www.gnuplot.info/
 Source: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source2: gnuplot-init.el
 Patch1: gnuplot-4.2.0-refers_to.patch
@@ -116,6 +117,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/emacs/site-lisp/site-start.d/gnuplot-init.el
 
 %changelog
+* Wed Oct 17 2007 Ivana Varekova <varekova@redhat.com> - 4.2.0-7
+- add URL tag
+
 * Mon Sep 24 2007 Ivana Varekova <varekova@redhat.com> - 4.2.0-6
 - spec file cleanup
 
