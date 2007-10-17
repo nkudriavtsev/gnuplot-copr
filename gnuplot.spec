@@ -22,7 +22,6 @@ Requires: libpng
 Requires(post): /sbin/install-info
 Requires(preun): /sbin/install-info
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-URL: http://www.gnuplot.info/
 
 %description
 Gnuplot is a command-line driven, interactive function plotting
