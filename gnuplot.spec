@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 1%{?dist}
+Release: 2%{?dist}
 # Modifications are to be distributed as patches to the released version.
 License: gnuplot and GPLv2
 Group: Applications/Engineering
@@ -18,7 +18,6 @@ Patch1: gnuplot-4.2.0-refers_to.patch
 BuildRequires: libpng-devel, tetex-latex, zlib-devel, libX11-devel, emacs
 BuildRequires: texinfo, readline-devel, libXt-devel, gd-devel
 BuildRequires: latex2html
-Requires: libpng
 Requires(post): /sbin/install-info
 Requires(preun): /sbin/install-info
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -32,12 +31,22 @@ dimensions and in many different formats.
 Install gnuplot if you need a graphics package for scientific data
 representation.
 
-%package emacs
+%package -n emacs-%{name}
 Group: Applications/Engineering
 Summary: Emacs bindings for the gnuplot main application
-Requires: %{name} = %{version}-%{release}, emacs
+Requires: %{name} = %{version}-%{release}
+Requires: emacs 
 
-%description emacs
+%description -n emacs-%{name}
+The gnuplot-emacs package contains the emacs related .elc files so that gnuplot
+nicely interacts and integrates into emacs.
+
+%package -n emacs-%{name}-el
+Group: Applications/Engineering
+Summary: Emacs bindings for the gnuplot main application
+Requires: emacs-%{name} = %{version}-%{release}
+
+%description -n emacs-%{name}-el
 The gnuplot-emacs package contains the emacs related .el files so that gnuplot
 nicely interacts and integrates into emacs.
 
@@ -45,18 +54,31 @@ nicely interacts and integrates into emacs.
 %setup -q
 %patch1 -p1 -b .refto
 sed -i -e 's:"/usr/lib/X11/app-defaults":"%{x11_app_defaults_dir}":' src/gplt_x11.c
+iconv -f windows-1252 -t utf-8 ChangeLog > ChangeLog.aux
+mv ChangeLog.aux ChangeLog
+iconv -f windows-1252 -t utf-8 demo/fontfile_latex.dem >demo/fontfile_latex.dem.aux
+mv demo/fontfile_latex.dem.aux demo/fontfile_latex.dem
+iconv -f iso-8859-1 -t utf-8  demo/demo.edf >demo/demo.edf.aux
+mv demo/demo.edf.aux demo/demo.edf
+iconv -f windows-1252 -t utf-8 demo/epslatex.dem >demo/epslatex.dem.aux
+mv demo/epslatex.dem.aux demo/epslatex.dem
+iconv -f windows-1252 -t utf-8 demo/fontfile.dem >demo/fontfile.dem.aux
+mv demo/fontfile.dem.aux demo/fontfile.dem
+chmod 644 src/getcolor.h
 
 %build
 %configure --with-readline=gnu --with-png --without-linux-vga \
  --enable-history-file
 
-make %{?_smp_mflags} RPM_OPT_FLAGS="$RPM_OPT_FLAGS"
+make %{?_smp_mflags}
 
 cd docs
 make html
 cd psdoc
 export GNUPLOT_PS_DIR=../../term/PostScript
 make ps_symbols.ps ps_fontfile_doc.pdf
+cd ../..
+rm -rf docs/htmldocs/images.idx
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -107,15 +129,26 @@ rm -rf $RPM_BUILD_ROOT
 %{x11_app_defaults_dir}/Gnuplot
 %{_infodir}/gnuplot.info.gz
 
-%files emacs
+%files -n emacs-%{name}
 %defattr(-,root,root,-)
-%{_datadir}/emacs/site-lisp/gnuplot/gnuplot-gui.el
+%doc ChangeLog Copyright
+%dir %{_datadir}/emacs/site-lisp/gnuplot/
 %{_datadir}/emacs/site-lisp/gnuplot/gnuplot-gui.elc
-%{_datadir}/emacs/site-lisp/gnuplot/gnuplot.el
 %{_datadir}/emacs/site-lisp/gnuplot/gnuplot.elc
 %{_datadir}/emacs/site-lisp/site-start.d/gnuplot-init.el
 
+%files -n emacs-%{name}-el
+%defattr(-,root,root,-)
+%doc ChangeLog Copyright
+%{_datadir}/emacs/site-lisp/gnuplot/gnuplot-gui.el
+%{_datadir}/emacs/site-lisp/gnuplot/gnuplot.el
+
 %changelog
+* Thu Oct 25 2007 Ivana Varekova <varekova@redhat.com> - 4.2.2-2
+- rename emacs subpackage, split intwo two parts
+- add font directories
+- clean spec file
+
 * Thu Oct 25 2007 Ivana Varekova <varekova@redhat.com> - 4.2.2-1
 - update to 4.2.2
 
