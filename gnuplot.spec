@@ -4,10 +4,14 @@
 
 %define x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
+%define emacs_version %(pkg-config emacs --modversion)
+%define emacs_lispdir %(pkg-config emacs --variable sitepkglispdir)
+%define emacs_startdir %(pkg-config emacs --variable sitestartdir)
+
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 2%{?dist}
+Release: 3%{?dist}
 # Modifications are to be distributed as patches to the released version.
 License: gnuplot and GPLv2
 Group: Applications/Engineering
@@ -35,7 +39,8 @@ representation.
 Group: Applications/Engineering
 Summary: Emacs bindings for the gnuplot main application
 Requires: %{name} = %{version}-%{release}
-Requires: emacs 
+BuildRequires:  emacs emacs-el
+Requires: emacs >= %{emacs_version}
 
 %description -n emacs-%{name}
 The gnuplot-emacs package contains the emacs related .elc files so that gnuplot
@@ -56,14 +61,6 @@ nicely interacts and integrates into emacs.
 sed -i -e 's:"/usr/lib/X11/app-defaults":"%{x11_app_defaults_dir}":' src/gplt_x11.c
 iconv -f windows-1252 -t utf-8 ChangeLog > ChangeLog.aux
 mv ChangeLog.aux ChangeLog
-iconv -f windows-1252 -t utf-8 demo/fontfile_latex.dem >demo/fontfile_latex.dem.aux
-mv demo/fontfile_latex.dem.aux demo/fontfile_latex.dem
-iconv -f iso-8859-1 -t utf-8  demo/demo.edf >demo/demo.edf.aux
-mv demo/demo.edf.aux demo/demo.edf
-iconv -f windows-1252 -t utf-8 demo/epslatex.dem >demo/epslatex.dem.aux
-mv demo/epslatex.dem.aux demo/epslatex.dem
-iconv -f windows-1252 -t utf-8 demo/fontfile.dem >demo/fontfile.dem.aux
-mv demo/fontfile.dem.aux demo/fontfile.dem
 chmod 644 src/getcolor.h
 
 %build
@@ -132,18 +129,21 @@ rm -rf $RPM_BUILD_ROOT
 %files -n emacs-%{name}
 %defattr(-,root,root,-)
 %doc ChangeLog Copyright
-%dir %{_datadir}/emacs/site-lisp/gnuplot/
-%{_datadir}/emacs/site-lisp/gnuplot/gnuplot-gui.elc
-%{_datadir}/emacs/site-lisp/gnuplot/gnuplot.elc
-%{_datadir}/emacs/site-lisp/site-start.d/gnuplot-init.el
+%dir %{emacs_lispdir}/%{name}
+%{emacs_lispdir}/%{name}/*.elc
+%{emacs_startdir}/*.el
 
 %files -n emacs-%{name}-el
 %defattr(-,root,root,-)
 %doc ChangeLog Copyright
-%{_datadir}/emacs/site-lisp/gnuplot/gnuplot-gui.el
-%{_datadir}/emacs/site-lisp/gnuplot/gnuplot.el
+%{emacs_lispdir}/%{name}/*.el
 
 %changelog
+* Thu Nov  1 2007 Ivana Varekova <varekova@redhat.com> - 4.2.2-3
+- add emacs buildrequires
+- add emacs-* macros
+- remove useless iconv
+
 * Thu Oct 25 2007 Ivana Varekova <varekova@redhat.com> - 4.2.2-2
 - rename emacs subpackage, split intwo two parts
 - add font directories
