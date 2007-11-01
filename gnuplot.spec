@@ -39,7 +39,7 @@ representation.
 Group: Applications/Engineering
 Summary: Emacs bindings for the gnuplot main application
 Requires: %{name} = %{version}-%{release}
-BuildRequires:  emacs emacs-el
+BuildRequires:  emacs emacs-el pkgconfig
 Requires: emacs >= %{emacs_version}
 
 %description -n emacs-%{name}
