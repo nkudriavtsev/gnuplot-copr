@@ -4,9 +4,15 @@
 
 %define x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
+%if %($(pkg-config emacs) ; echo $?)
+%define emacs_version 22.1
+%define emacs_lispdir %{_datadir}/emacs/site-lisp
+%define emacs_startdir %{_datadir}/emacs/site-lisp/site-start.d
+%else
 %define emacs_version %(pkg-config emacs --modversion)
 %define emacs_lispdir %(pkg-config emacs --variable sitepkglispdir)
 %define emacs_startdir %(pkg-config emacs --variable sitestartdir)
+%endif
 
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
