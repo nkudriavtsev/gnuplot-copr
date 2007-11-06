@@ -17,7 +17,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 3%{?dist}
+Release: 4%{?dist}
 # Modifications are to be distributed as patches to the released version.
 License: gnuplot and GPLv2
 Group: Applications/Engineering
@@ -68,6 +68,7 @@ sed -i -e 's:"/usr/lib/X11/app-defaults":"%{x11_app_defaults_dir}":' src/gplt_x1
 iconv -f windows-1252 -t utf-8 ChangeLog > ChangeLog.aux
 mv ChangeLog.aux ChangeLog
 chmod 644 src/getcolor.h
+chmod 644 demo/html/webify.pl
 
 %build
 %configure --with-readline=gnu --with-png --without-linux-vga \
@@ -113,7 +114,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %doc BUGS ChangeLog Copyright FAQ NEWS README TODO 
 %doc docs/psdoc/ps_guide.ps docs/psdoc/ps_symbols.ps tutorial/tutorial.dvi demo docs/psdoc/ps_file.doc 
-%doc docs/psdoc/ps_fontfile_doc.pdf docs/htmldocs
+%doc docs/psdoc/ps_fontfile_doc.pdf docs/htmldocs tutorial/eg7.eps
 %dir %{_libexecdir}/gnuplot
 %dir %{_libexecdir}/gnuplot/%{major}.%{minor}
 %{_libexecdir}/gnuplot/%{major}.%{minor}/gnuplot_x11
@@ -145,6 +146,10 @@ rm -rf $RPM_BUILD_ROOT
 %{emacs_lispdir}/%{name}/*.el
 
 %changelog
+* Tue Nov  6 2007 Ivana Varekova <varekova@redhat.com> - 4.2.2-4
+- fix webify.pl permissions
+- add eg7.eps to documentation
+
 * Thu Nov  1 2007 Ivana Varekova <varekova@redhat.com> - 4.2.2-3
 - add emacs buildrequires
 - add emacs-* macros
