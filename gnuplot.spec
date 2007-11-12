@@ -17,7 +17,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 4%{?dist}
+Release: 5%{?dist}
 # Modifications are to be distributed as patches to the released version.
 License: gnuplot and GPLv2
 Group: Applications/Engineering
@@ -47,6 +47,7 @@ Summary: Emacs bindings for the gnuplot main application
 Requires: %{name} = %{version}-%{release}
 BuildRequires:  emacs emacs-el pkgconfig
 Requires: emacs >= %{emacs_version}
+Provides: gnuplot-emacs
 
 %description -n emacs-%{name}
 The gnuplot-emacs package contains the emacs related .elc files so that gnuplot
@@ -146,6 +147,9 @@ rm -rf $RPM_BUILD_ROOT
 %{emacs_lispdir}/%{name}/*.el
 
 %changelog
+* Mon Nov 12 2007 Ivana Varekova <varekova@redhat.com> - 4.2.2-5
+- fix 373941 - add provides tag
+
 * Tue Nov  6 2007 Ivana Varekova <varekova@redhat.com> - 4.2.2-4
 - fix webify.pl permissions
 - add eg7.eps to documentation
