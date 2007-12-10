@@ -17,7 +17,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 6%{?dist}
+Release: 7%{?dist}
 # Modifications are to be distributed as patches to the released version.
 License: gnuplot and GPLv2
 Group: Applications/Engineering
@@ -26,7 +26,7 @@ Source: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source2: gnuplot-init.el
 Patch1: gnuplot-4.2.0-refers_to.patch
 BuildRequires: libpng-devel, tetex-latex, zlib-devel, libX11-devel, emacs
-BuildRequires: texinfo, readline-devel, libXt-devel, gd-devel
+BuildRequires: texinfo, readline-devel, libXt-devel, gd-devel, wxGTK-devel
 BuildRequires: latex2html
 Requires(post): /sbin/install-info
 Requires(preun): /sbin/install-info
@@ -151,6 +151,9 @@ rm -rf $RPM_BUILD_ROOT
 %{emacs_lispdir}/%{name}/*.el
 
 %changelog
+* Mon Dec 10 2007 Ivana Varekova <varekova@redhat.com> - 4.2.2-7
+- add wxGTK-devel dependency (#405411)
+
 * Thu Nov 15 2007 Ivana Varekova <varekova@redhat.com> - 4.2.2-6
 - add obsoletes tag
 
