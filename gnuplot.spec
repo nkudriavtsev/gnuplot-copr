@@ -17,7 +17,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 8%{?dist}
+Release: 9%{?dist}
 # Modifications are to be distributed as patches to the released version.
 License: gnuplot and GPLv2
 Group: Applications/Engineering
@@ -28,7 +28,6 @@ Patch1: gnuplot-4.2.0-refers_to.patch
 BuildRequires: libpng-devel, tetex-latex, zlib-devel, libX11-devel, emacs
 BuildRequires: texinfo, readline-devel, libXt-devel, gd-devel, wxGTK-devel
 BuildRequires: latex2html
-Requires: wxGTK
 Requires(post): /sbin/install-info
 Requires(preun): /sbin/install-info
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -48,8 +47,8 @@ Summary: Emacs bindings for the gnuplot main application
 Requires: %{name} = %{version}-%{release}
 BuildRequires:  emacs emacs-el pkgconfig
 Requires: emacs >= %{emacs_version}
-Provides: gnuplot-emacs
-Obsoletes: gnuplot-emacs
+Provides: gnuplot-emacs = %{version}-%{release}
+Obsoletes: gnuplot-emacs < 4.2.2-3
 
 %description -n emacs-%{name}
 The gnuplot-emacs package contains the emacs related .elc files so that gnuplot
@@ -59,8 +58,7 @@ nicely interacts and integrates into emacs.
 Group: Applications/Engineering
 Summary: Emacs bindings for the gnuplot main application
 Requires: emacs-%{name} = %{version}-%{release}
-Provides: gnuplot-emacs
-Obsoletes: gnuplot-emacs
+Obsoletes: gnuplot-emacs < 4.2.2-3
 
 
 %description -n emacs-%{name}-el
@@ -152,6 +150,9 @@ rm -rf $RPM_BUILD_ROOT
 %{emacs_lispdir}/%{name}/*.el
 
 %changelog
+* Tue Jan 29 2008 Ivana Varekova <varekova@redhat.com> - 4.2.2-9
+- spec file cleanup
+
 * Mon Jan 28 2008 Ivana Varekova <varekova@redhat.com> - 4.2.2-8
 - fix 430335 - add wxGTK requires
 
