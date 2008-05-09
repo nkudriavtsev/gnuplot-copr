@@ -1,6 +1,6 @@
 %define major 4
 %define minor 2
-%define patchlevel 2
+%define patchlevel 3
 
 %define x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
@@ -17,7 +17,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 10%{?dist}
+Release: 1%{?dist}
 # Modifications are to be distributed as patches to the released version.
 License: gnuplot and GPLv2
 Group: Applications/Engineering
@@ -100,7 +100,7 @@ mv $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/gnuplot.el{,c} $RPM_BUILD_ROOT%{_d
 mv $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/gnuplot-gui.el{,c} $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/gnuplot
 
 mkdir -p $RPM_BUILD_ROOT%{x11_app_defaults_dir}
-mv $RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/Gnuplot.app-defaults $RPM_BUILD_ROOT%{x11_app_defaults_dir}/Gnuplot
+mv $RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/Gnuplot $RPM_BUILD_ROOT%{x11_app_defaults_dir}/Gnuplot
 rm -rf $RPM_BUILD_ROOT%{_libdir}/
 
 %post 
@@ -150,6 +150,9 @@ rm -rf $RPM_BUILD_ROOT
 %{emacs_lispdir}/%{name}/*.el
 
 %changelog
+* Fri May  9 2008 Ivana Varekova <varekova@redhat.com> - 4.2.3-1
+- update to 4.2.3
+
 * Wed Feb 20 2008 Fedora Release Engineering <rel-eng@fedoraproject.org> - 4.2.2-10
 - Autorebuild for GCC 4.3
 
