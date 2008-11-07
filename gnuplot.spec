@@ -1,6 +1,6 @@
 %define major 4
 %define minor 2
-%define patchlevel 3
+%define patchlevel 4
 
 %define x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
@@ -150,6 +150,9 @@ rm -rf $RPM_BUILD_ROOT
 %{emacs_lispdir}/%{name}/*.el
 
 %changelog
+* Fri Nov  7 2008 Ivana Varekova <varekova@redhat.com> - 4.2.4-1 
+- update to 4.2.4
+
 * Fri May  9 2008 Ivana Varekova <varekova@redhat.com> - 4.2.3-1
 - update to 4.2.3
 
