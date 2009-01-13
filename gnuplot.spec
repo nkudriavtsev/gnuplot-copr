@@ -217,7 +217,7 @@ rm -rf $RPM_BUILD_ROOT
 %{emacs_lispdir}/%{name}/*.el
 
 %changelog
-* Tue Jan 13 2008 Ivana Varekova <varekova@redhat.com> - 4.2.4-2
+* Tue Jan 13 2009 Ivana Varekova <varekova@redhat.com> - 4.2.4-2
 - add minimal package for server SIG purposes
 
 * Fri Nov  7 2008 Ivana Varekova <varekova@redhat.com> - 4.2.4-1
