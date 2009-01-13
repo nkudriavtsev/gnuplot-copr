@@ -17,7 +17,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 1%{?dist}
+Release: 2%{?dist}
 # Modifications are to be distributed as patches to the released version.
 License: gnuplot and GPLv2
 Group: Applications/Engineering
@@ -28,8 +28,9 @@ Patch1: gnuplot-4.2.0-refers_to.patch
 BuildRequires: libpng-devel, tetex-latex, zlib-devel, libX11-devel, emacs
 BuildRequires: texinfo, readline-devel, libXt-devel, gd-devel, wxGTK-devel
 BuildRequires: latex2html
-Requires(post): /sbin/install-info
-Requires(preun): /sbin/install-info
+Requires: %{name}-common = %{version}-%{release}
+Requires(post): %{_sbindir}/alternatives
+Requires(preun): %{_sbindir}/alternatives
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %description
@@ -40,6 +41,36 @@ dimensions and in many different formats.
 
 Install gnuplot if you need a graphics package for scientific data
 representation.
+
+%package common
+Group: Applications/Engineering
+Summary: common gnuplot parts
+Requires(post): %{_sbindir}/install-info
+Requires(preun): %{_sbindir}/install-info
+
+%description common
+Gnuplot is a command-line driven, interactive function plotting
+program especially suited for scientific data representation.  Gnuplot
+can be used to plot functions and data points in both two and three
+dimensions and in many different formats.
+
+This subpackage contains common parts needed for arbitrary version of gnuplot
+
+%package minimal
+Group: Applications/Engineering
+Summary: Minimal version of program for plotting mathematical expressions and data
+Requires: %{name}-common = %{version}-%{release}
+Requires(post): %{_sbindir}/alternatives
+Requires(preun): %{_sbindir}/alternatives
+
+%description minimal
+Gnuplot is a command-line driven, interactive function plotting
+program especially suited for scientific data representation.  Gnuplot
+can be used to plot functions and data points in both two and three
+dimensions and in many different formats.
+
+Install gnuplot-minimal if you need a minimal version of graphics package 
+for scientific data representation.
 
 %package -n emacs-%{name}
 Group: Applications/Engineering
@@ -75,9 +106,17 @@ chmod 644 src/getcolor.h
 chmod 644 demo/html/webify.pl
 
 %build
+# at first create minimal version of gnuplot for server SIG purposes
+%configure --with-readline=gnu --with-png --without-linux-vga \
+ --enable-history-file --disable-wxwidgets
+make %{?_smp_mflags}
+mv src/gnuplot src/gnuplot-minimal
+
+# clean all settings
+make clean
+# create full version of gnuplot
 %configure --with-readline=gnu --with-png --without-linux-vga \
  --enable-history-file
-
 make %{?_smp_mflags}
 
 cd docs
@@ -103,12 +142,33 @@ mkdir -p $RPM_BUILD_ROOT%{x11_app_defaults_dir}
 mv $RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/Gnuplot $RPM_BUILD_ROOT%{x11_app_defaults_dir}/Gnuplot
 rm -rf $RPM_BUILD_ROOT%{_libdir}/
 
-%post 
+# rename binary
+mv $RPM_BUILD_ROOT%{_bindir}/gnuplot $RPM_BUILD_ROOT%{_bindir}/gnuplot-wx
+# install minimal binary
+install -p -m 755 ./src/gnuplot-minimal $RPM_BUILD_ROOT%{_bindir}/gnuplot-minimal
+
+%post
+%{_sbindir}/alternatives --install %{_bindir}/gnuplot gnuplot %{_bindir}/gnuplot-wx 60
+
+%post common
 /sbin/install-info %{_infodir}/gnuplot.info %{_infodir}/dir || :
 
+%post minimal
+%{_sbindir}/alternatives --install %{_bindir}/gnuplot gnuplot %{_bindir}/gnuplot-minimal 40
+
 %preun
-if [ "$1" = "0" ] ; then # last uninstall
+if [ $1 = 0 ]; then
+    %{_sbindir}/alternatives --remove gnuplot %{_bindir}/gnuplot-wx
+fi
+
+%preun common
+if [ $1 = 0 ] ; then # last uninstall
    /sbin/install-info --delete %{_infodir}/gnuplot.info %{_infodir}/dir || :
+fi
+
+%preun minimal
+if [ $1 = 0 ]; then
+    %{_sbindir}/alternatives --remove gnuplot %{_bindir}/gnuplot-minimal
 fi
 
 %clean
@@ -116,19 +176,22 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%doc BUGS ChangeLog Copyright FAQ NEWS README TODO 
-%doc docs/psdoc/ps_guide.ps docs/psdoc/ps_symbols.ps tutorial/tutorial.dvi demo docs/psdoc/ps_file.doc 
+%{_bindir}/gnuplot-wx
+
+%files common
+%defattr(-,root,root,-)
+%doc BUGS ChangeLog Copyright FAQ NEWS README TODO
+%doc docs/psdoc/ps_guide.ps docs/psdoc/ps_symbols.ps tutorial/tutorial.dvi demo docs/psdoc/ps_file.doc
 %doc docs/psdoc/ps_fontfile_doc.pdf docs/htmldocs tutorial/eg7.eps
-%dir %{_libexecdir}/gnuplot
-%dir %{_libexecdir}/gnuplot/%{major}.%{minor}
-%{_libexecdir}/gnuplot/%{major}.%{minor}/gnuplot_x11
-%{_bindir}/gnuplot
 %{_mandir}/man1/gnuplot.1.gz
 %dir %{_datadir}/gnuplot
 %dir %{_datadir}/gnuplot/%{major}.%{minor}
 %dir %{_datadir}/gnuplot/%{major}.%{minor}/PostScript
 %{_datadir}/gnuplot/%{major}.%{minor}/PostScript/*.ps
 %{_datadir}/gnuplot/%{major}.%{minor}/gnuplot.gih
+%dir %{_libexecdir}/gnuplot
+%dir %{_libexecdir}/gnuplot/%{major}.%{minor}
+%{_libexecdir}/gnuplot/%{major}.%{minor}/gnuplot_x11
 %dir %{_datadir}/texmf
 %dir %{_datadir}/texmf/tex
 %dir %{_datadir}/texmf/tex/latex
@@ -136,6 +199,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/texmf/tex/latex/gnuplot/gnuplot.cfg
 %{x11_app_defaults_dir}/Gnuplot
 %{_infodir}/gnuplot.info.gz
+
+%files minimal
+%defattr(-,root,root,-)
+%{_bindir}/gnuplot-minimal
 
 %files -n emacs-%{name}
 %defattr(-,root,root,-)
@@ -150,7 +217,10 @@ rm -rf $RPM_BUILD_ROOT
 %{emacs_lispdir}/%{name}/*.el
 
 %changelog
-* Fri Nov  7 2008 Ivana Varekova <varekova@redhat.com> - 4.2.4-1 
+* Tue Jan 13 2008 Ivana Varekova <varekova@redhat.com> - 4.2.4-2
+- add minimal package for server SIG purposes
+
+* Fri Nov  7 2008 Ivana Varekova <varekova@redhat.com> - 4.2.4-1
 - update to 4.2.4
 
 * Fri May  9 2008 Ivana Varekova <varekova@redhat.com> - 4.2.3-1
