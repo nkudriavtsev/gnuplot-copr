@@ -17,7 +17,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 2%{?dist}
+Release: 3%{?dist}
 # Modifications are to be distributed as patches to the released version.
 License: gnuplot and GPLv2
 Group: Applications/Engineering
@@ -45,8 +45,8 @@ representation.
 %package common
 Group: Applications/Engineering
 Summary: common gnuplot parts
-Requires(post): %{_sbindir}/install-info
-Requires(preun): %{_sbindir}/install-info
+Requires(post): /sbin/install-info
+Requires(preun): /sbin/install-info
 
 %description common
 Gnuplot is a command-line driven, interactive function plotting
@@ -217,6 +217,9 @@ rm -rf $RPM_BUILD_ROOT
 %{emacs_lispdir}/%{name}/*.el
 
 %changelog
+* Wed Jan 14 2009 Ivana Varekova <varekova@redhat.com> - 4.2.4-3
+- fix sbin path
+
 * Tue Jan 13 2009 Ivana Varekova <varekova@redhat.com> - 4.2.4-2
 - add minimal package for server SIG purposes
 
