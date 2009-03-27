@@ -17,7 +17,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 5%{?dist}
+Release: 6%{?dist}
 # Modifications are to be distributed as patches to the released version.
 License: gnuplot and GPLv2
 Group: Applications/Engineering
@@ -91,10 +91,18 @@ Summary: Emacs bindings for the gnuplot main application
 Requires: emacs-%{name} = %{version}-%{release}
 Obsoletes: gnuplot-emacs < 4.2.2-3
 
-
 %description -n emacs-%{name}-el
 The gnuplot-emacs package contains the emacs related .el files so that gnuplot
 nicely interacts and integrates into emacs.
+
+%package  doc
+Group: Applications/Engineering
+Summary: Documentation fo bindings for the gnuplot main application
+Obsoletes: gnuplot-common < 4.2.4-5
+
+%description doc
+The gnuplot-doc package contains the documentation related to gnuplot 
+plotting tool
 
 %prep
 %setup -q
@@ -178,11 +186,15 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %{_bindir}/gnuplot-wx
 
+%files doc
+%defattr(-,root,root,-)
+%doc ChangeLog Copyright
+%doc docs/psdoc/ps_guide.ps docs/psdoc/ps_symbols.ps tutorial/tutorial.dvi demo docs/psdoc/ps_file.doc
+%doc docs/psdoc/ps_fontfile_doc.pdf docs/htmldocs tutorial/eg7.eps
+
 %files common
 %defattr(-,root,root,-)
 %doc BUGS ChangeLog Copyright FAQ NEWS README TODO
-%doc docs/psdoc/ps_guide.ps docs/psdoc/ps_symbols.ps tutorial/tutorial.dvi demo docs/psdoc/ps_file.doc
-%doc docs/psdoc/ps_fontfile_doc.pdf docs/htmldocs tutorial/eg7.eps
 %{_mandir}/man1/gnuplot.1.gz
 %dir %{_datadir}/gnuplot
 %dir %{_datadir}/gnuplot/%{major}.%{minor}
@@ -217,6 +229,9 @@ rm -rf $RPM_BUILD_ROOT
 %{emacs_lispdir}/%{name}/*.el
 
 %changelog
+* Fri Mar 27 2009 Ivana Varekova <varekova@redhat.com> - 4.2.4-6
+- split documentation
+
 * Tue Mar 10 2009 Ivana Varekova <varekova@redhat.com> - 4.2.4-5
 - fix #489069 (update of the package from nonsplit version
   causes the absence of gnuplot binary -
