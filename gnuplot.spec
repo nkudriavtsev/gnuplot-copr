@@ -1,6 +1,6 @@
 %define major 4
 %define minor 2
-%define patchlevel 4
+%define patchlevel 5
 
 %define x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
@@ -17,7 +17,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 6%{?dist}
+Release: 1%{?dist}
 # Modifications are to be distributed as patches to the released version.
 License: gnuplot and GPLv2
 Group: Applications/Engineering
@@ -229,6 +229,9 @@ rm -rf $RPM_BUILD_ROOT
 %{emacs_lispdir}/%{name}/*.el
 
 %changelog
+* Thu May 28 2009 Ivana Varekova <varekova@redhat.com> - 4.2.5-1
+- update to 4.2.5
+
 * Fri Mar 27 2009 Ivana Varekova <varekova@redhat.com> - 4.2.4-6
 - split documentation
 
