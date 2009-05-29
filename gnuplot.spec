@@ -17,7 +17,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 6%{?dist}
+Release: 7%{?dist}
 # Modifications are to be distributed as patches to the released version.
 License: gnuplot and GPLv2
 Group: Applications/Engineering
@@ -166,7 +166,7 @@ install -p -m 755 ./src/gnuplot-minimal $RPM_BUILD_ROOT%{_bindir}/gnuplot-minima
 
 %preun
 if [ $1 = 0 ]; then
-    %{_sbindir}/alternatives --remove gnuplot %{_bindir}/gnuplot-wx
+    %{_sbindir}/alternatives --remove gnuplot %{_bindir}/gnuplot-wx || :
 fi
 
 %preun common
@@ -176,7 +176,7 @@ fi
 
 %preun minimal
 if [ $1 = 0 ]; then
-    %{_sbindir}/alternatives --remove gnuplot %{_bindir}/gnuplot-minimal
+    %{_sbindir}/alternatives --remove gnuplot %{_bindir}/gnuplot-minimal || :
 fi
 
 %clean
@@ -229,6 +229,9 @@ rm -rf $RPM_BUILD_ROOT
 %{emacs_lispdir}/%{name}/*.el
 
 %changelog
+* Fri May 29 2009 Ivana Varekova <varekova@redhat.com> - 4.2.4-7
+- fix preun scripts
+
 * Fri Mar 27 2009 Ivana Varekova <varekova@redhat.com> - 4.2.4-6
 - split documentation
 
