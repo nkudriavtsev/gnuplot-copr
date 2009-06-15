@@ -17,7 +17,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 3%{?dist}
+Release: 4%{?dist}
 # Modifications are to be distributed as patches to the released version.
 License: gnuplot and GPLv2
 Group: Applications/Engineering
@@ -242,7 +242,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/texmf/tex/latex/gnuplot/gnuplot.cfg
 
 %changelog
-* Mon Jun 15 2009 Ivana Varekova <varekova@redhat.com> - 4.2.5-3
+* Mon Jun 15 2009 Ivana Varekova <varekova@redhat.com> - 4.2.5-4
 - add gnuplot-latex subpackage
   patch by jnovy
 
