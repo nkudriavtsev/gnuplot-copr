@@ -17,7 +17,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 2%{?dist}
+Release: 3%{?dist}
 # Modifications are to be distributed as patches to the released version.
 License: gnuplot and GPLv2
 Group: Applications/Engineering
@@ -25,7 +25,7 @@ URL: http://www.gnuplot.info/
 Source: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source2: gnuplot-init.el
 Patch1: gnuplot-4.2.0-refers_to.patch
-BuildRequires: libpng-devel, tetex-latex, zlib-devel, libX11-devel, emacs
+BuildRequires: libpng-devel, tex(latex), zlib-devel, libX11-devel, emacs
 BuildRequires: texinfo, readline-devel, libXt-devel, gd-devel, wxGTK-devel
 BuildRequires: latex2html
 Requires: %{name}-common = %{version}-%{release}
@@ -103,6 +103,19 @@ Obsoletes: gnuplot-common < 4.2.4-5
 %description doc
 The gnuplot-doc package contains the documentation related to gnuplot 
 plotting tool
+
+%package  latex
+Group: Applications/Engineering
+Summary: Configuration for LaTeX typesetting using gnuplot
+Requires: tex(latex)
+Requires: %{name} = %{version}-%{release}
+BuildArch: noarch
+Obsoletes: gnuplot-common < 4.2.5-2
+
+%description latex
+The gnuplot-latex package contains LaTeX configuration file related to gnuplot 
+plotting tool.
+
 
 %prep
 %setup -q
@@ -204,11 +217,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libexecdir}/gnuplot
 %dir %{_libexecdir}/gnuplot/%{major}.%{minor}
 %{_libexecdir}/gnuplot/%{major}.%{minor}/gnuplot_x11
-%dir %{_datadir}/texmf
-%dir %{_datadir}/texmf/tex
-%dir %{_datadir}/texmf/tex/latex
-%dir %{_datadir}/texmf/tex/latex/gnuplot
-%{_datadir}/texmf/tex/latex/gnuplot/gnuplot.cfg
 %{x11_app_defaults_dir}/Gnuplot
 %{_infodir}/gnuplot.info.gz
 
@@ -228,7 +236,16 @@ rm -rf $RPM_BUILD_ROOT
 %doc ChangeLog Copyright
 %{emacs_lispdir}/%{name}/*.el
 
+%files latex
+%defattr(-,root,root,-)
+%dir %{_datadir}/texmf/tex/latex/gnuplot
+%{_datadir}/texmf/tex/latex/gnuplot/gnuplot.cfg
+
 %changelog
+* Mon Jun 15 2009 Ivana Varekova <varekova@redhat.com> - 4.2.5-3
+- add gnuplot-latex subpackage
+  patch by jnovy
+
 * Fri May 29 2009 Ivana Varekova <varekova@redhat.com> - 4.2.5-2
 - fix preun scripts
 
