@@ -172,7 +172,7 @@ install -p -m 755 ./src/gnuplot-minimal $RPM_BUILD_ROOT%{_bindir}/gnuplot-minima
 %{_sbindir}/alternatives --install %{_bindir}/gnuplot gnuplot %{_bindir}/gnuplot-wx 60
 
 %post common
-if [ -f %{_infodir}/gnuplot.info ]; then
+if [ -f %{_infodir}/gnuplot.info* ]; then
     /sbin/install-info %{_infodir}/gnuplot.info %{_infodir}/dir || :
 fi
 
@@ -186,7 +186,7 @@ fi
 
 %preun common
 if [ $1 = 0 ] ; then # last uninstall
-    if [ -f %{_infodir}/gnuplot.info ]; then
+    if [ -f %{_infodir}/gnuplot.info* ]; then
 	/sbin/install-info --delete %{_infodir}/gnuplot.info %{_infodir}/dir || :
     fi
 fi
