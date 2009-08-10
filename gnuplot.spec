@@ -17,7 +17,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 5%{?dist}
+Release: 6%{?dist}
 # Modifications are to be distributed as patches to the released version.
 License: gnuplot and GPLv2
 Group: Applications/Engineering
@@ -172,7 +172,9 @@ install -p -m 755 ./src/gnuplot-minimal $RPM_BUILD_ROOT%{_bindir}/gnuplot-minima
 %{_sbindir}/alternatives --install %{_bindir}/gnuplot gnuplot %{_bindir}/gnuplot-wx 60
 
 %post common
-/sbin/install-info %{_infodir}/gnuplot.info %{_infodir}/dir || :
+if [ -f %{_infodir}/gnuplot.info ]; then
+    /sbin/install-info %{_infodir}/gnuplot.info %{_infodir}/dir || :
+fi
 
 %posttrans minimal
 %{_sbindir}/alternatives --install %{_bindir}/gnuplot gnuplot %{_bindir}/gnuplot-minimal 40
@@ -184,7 +186,9 @@ fi
 
 %preun common
 if [ $1 = 0 ] ; then # last uninstall
-   /sbin/install-info --delete %{_infodir}/gnuplot.info %{_infodir}/dir || :
+    if [ -f %{_infodir}/gnuplot.info ]; then
+	/sbin/install-info --delete %{_infodir}/gnuplot.info %{_infodir}/dir || :
+    fi
 fi
 
 %preun minimal
@@ -242,6 +246,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/texmf/tex/latex/gnuplot/gnuplot.cfg
 
 %changelog
+* Mon Aug 10 2009 Ivana Varekova <varekova redhat com> 4.2.5-6
+- fix installation with --excludedocs option (#515963)
+
 * Fri Jul 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.2.5-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
 
