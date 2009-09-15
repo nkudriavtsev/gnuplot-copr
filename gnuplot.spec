@@ -1,6 +1,6 @@
 %define major 4
 %define minor 2
-%define patchlevel 5
+%define patchlevel 6
 
 %define x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
@@ -246,7 +246,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/texmf/tex/latex/gnuplot/gnuplot.cfg
 
 %changelog
-* Mon Aug 10 2009 Ivana Varekova <varekova redhat com> 4.2.5-6
+* Tue Sep 15 2009 Ivana Varekova <varekova@redhat.com> 4.2.6-1
+- update to 4.2.6
+
+* Mon Aug 10 2009 Ivana Varekova <varekova@redhat.com> 4.2.5-6
 - fix installation with --excludedocs option (#515963)
 
 * Fri Jul 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.2.5-5
