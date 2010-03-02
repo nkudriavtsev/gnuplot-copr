@@ -17,9 +17,9 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 1%{?dist}
+Release: 2%{?dist}
 # Modifications are to be distributed as patches to the released version.
-License: gnuplot and GPLv2
+License: gnuplot
 Group: Applications/Engineering
 URL: http://www.gnuplot.info/
 Source: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
@@ -44,7 +44,7 @@ representation.
 
 %package common
 Group: Applications/Engineering
-Summary: common gnuplot parts
+Summary: The common gnuplot parts
 Requires(post): /sbin/install-info
 Requires(preun): /sbin/install-info
 
@@ -246,6 +246,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/texmf/tex/latex/gnuplot/gnuplot.cfg
 
 %changelog
+* Tue Mar  2 2010 Ivana Hutarova Varekova <varekova@redhat.com> 4.2.6-2
+- fix license tag
+
 * Tue Sep 15 2009 Ivana Varekova <varekova@redhat.com> 4.2.6-1
 - update to 4.2.6
 
