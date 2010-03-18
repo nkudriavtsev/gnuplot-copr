@@ -1,6 +1,6 @@
 %define major 4
-%define minor 2
-%define patchlevel 6
+%define minor 4
+%define patchlevel 0
 
 %define x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
@@ -17,9 +17,10 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 2%{?dist}
+Release: 1%{?dist}
 # Modifications are to be distributed as patches to the released version.
-License: gnuplot
+# aglfn.txt has license: MIT
+License: gnuplot and MIT
 Group: Applications/Engineering
 URL: http://www.gnuplot.info/
 Source: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
@@ -125,11 +126,14 @@ iconv -f windows-1252 -t utf-8 ChangeLog > ChangeLog.aux
 mv ChangeLog.aux ChangeLog
 chmod 644 src/getcolor.h
 chmod 644 demo/html/webify.pl
+chmod 644 demo/html/webify_svg.pl
+chmod 644 demo/html/webify_canvas.pl
 
 %build
 # at first create minimal version of gnuplot for server SIG purposes
 %configure --with-readline=gnu --with-png --without-linux-vga \
- --enable-history-file --disable-wxwidgets
+ --enable-history-file --disable-wxwidgets \
+ --without-cairo 
 make %{?_smp_mflags}
 mv src/gnuplot src/gnuplot-minimal
 
@@ -160,7 +164,7 @@ mv $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/gnuplot.el{,c} $RPM_BUILD_ROOT%{_d
 mv $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/gnuplot-gui.el{,c} $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/gnuplot
 
 mkdir -p $RPM_BUILD_ROOT%{x11_app_defaults_dir}
-mv $RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/Gnuplot $RPM_BUILD_ROOT%{x11_app_defaults_dir}/Gnuplot
+mv $RPM_BUILD_ROOT%{_datadir}/gnuplot/%{major}.%{minor}/app-defaults/Gnuplot $RPM_BUILD_ROOT%{x11_app_defaults_dir}/Gnuplot
 rm -rf $RPM_BUILD_ROOT%{_libdir}/
 
 # rename binary
@@ -187,7 +191,7 @@ fi
 %preun common
 if [ $1 = 0 ] ; then # last uninstall
     if [ -f %{_infodir}/gnuplot.info* ]; then
-	/sbin/install-info --delete %{_infodir}/gnuplot.info %{_infodir}/dir || :
+        /sbin/install-info --delete %{_infodir}/gnuplot.info %{_infodir}/dir || :
     fi
 fi
 
@@ -211,12 +215,17 @@ rm -rf $RPM_BUILD_ROOT
 
 %files common
 %defattr(-,root,root,-)
-%doc BUGS ChangeLog Copyright FAQ NEWS README TODO
+%doc BUGS ChangeLog Copyright NEWS README TODO
 %{_mandir}/man1/gnuplot.1.gz
 %dir %{_datadir}/gnuplot
 %dir %{_datadir}/gnuplot/%{major}.%{minor}
 %dir %{_datadir}/gnuplot/%{major}.%{minor}/PostScript
 %{_datadir}/gnuplot/%{major}.%{minor}/PostScript/*.ps
+%{_datadir}/gnuplot/%{major}.%{minor}/PostScript/aglfn.txt
+%dir %{_datadir}/gnuplot/%{major}.%{minor}/js
+%{_datadir}/gnuplot/%{major}.%{minor}/js/*
+%dir %{_datadir}/gnuplot/4.4/lua/
+/usr/share/gnuplot/4.4/lua/gnuplot-tikz.lua
 %{_datadir}/gnuplot/%{major}.%{minor}/gnuplot.gih
 %dir %{_libexecdir}/gnuplot
 %dir %{_libexecdir}/gnuplot/%{major}.%{minor}
@@ -244,8 +253,13 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %dir %{_datadir}/texmf/tex/latex/gnuplot
 %{_datadir}/texmf/tex/latex/gnuplot/gnuplot.cfg
+%{_datadir}/texmf/tex/latex/gnuplot/gnuplot-lua-tikz.sty
 
 %changelog
+* Thu Mar 18 2010 Ivama Hutarova Varekova <varekova@redhat.com> 4.4.0-1
+- update to 4.4.0
+  spec file changes
+
 * Tue Mar  2 2010 Ivana Hutarova Varekova <varekova@redhat.com> 4.2.6-2
 - fix license tag
 
