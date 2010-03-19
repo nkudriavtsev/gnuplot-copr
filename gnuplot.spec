@@ -17,7 +17,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 1%{?dist}
+Release: 2%{?dist}
 # Modifications are to be distributed as patches to the released version.
 # aglfn.txt has license: MIT
 License: gnuplot and MIT
@@ -79,6 +79,7 @@ Summary: Emacs bindings for the gnuplot main application
 Requires: %{name} = %{version}-%{release}
 BuildRequires:  emacs emacs-el pkgconfig
 Requires: emacs >= %{emacs_version}
+BuildArch: noarch
 Provides: gnuplot-emacs = %{version}-%{release}
 Obsoletes: gnuplot-emacs < 4.2.2-3
 
@@ -90,6 +91,7 @@ nicely interacts and integrates into emacs.
 Group: Applications/Engineering
 Summary: Emacs bindings for the gnuplot main application
 Requires: emacs-%{name} = %{version}-%{release}
+BuildArch: noarch
 Obsoletes: gnuplot-emacs < 4.2.2-3
 
 %description -n emacs-%{name}-el
@@ -100,6 +102,7 @@ nicely interacts and integrates into emacs.
 Group: Applications/Engineering
 Summary: Documentation fo bindings for the gnuplot main application
 Obsoletes: gnuplot-common < 4.2.4-5
+BuildArch: noarch
 
 %description doc
 The gnuplot-doc package contains the documentation related to gnuplot 
@@ -205,6 +208,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
+%doc ChangeLog Copyright
 %{_bindir}/gnuplot-wx
 
 %files doc
@@ -235,6 +239,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files minimal
 %defattr(-,root,root,-)
+%doc ChangeLog Copyright
 %{_bindir}/gnuplot-minimal
 
 %files -n emacs-%{name}
@@ -251,12 +256,17 @@ rm -rf $RPM_BUILD_ROOT
 
 %files latex
 %defattr(-,root,root,-)
+%doc ChangeLog Copyright
 %dir %{_datadir}/texmf/tex/latex/gnuplot
 %{_datadir}/texmf/tex/latex/gnuplot/gnuplot.cfg
 %{_datadir}/texmf/tex/latex/gnuplot/gnuplot-lua-tikz.sty
 
 %changelog
-* Thu Mar 18 2010 Ivama Hutarova Varekova <varekova@redhat.com> 4.4.0-1
+* Fri Mar 19 2010 Ivana Hutarova Varekova <varekova@redhat.com> 4.4.0-2
+- Resolves #573873
+  mark emacs* and doc subpackages as noarch
+
+* Thu Mar 18 2010 Ivana Hutarova Varekova <varekova@redhat.com> 4.4.0-1
 - update to 4.4.0
   spec file changes
 
