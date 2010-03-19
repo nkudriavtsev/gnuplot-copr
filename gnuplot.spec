@@ -4,20 +4,10 @@
 
 %define x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
-%if %($(pkg-config emacs) ; echo $?)
-%define emacs_version 22.1
-%define emacs_lispdir %{_datadir}/emacs/site-lisp
-%define emacs_startdir %{_datadir}/emacs/site-lisp/site-start.d
-%else
-%define emacs_version %(pkg-config emacs --modversion)
-%define emacs_lispdir %(pkg-config emacs --variable sitepkglispdir)
-%define emacs_startdir %(pkg-config emacs --variable sitestartdir)
-%endif
-
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 2%{?dist}
+Release: 3%{?dist}
 # Modifications are to be distributed as patches to the released version.
 # aglfn.txt has license: MIT
 License: gnuplot and MIT
@@ -78,7 +68,7 @@ Group: Applications/Engineering
 Summary: Emacs bindings for the gnuplot main application
 Requires: %{name} = %{version}-%{release}
 BuildRequires:  emacs emacs-el pkgconfig
-Requires: emacs >= %{emacs_version}
+Requires: emacs >= %{_emacs_version}
 BuildArch: noarch
 Provides: gnuplot-emacs = %{version}-%{release}
 Obsoletes: gnuplot-emacs < 4.2.2-3
@@ -158,13 +148,13 @@ rm -rf docs/htmldocs/images.idx
 %install
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT INSTALL='install -p'
-install -d ${RPM_BUILD_ROOT}%{_datadir}/emacs/site-lisp/site-start.d/
-install -p -m 644 %SOURCE2 ${RPM_BUILD_ROOT}%{_datadir}/emacs/site-lisp/site-start.d/gnuplot-init.el
+install -d ${RPM_BUILD_ROOT}/%{_emacs_sitestartdir}/
+install -p -m 644 %SOURCE2 ${RPM_BUILD_ROOT}/%{_emacs_sitestartdir}//gnuplot-init.el
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 rm -f $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/info-look*.el*
-install -d ${RPM_BUILD_ROOT}%{_datadir}/emacs/site-lisp/gnuplot
-mv $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/gnuplot.el{,c} $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/gnuplot
-mv $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/gnuplot-gui.el{,c} $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/gnuplot
+install -d ${RPM_BUILD_ROOT}/%{_emacs_sitelispdir}/%{name}
+mv $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/gnuplot.el{,c} $RPM_BUILD_ROOT/%{_emacs_sitelispdir}/%{name}
+mv $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/gnuplot-gui.el{,c} $RPM_BUILD_ROOT/%{_emacs_sitelispdir}/%{name}
 
 mkdir -p $RPM_BUILD_ROOT%{x11_app_defaults_dir}
 mv $RPM_BUILD_ROOT%{_datadir}/gnuplot/%{major}.%{minor}/app-defaults/Gnuplot $RPM_BUILD_ROOT%{x11_app_defaults_dir}/Gnuplot
@@ -245,14 +235,14 @@ rm -rf $RPM_BUILD_ROOT
 %files -n emacs-%{name}
 %defattr(-,root,root,-)
 %doc ChangeLog Copyright
-%dir %{emacs_lispdir}/%{name}
-%{emacs_lispdir}/%{name}/*.elc
-%{emacs_startdir}/*.el
+%dir %{_emacs_sitelispdir}/%{name}
+%{_emacs_sitelispdir}/%{name}/*.elc
+%{_emacs_sitestartdir}/*.el
 
 %files -n emacs-%{name}-el
 %defattr(-,root,root,-)
 %doc ChangeLog Copyright
-%{emacs_lispdir}/%{name}/*.el
+%{_emacs_sitelispdir}/%{name}/*.el
 
 %files latex
 %defattr(-,root,root,-)
@@ -262,6 +252,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/texmf/tex/latex/gnuplot/gnuplot-lua-tikz.sty
 
 %changelog
+* Fri Mar 19 2010 Ivana Hutarova Varekova <varekova@redhat.com> 4.4.0-3
+- Resolves #573873
+  fix the emacs variables (thanks Jonathan G. Underwood)
+
 * Fri Mar 19 2010 Ivana Hutarova Varekova <varekova@redhat.com> 4.4.0-2
 - Resolves #573873
   mark emacs* and doc subpackages as noarch
