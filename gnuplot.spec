@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 3%{?dist}
+Release: 4%{?dist}
 # Modifications are to be distributed as patches to the released version.
 # aglfn.txt has license: MIT
 License: gnuplot and MIT
@@ -252,6 +252,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/texmf/tex/latex/gnuplot/gnuplot-lua-tikz.sty
 
 %changelog
+* Wed Jul 14 2010 Dan Horák <dan@danny.cz> - 4.4.0-4
+- rebuilt against wxGTK-2.8.11-2
+
 * Fri Mar 19 2010 Ivana Hutarova Varekova <varekova@redhat.com> 4.4.0-3
 - Resolves #573873
   fix the emacs variables (thanks Jonathan G. Underwood)
