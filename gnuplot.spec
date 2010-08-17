@@ -17,7 +17,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 1%{?dist}
+Release: 2%{?dist}
 # Modifications are to be distributed as patches to the released version.
 License: gnuplot and GPLv2
 Group: Applications/Engineering
@@ -25,10 +25,12 @@ URL: http://www.gnuplot.info/
 Source: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source2: gnuplot-init.el
 Patch1: gnuplot-4.2.0-refers_to.patch
+Patch2: gnuplot-4.2.6-fonts.patch
 BuildRequires: libpng-devel, tex(latex), zlib-devel, libX11-devel, emacs
 BuildRequires: texinfo, readline-devel, libXt-devel, gd-devel, wxGTK-devel
 BuildRequires: latex2html
 Requires: %{name}-common = %{version}-%{release}
+Requires: dejavu-sans-fonts
 Requires(post): %{_sbindir}/alternatives
 Requires(preun): %{_sbindir}/alternatives
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -120,6 +122,7 @@ plotting tool.
 %prep
 %setup -q
 %patch1 -p1 -b .refto
+%patch2 -p1 -b .font
 sed -i -e 's:"/usr/lib/X11/app-defaults":"%{x11_app_defaults_dir}":' src/gplt_x11.c
 iconv -f windows-1252 -t utf-8 ChangeLog > ChangeLog.aux
 mv ChangeLog.aux ChangeLog
@@ -246,6 +249,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/texmf/tex/latex/gnuplot/gnuplot.cfg
 
 %changelog
+* Tue Aug 17 2010 Ivana Hutarova Varekova <varekova@redhat.com> 4.2.6-2
+- Resolves: #537960
+  Could not find/open font when opening font "arial"
+
 * Tue Sep 15 2009 Ivana Varekova <varekova@redhat.com> 4.2.6-1
 - update to 4.2.6
 
