@@ -1,13 +1,13 @@
 %define major 4
 %define minor 4
-%define patchlevel 0
+%define patchlevel 1
 
 %define x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 5%{?dist}
+Release: 1%{?dist}
 # Modifications are to be distributed as patches to the released version.
 # aglfn.txt has license: MIT
 License: gnuplot and MIT
@@ -17,6 +17,7 @@ Source: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source2: gnuplot-init.el
 Patch1: gnuplot-4.2.0-refers_to.patch
 Patch2: gnuplot-4.2.0-fonts.patch
+Patch3: gnuplot-4.4.1-mp.patch
 BuildRequires: libpng-devel, tex(latex), zlib-devel, libX11-devel, emacs
 BuildRequires: texinfo, readline-devel, libXt-devel, gd-devel, wxGTK-devel
 BuildRequires: latex2html
@@ -117,6 +118,7 @@ plotting tool.
 %setup -q
 %patch1 -p1 -b .refto
 %patch2 -p1 -b .font
+%patch3 -p1 -b .mp
 sed -i -e 's:"/usr/lib/X11/app-defaults":"%{x11_app_defaults_dir}":' src/gplt_x11.c
 iconv -f windows-1252 -t utf-8 ChangeLog > ChangeLog.aux
 mv ChangeLog.aux ChangeLog
@@ -255,7 +257,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/texmf/tex/latex/gnuplot/gnuplot-lua-tikz.sty
 
 %changelog
-* Tue Aug 17 2010 Ivana Hutarova Varekova <varekova@redhat.com> 4.4.0-4
+* Tue Aug 17 2010 Ivana Hutarova Varekova <varekova@redhat.com> 4.4.1-1
+- Resolves: #633283
+  update to 4.4.1
+  fix man-page bug
+
+* Tue Aug 17 2010 Ivana Hutarova Varekova <varekova@redhat.com> 4.4.0-5
 - Resolves: #537960
   Could not find/open font when opening font "arial"
 
