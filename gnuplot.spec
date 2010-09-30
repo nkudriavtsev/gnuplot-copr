@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 5%{?dist}
+Release: 5%{?dist}.1
 # Modifications are to be distributed as patches to the released version.
 # aglfn.txt has license: MIT
 License: gnuplot and MIT
@@ -255,6 +255,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/texmf/tex/latex/gnuplot/gnuplot-lua-tikz.sty
 
 %changelog
+* Wed Sep 29 2010 jkeating - 4.4.0-5.1
+- Rebuilt for gcc bug 634757
+
 * Tue Aug 17 2010 Ivana Hutarova Varekova <varekova@redhat.com> 4.4.0-5
 - Resolves: #537960
   Could not find/open font when opening font "arial"
