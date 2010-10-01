@@ -1,6 +1,6 @@
 %define major 4
 %define minor 4
-%define patchlevel 1
+%define patchlevel 2
 
 %define x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
@@ -257,6 +257,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/texmf/tex/latex/gnuplot/gnuplot-lua-tikz.sty
 
 %changelog
+* Fri Oct  1 2010 Ivana Hutarova Varekova <varekova@redhat.com> 4.4.2-1
+- update to 4.4.2
+
 * Wed Sep 29 2010 jkeating - 4.4.1-2
 - Rebuilt for gcc bug 634757
 
