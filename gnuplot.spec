@@ -1,13 +1,13 @@
 %define major 4
 %define minor 4
-%define patchlevel 2
+%define patchlevel 3
 
 %define x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 3%{?dist}
+Release: 1%{?dist}
 # Modifications are to be distributed as patches to the released version.
 # aglfn.txt has license: MIT
 License: gnuplot and MIT
@@ -257,6 +257,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/texmf/tex/latex/gnuplot/gnuplot-lua-tikz.sty
 
 %changelog
+* Fri Mar 11 2011 Ivana Hutarova Varekova <varekova@redhat.com> 4.4.3-1
+- update to 4.4.3
+
 * Tue Feb 08 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.4.2-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
 
