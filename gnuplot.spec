@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 3%{?dist}
+Release: 4%{?dist}
 # Modifications are to be distributed as patches to the released version.
 # aglfn.txt has license: MIT
 License: gnuplot and MIT
@@ -20,7 +20,7 @@ Patch2: gnuplot-4.2.0-fonts.patch
 Patch3: gnuplot-4.4.1-mp.patch
 BuildRequires: libpng-devel, tex(latex), zlib-devel, libX11-devel, emacs
 BuildRequires: texinfo, readline-devel, libXt-devel, gd-devel, wxGTK-devel
-BuildRequires: latex2html
+BuildRequires: latex2html, lua-devel
 Requires: %{name}-common = %{version}-%{release}
 Requires: dejavu-sans-fonts
 Requires(post): %{_sbindir}/alternatives
@@ -257,6 +257,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/texmf/tex/latex/gnuplot/gnuplot-lua-tikz.sty
 
 %changelog
+* Fri Nov 04 2011 Peter Schiffer <pschiffe@redhat.com> 4.4.2-4
+- resolves: #728813
+  added missing lua terminal
+
 * Tue Feb 08 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.4.2-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
 
