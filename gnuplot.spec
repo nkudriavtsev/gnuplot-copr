@@ -1,13 +1,13 @@
 %define major 4
 %define minor 4
-%define patchlevel 3
+%define patchlevel 4
 
 %define x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 3%{?dist}
+Release: 1%{?dist}
 # Modifications are to be distributed as patches to the released version.
 # aglfn.txt has license: MIT
 License: gnuplot and MIT
@@ -20,7 +20,8 @@ Patch2: gnuplot-4.2.0-fonts.patch
 Patch3: gnuplot-4.4.1-mp.patch
 BuildRequires: libpng-devel, tex(latex), zlib-devel, libX11-devel, emacs
 BuildRequires: texinfo, readline-devel, libXt-devel, gd-devel, wxGTK-devel
-BuildRequires: latex2html, librsvg2, giflib-devel, libotf, m17n-lib-flt, lua-devel
+BuildRequires: latex2html, librsvg2, giflib-devel, libotf, m17n-lib-flt
+BuildRequires: lua-devel, pango-devel, cairo-devel
 Requires: %{name}-common = %{version}-%{release}
 Requires: dejavu-sans-fonts
 Requires(post): %{_sbindir}/alternatives
@@ -257,6 +258,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/texmf/tex/latex/gnuplot/gnuplot-lua-tikz.sty
 
 %changelog
+* Wed Nov 16 2011 Peter Schiffer <pschiffe@redhat.com> 4.4.4-1
+- resolves: #753745
+  update to 4.4.4
+
 * Fri Nov 04 2011 Peter Schiffer <pschiffe@redhat.com> 4.4.3-3
 - resolves: #728813
   added missing lua terminal
