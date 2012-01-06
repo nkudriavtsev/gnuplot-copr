@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 1%{?dist}
+Release: 2%{?dist}
 # Modifications are to be distributed as patches to the released version.
 # aglfn.txt has license: MIT
 License: gnuplot and MIT
@@ -18,10 +18,11 @@ Source2: gnuplot-init.el
 Patch1: gnuplot-4.2.0-refers_to.patch
 Patch2: gnuplot-4.2.0-fonts.patch
 Patch3: gnuplot-4.4.1-mp.patch
+Patch4: gnuplot-4.4.4-tikz.patch
 BuildRequires: libpng-devel, tex(latex), zlib-devel, libX11-devel, emacs
 BuildRequires: texinfo, readline-devel, libXt-devel, gd-devel, wxGTK-devel
 BuildRequires: latex2html, librsvg2, giflib-devel, libotf, m17n-lib-flt
-BuildRequires: lua-devel, pango-devel, cairo-devel
+BuildRequires: lua-devel, pango-devel, cairo-devel, texlive-texmf-latex
 Requires: %{name}-common = %{version}-%{release}
 Requires: dejavu-sans-fonts
 Requires(post): %{_sbindir}/alternatives
@@ -92,7 +93,7 @@ Obsoletes: gnuplot-emacs < 4.2.2-3
 The gnuplot-emacs package contains the emacs related .el files so that gnuplot
 nicely interacts and integrates into emacs.
 
-%package  doc
+%package doc
 Group: Applications/Engineering
 Summary: Documentation fo bindings for the gnuplot main application
 Obsoletes: gnuplot-common < 4.2.4-5
@@ -102,10 +103,10 @@ BuildArch: noarch
 The gnuplot-doc package contains the documentation related to gnuplot 
 plotting tool
 
-%package  latex
+%package latex
 Group: Applications/Engineering
 Summary: Configuration for LaTeX typesetting using gnuplot
-Requires: tex(latex)
+Requires: tex(latex), texlive-texmf-xetex
 Requires: %{name} = %{version}-%{release}
 BuildArch: noarch
 Obsoletes: gnuplot-common < 4.2.5-2
@@ -120,6 +121,7 @@ plotting tool.
 %patch1 -p1 -b .refto
 %patch2 -p1 -b .font
 %patch3 -p1 -b .mp
+%patch4 -p1 -b .tikz
 sed -i -e 's:"/usr/lib/X11/app-defaults":"%{x11_app_defaults_dir}":' src/gplt_x11.c
 iconv -f windows-1252 -t utf-8 ChangeLog > ChangeLog.aux
 mv ChangeLog.aux ChangeLog
@@ -199,6 +201,8 @@ if [ $1 = 0 ]; then
     %{_sbindir}/alternatives --remove gnuplot %{_bindir}/gnuplot-minimal || :
 fi
 
+%post latex -p /usr/bin/texhash
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -258,6 +262,16 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/texmf/tex/latex/gnuplot/gnuplot-lua-tikz.sty
 
 %changelog
+* Fri Jan 06 2012 Peter Schiffer <pschiffe@redhat.com> 4.4.4-2
+- resolves: #769369
+  added dependency on texlive-texmf-xetex package for latex subpackage
+  run texhash after installing latex subpackage
+- resolves: #769357
+  added upstream tikz-444.patch solving issue with tikz terminal
+- resolves: #769355
+  added build dependency on texlive-texmf-latex because of subfigure.sty file
+- rebuilt for gcc 4.7
+
 * Wed Nov 16 2011 Peter Schiffer <pschiffe@redhat.com> 4.4.4-1
 - resolves: #753745
   update to 4.4.4

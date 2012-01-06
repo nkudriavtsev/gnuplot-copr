@@ -1,0 +1,11 @@
+diff -up gnuplot-4.4.4/term/lua/gnuplot-tikz.lua.tikz gnuplot-4.4.4/term/lua/gnuplot-tikz.lua
+--- gnuplot-4.4.4/term/lua/gnuplot-tikz.lua.tikz	2011-11-13 00:57:15.000000000 +0100
++++ gnuplot-4.4.4/term/lua/gnuplot-tikz.lua	2012-01-06 10:55:45.157816216 +0100
+@@ -251,6 +251,7 @@ pgf.write_graph_begin = function (font, 
+   gp.write(string.format("\\begin{tikzpicture}[gnuplot%s]\n",global_opt))
+   gp.write(string.format("%%%% generated with GNUPLOT %sp%s (%s; terminal rev. %s, script rev. %s)\n%%%% %s\n",
+       term.gp_version, term.gp_patchlevel,
++      _VERSION,
+       string.sub(term.lua_term_revision,7,-3),
+       pgf.REVISION,os.date()))
+   if font ~= "" then
