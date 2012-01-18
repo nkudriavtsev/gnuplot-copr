@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 2%{?dist}
+Release: 3%{?dist}
 # Modifications are to be distributed as patches to the released version.
 # aglfn.txt has license: MIT
 License: gnuplot and MIT
@@ -20,9 +20,12 @@ Patch2: gnuplot-4.2.0-fonts.patch
 Patch3: gnuplot-4.4.1-mp.patch
 Patch4: gnuplot-4.4.4-tikz.patch
 BuildRequires: libpng-devel, tex(latex), zlib-devel, libX11-devel, emacs
-BuildRequires: texinfo, readline-devel, libXt-devel, gd-devel, wxGTK-devel
-BuildRequires: latex2html, librsvg2, giflib-devel, libotf, m17n-lib-flt
-BuildRequires: lua-devel, pango-devel, cairo-devel, texlive-texmf-latex
+BuildRequires: texinfo, readline-devel, libXt-devel, gd-devel, latex2html
+BuildRequires: librsvg2, giflib-devel, libotf, m17n-lib-flt, lua-devel
+BuildRequires: pango-devel, cairo-devel, texlive-texmf-latex
+%if %{!?rhel:1}
+BuildRequires: wxGTK-devel
+%endif
 Requires: %{name}-common = %{version}-%{release}
 Requires: dejavu-sans-fonts
 Requires(post): %{_sbindir}/alternatives
@@ -141,8 +144,15 @@ mv src/gnuplot src/gnuplot-minimal
 # clean all settings
 make clean
 # create full version of gnuplot
+%if %{!?rhel:1}
+# Fedora
 %configure --with-readline=gnu --with-png --without-linux-vga \
  --enable-history-file
+%else
+# RHEL - without wxWidgets support
+%configure --with-readline=gnu --with-png --without-linux-vga \
+ --enable-history-file --disable-wxwidgets
+%endif
 make %{?_smp_mflags}
 
 cd docs
@@ -262,6 +272,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/texmf/tex/latex/gnuplot/gnuplot-lua-tikz.sty
 
 %changelog
+* Wed Jan 18 2012 Peter Schiffer <pschiffe@redhat.com> 4.4.4-3
+- resolves: #761260
+  disabled wxWidgets support for RHEL
+
 * Fri Jan 06 2012 Peter Schiffer <pschiffe@redhat.com> 4.4.4-2
 - resolves: #769369
   added dependency on texlive-texmf-xetex package for latex subpackage
