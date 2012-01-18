@@ -23,7 +23,7 @@ BuildRequires: libpng-devel, tex(latex), zlib-devel, libX11-devel, emacs
 BuildRequires: texinfo, readline-devel, libXt-devel, gd-devel, latex2html
 BuildRequires: librsvg2, giflib-devel, libotf, m17n-lib-flt, lua-devel
 BuildRequires: pango-devel, cairo-devel, texlive-texmf-latex
-%if %{!?rhel:1}
+%if !0%{?rhel:1}
 BuildRequires: wxGTK-devel
 %endif
 Requires: %{name}-common = %{version}-%{release}
@@ -144,7 +144,7 @@ mv src/gnuplot src/gnuplot-minimal
 # clean all settings
 make clean
 # create full version of gnuplot
-%if %{!?rhel:1}
+%if !0%{?rhel:1}
 # Fedora
 %configure --with-readline=gnu --with-png --without-linux-vga \
  --enable-history-file
