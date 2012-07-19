@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 1%{?dist}
+Release: 2%{?dist}
 # Modifications are to be distributed as patches to the released version.
 # aglfn.txt has license: MIT
 License: gnuplot and MIT
@@ -269,6 +269,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/texmf/tex/latex/gnuplot/*
 
 %changelog
+* Thu Jul 19 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.6.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
+
 * Thu Jul 12 2012 Peter Schiffer <pschiffe@redhat.com> 4.6.0-1
 - resolves: #783421
   update to 4.6.0
