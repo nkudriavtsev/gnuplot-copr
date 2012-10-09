@@ -1,13 +1,13 @@
 %define major 4
 %define minor 6
-%define patchlevel 0
+%define patchlevel 1
 
 %define x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 2%{?dist}
+Release: 1%{?dist}
 # Modifications are to be distributed as patches to the released version.
 # aglfn.txt has license: MIT
 License: gnuplot and MIT
@@ -21,6 +21,7 @@ BuildRequires: libpng-devel, tex(latex), zlib-devel, libX11-devel, emacs
 BuildRequires: texinfo, readline-devel, libXt-devel, gd-devel, latex2html
 BuildRequires: librsvg2, giflib-devel, libotf, m17n-lib-flt, lua-devel
 BuildRequires: pango-devel, cairo-devel, texlive-texmf-latex, tex4ht
+BuildRequires: tex(subfigure.sty), tex(cm-super-t1.enc)
 %if !0%{?rhel:1}
 BuildRequires: wxGTK-devel
 %endif
@@ -66,7 +67,7 @@ program especially suited for scientific data representation.  Gnuplot
 can be used to plot functions and data points in both two and three
 dimensions and in many different formats.
 
-Install gnuplot-minimal if you need a minimal version of graphics package 
+Install gnuplot-minimal if you need a minimal version of graphics package
 for scientific data representation.
 
 %package -n emacs-%{name}
@@ -101,19 +102,19 @@ Obsoletes: gnuplot-common < 4.2.4-5
 BuildArch: noarch
 
 %description doc
-The gnuplot-doc package contains the documentation related to gnuplot 
+The gnuplot-doc package contains the documentation related to gnuplot
 plotting tool
 
 %package latex
 Group: Applications/Engineering
 Summary: Configuration for LaTeX typesetting using gnuplot
-Requires: tex(latex), texlive-texmf-xetex
+Requires: tex(latex), tex(xetex)
 Requires: %{name} = %{version}-%{release}
 BuildArch: noarch
 Obsoletes: gnuplot-common < 4.2.5-2
 
 %description latex
-The gnuplot-latex package contains LaTeX configuration file related to gnuplot 
+The gnuplot-latex package contains LaTeX configuration file related to gnuplot
 plotting tool.
 
 
@@ -133,7 +134,7 @@ chmod 644 demo/html/webify_canvas.pl
 # at first create minimal version of gnuplot for server SIG purposes
 %configure --with-readline=gnu --with-png --without-linux-vga \
  --enable-history-file --disable-wxwidgets \
- --without-cairo 
+ --without-cairo
 make %{?_smp_mflags}
 mv src/gnuplot src/gnuplot-minimal
 
@@ -225,7 +226,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files common
 %defattr(-,root,root,-)
-%doc BUGS ChangeLog Copyright NEWS README TODO
+%doc BUGS ChangeLog Copyright NEWS README
 %{_mandir}/man1/gnuplot.1.gz
 %dir %{_datadir}/gnuplot
 %dir %{_datadir}/gnuplot/%{major}.%{minor}
@@ -254,6 +255,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %doc ChangeLog Copyright
 %dir %{_emacs_sitelispdir}/%{name}
+%{_emacs_sitelispdir}/*.elc
 %{_emacs_sitelispdir}/%{name}/*.elc
 %{_emacs_sitestartdir}/*.el
 
@@ -261,6 +263,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %doc ChangeLog Copyright
 %{_emacs_sitelispdir}/%{name}/*.el
+%{_emacs_sitelispdir}/*.el
 
 %files latex
 %defattr(-,root,root,-)
@@ -269,6 +272,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/texmf/tex/latex/gnuplot/*
 
 %changelog
+* Tue Oct  9 2012 Peter Schiffer <pschiffe@redhat.com> 4.6.1-1
+- resolves: #861849
+  update to 4.6.1
+
 * Thu Jul 19 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.6.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
 
@@ -437,7 +444,7 @@ rm -rf $RPM_BUILD_ROOT
 * Mon May 21 2007 Ivana Varekova <varekova@redhat.com> - 4.2.0-1
 - Resolves: #231205
   update to 4.2.0
-  spec changes from Tim Orling  
+  spec changes from Tim Orling
 
 * Mon Mar 26 2007 Ivana Varekova <varekova@redhat.com> - 4.0.0-18
 - add missing directories (#233838)
@@ -446,7 +453,7 @@ rm -rf $RPM_BUILD_ROOT
 - incorporate the package review feedback
 
 * Mon Jan 22 2007 Ivana Varekova <varekova@redhat.com> - 4.0.0-16
-- Resolves: 223693  
+- Resolves: 223693
   fix non-failsafe install-info problem
 
 * Fri Dec 22 2006 Ivana Varekova <varekova@redhat.com> - 4.0.0-15
@@ -498,7 +505,7 @@ rm -rf $RPM_BUILD_ROOT
 * Mon Oct 11 2004 Tim Waugh <twaugh@redhat.com> 4.0.0-4
 - Build requires texinfo and readline-devel (bug #134922)
 
-* Tue Sep 07 2004 Karsten Hopp <karsten@redhat.de> 4.0.0-3 
+* Tue Sep 07 2004 Karsten Hopp <karsten@redhat.de> 4.0.0-3
 - fix typo in preun script
 
 * Thu Sep  2 2004 Bill Nottingham <notting@redhat.com> 4.0.0-2
@@ -608,7 +615,7 @@ rm -rf $RPM_BUILD_ROOT
 * Tue Jun 15 1999 Bill Nottingham <notting@redhat.com>
 - update to 3.7.0.1
 
-* Sun Mar 21 1999 Cristian Gafton <gafton@redhat.com> 
+* Sun Mar 21 1999 Cristian Gafton <gafton@redhat.com>
 - auto rebuild in the new build environment (release 2)
 
 * Tue Feb  2 1999 Jeff Johnson <jbj@redhat.com>
