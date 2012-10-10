@@ -1,35 +1,35 @@
-%define major 4
-%define minor 6
-%define patchlevel 1
+%global major 4
+%global minor 6
+%global patchlevel 1
 
-%define x11_app_defaults_dir %{_datadir}/X11/app-defaults
+%global x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
 Release: 1%{?dist}
-# Modifications are to be distributed as patches to the released version.
-# aglfn.txt has license: MIT
+# MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
 URL: http://www.gnuplot.info/
 Source: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
-Source2: gnuplot-init.el
-Patch1: gnuplot-4.2.0-refers_to.patch
-Patch2: gnuplot-4.2.0-fonts.patch
-BuildRequires: libpng-devel, tex(latex), zlib-devel, libX11-devel, emacs
-BuildRequires: texinfo, readline-devel, libXt-devel, gd-devel, latex2html
-BuildRequires: librsvg2, giflib-devel, libotf, m17n-lib-flt, lua-devel
-BuildRequires: pango-devel, cairo-devel, texlive-texmf-latex, tex4ht
-BuildRequires: tex(subfigure.sty), tex(cm-super-t1.enc)
-%if !0%{?rhel:1}
-BuildRequires: wxGTK-devel
-%endif
+Source1: gnuplot-init.el
+
+Patch0: gnuplot-4.2.0-refers_to.patch
+Patch1: gnuplot-4.2.0-fonts.patch
+
 Requires: %{name}-common = %{version}-%{release}
 Requires: dejavu-sans-fonts
 Requires(post): %{_sbindir}/alternatives
 Requires(preun): %{_sbindir}/alternatives
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+BuildRequires: cairo-devel, emacs, gd-devel, giflib-devel, libotf, libpng-devel
+BuildRequires: librsvg2, libX11-devel, libXt-devel, lua-devel, m17n-lib-flt
+BuildRequires: pango-devel, readline-devel, tex(latex), tex(subfigure.sty)
+BuildRequires: tex(cm-super-t1.enc), tex4ht, texinfo, zlib-devel
+%if !0%{?rhel:1}
+BuildRequires: wxGTK-devel
+%endif
 
 %description
 Gnuplot is a command-line driven, interactive function plotting
@@ -74,8 +74,8 @@ for scientific data representation.
 Group: Applications/Engineering
 Summary: Emacs bindings for the gnuplot main application
 Requires: %{name} = %{version}-%{release}
-BuildRequires:  emacs emacs-el pkgconfig
 Requires: emacs >= %{_emacs_version}
+BuildRequires: emacs-el pkgconfig
 BuildArch: noarch
 Provides: gnuplot-emacs = %{version}-%{release}
 Obsoletes: gnuplot-emacs < 4.2.2-3
@@ -89,7 +89,6 @@ Group: Applications/Engineering
 Summary: Emacs bindings for the gnuplot main application
 Requires: emacs-%{name} = %{version}-%{release}
 BuildArch: noarch
-Obsoletes: gnuplot-emacs < 4.2.2-3
 
 %description -n emacs-%{name}-el
 The gnuplot-emacs package contains the emacs related .el files so that gnuplot
@@ -98,8 +97,8 @@ nicely interacts and integrates into emacs.
 %package doc
 Group: Applications/Engineering
 Summary: Documentation fo bindings for the gnuplot main application
-Obsoletes: gnuplot-common < 4.2.4-5
 BuildArch: noarch
+Obsoletes: gnuplot-common < 4.2.4-5
 
 %description doc
 The gnuplot-doc package contains the documentation related to gnuplot
@@ -108,8 +107,8 @@ plotting tool
 %package latex
 Group: Applications/Engineering
 Summary: Configuration for LaTeX typesetting using gnuplot
-Requires: tex(latex), tex(xetex)
 Requires: %{name} = %{version}-%{release}
+Requires: tex(latex), tex(xetex)
 BuildArch: noarch
 Obsoletes: gnuplot-common < 4.2.5-2
 
@@ -117,11 +116,10 @@ Obsoletes: gnuplot-common < 4.2.5-2
 The gnuplot-latex package contains LaTeX configuration file related to gnuplot
 plotting tool.
 
-
 %prep
 %setup -q
-%patch1 -p1 -b .refto
-%patch2 -p1 -b .font
+%patch0 -p1 -b .refto
+%patch1 -p1 -b .font
 sed -i -e 's:"/usr/lib/X11/app-defaults":"%{x11_app_defaults_dir}":' src/gplt_x11.c
 iconv -f windows-1252 -t utf-8 ChangeLog > ChangeLog.aux
 mv ChangeLog.aux ChangeLog
@@ -133,8 +131,7 @@ chmod 644 demo/html/webify_canvas.pl
 %build
 # at first create minimal version of gnuplot for server SIG purposes
 %configure --with-readline=gnu --with-png --without-linux-vga \
- --enable-history-file --disable-wxwidgets \
- --without-cairo
+ --enable-history-file --disable-wxwidgets --without-cairo
 make %{?_smp_mflags}
 mv src/gnuplot src/gnuplot-minimal
 
@@ -161,10 +158,9 @@ cd ../..
 rm -rf docs/htmldocs/images.idx
 
 %install
-rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT INSTALL='install -p'
 install -d ${RPM_BUILD_ROOT}/%{_emacs_sitestartdir}/
-install -p -m 644 %SOURCE2 ${RPM_BUILD_ROOT}/%{_emacs_sitestartdir}//gnuplot-init.el
+install -p -m 644 %SOURCE1 ${RPM_BUILD_ROOT}/%{_emacs_sitestartdir}/gnuplot-init.el
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 rm -f $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/info-look*.el*
 install -d ${RPM_BUILD_ROOT}/%{_emacs_sitelispdir}/%{name}
@@ -208,24 +204,18 @@ if [ $1 = 0 ]; then
     %{_sbindir}/alternatives --remove gnuplot %{_bindir}/gnuplot-minimal || :
 fi
 
-%post latex -p /usr/bin/texhash
-
-%clean
-rm -rf $RPM_BUILD_ROOT
+%post latex -p %{_bindir}/texhash
 
 %files
-%defattr(-,root,root,-)
 %doc ChangeLog Copyright
 %{_bindir}/gnuplot-wx
 
 %files doc
-%defattr(-,root,root,-)
 %doc ChangeLog Copyright
 %doc docs/psdoc/ps_guide.ps docs/psdoc/ps_symbols.ps tutorial/tutorial.dvi demo docs/psdoc/ps_file.doc
 %doc docs/psdoc/ps_fontfile_doc.pdf docs/htmldocs tutorial/eg7.eps
 
 %files common
-%defattr(-,root,root,-)
 %doc BUGS ChangeLog Copyright NEWS README
 %{_mandir}/man1/gnuplot.1.gz
 %dir %{_datadir}/gnuplot
@@ -247,12 +237,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_infodir}/gnuplot.info.gz
 
 %files minimal
-%defattr(-,root,root,-)
 %doc ChangeLog Copyright
 %{_bindir}/gnuplot-minimal
 
 %files -n emacs-%{name}
-%defattr(-,root,root,-)
 %doc ChangeLog Copyright
 %dir %{_emacs_sitelispdir}/%{name}
 %{_emacs_sitelispdir}/*.elc
@@ -260,21 +248,20 @@ rm -rf $RPM_BUILD_ROOT
 %{_emacs_sitestartdir}/*.el
 
 %files -n emacs-%{name}-el
-%defattr(-,root,root,-)
 %doc ChangeLog Copyright
 %{_emacs_sitelispdir}/%{name}/*.el
 %{_emacs_sitelispdir}/*.el
 
 %files latex
-%defattr(-,root,root,-)
 %doc ChangeLog Copyright
 %dir %{_datadir}/texmf/tex/latex/gnuplot
 %{_datadir}/texmf/tex/latex/gnuplot/*
 
 %changelog
-* Tue Oct  9 2012 Peter Schiffer <pschiffe@redhat.com> 4.6.1-1
+* Wed Oct 10 2012 Peter Schiffer <pschiffe@redhat.com> 4.6.1-1
 - resolves: #861849
-  update to 4.6.1
+  updated to 4.6.1
+- cleaned .spec file
 
 * Thu Jul 19 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.6.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
