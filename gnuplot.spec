@@ -20,6 +20,9 @@ Patch1: gnuplot-4.2.0-fonts.patch
 # resolves: #759964
 # submitted upstream: http://sourceforge.net/tracker/?func=detail&aid=3558970&group_id=2055&atid=302055
 Patch2: gnuplot-4.6.1-xcopygc-sigsegv.patch
+# resolves: #812225
+# submitted upstream: http://sourceforge.net/tracker/?func=detail&aid=3558973&group_id=2055&atid=302055
+Patch3: gnuplot-4.6.1-plot-sigsegv.patch
 
 Requires: %{name}-common = %{version}-%{release}
 Requires: dejavu-sans-fonts
@@ -124,6 +127,7 @@ plotting tool.
 %patch0 -p1 -b .refto
 %patch1 -p1 -b .font
 %patch2 -p1 -b .xcopygc
+%patch3 -p1 -b .plot-sigsegv
 sed -i -e 's:"/usr/lib/X11/app-defaults":"%{x11_app_defaults_dir}":' src/gplt_x11.c
 iconv -f windows-1252 -t utf-8 ChangeLog > ChangeLog.aux
 mv ChangeLog.aux ChangeLog
@@ -267,6 +271,8 @@ fi
   updated to 4.6.1
 - cleaned .spec file
 - resolves: #759964
+  fixed sigsegv
+- resolves: #812225
   fixed sigsegv
 
 * Thu Jul 19 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.6.0-2
