@@ -32,7 +32,7 @@ Requires(preun): %{_sbindir}/alternatives
 BuildRequires: cairo-devel, emacs, gd-devel, giflib-devel, libotf, libpng-devel
 BuildRequires: librsvg2, libX11-devel, libXt-devel, lua-devel, m17n-lib-flt
 BuildRequires: pango-devel, readline-devel, tex(latex), tex(subfigure.sty)
-BuildRequires: tex(cm-super-t1.enc), tex4ht, texinfo, zlib-devel
+BuildRequires: tex(cm-super-t1.enc), tex-tex4ht, texinfo, zlib-devel
 %if !0%{?rhel:1}
 BuildRequires: wxGTK-devel
 %endif
@@ -114,7 +114,7 @@ plotting tool
 Group: Applications/Engineering
 Summary: Configuration for LaTeX typesetting using gnuplot
 Requires: %{name} = %{version}-%{release}
-Requires: tex(latex), tex(xetex)
+Requires: tex(latex), tex(xetex), tex-preview
 BuildArch: noarch
 Obsoletes: gnuplot-common < 4.2.5-2
 
@@ -212,7 +212,8 @@ if [ $1 = 0 ]; then
     %{_sbindir}/alternatives --remove gnuplot %{_bindir}/gnuplot-minimal || :
 fi
 
-%post latex -p %{_bindir}/texhash
+%post latex
+[ -e %{_bindir}/texhash ] && %{_bindir}/texhash 2> /dev/null;
 
 %files
 %doc ChangeLog Copyright
@@ -262,11 +263,10 @@ fi
 
 %files latex
 %doc ChangeLog Copyright
-%dir %{_datadir}/texmf/tex/latex/gnuplot
-%{_datadir}/texmf/tex/latex/gnuplot/*
+%{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
-* Wed Oct 10 2012 Peter Schiffer <pschiffe@redhat.com> 4.6.1-1
+* Tue Oct 23 2012 Peter Schiffer <pschiffe@redhat.com> 4.6.1-1
 - resolves: #861849
   updated to 4.6.1
 - cleaned .spec file
@@ -274,6 +274,7 @@ fi
   fixed sigsegv
 - resolves: #812225
   fixed sigsegv
+- fixed requires/buildrequires
 
 * Thu Jul 19 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.6.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
