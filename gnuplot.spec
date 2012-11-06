@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 3%{?dist}
+Release: 4%{?dist}
 # Modifications are to be distributed as patches to the released version.
 # aglfn.txt has license: MIT
 License: gnuplot and MIT
@@ -19,6 +19,9 @@ Patch1: gnuplot-4.2.0-refers_to.patch
 Patch2: gnuplot-4.2.0-fonts.patch
 Patch3: gnuplot-4.4.1-mp.patch
 Patch4: gnuplot-4.4.4-tikz.patch
+# resolves: #759964
+# submitted upstream: http://sourceforge.net/tracker/?func=detail&aid=3558970&group_id=2055&atid=302055
+Patch5: gnuplot-4.6.1-xcopygc-sigsegv.patch
 BuildRequires: libpng-devel, tex(latex), zlib-devel, libX11-devel, emacs
 BuildRequires: texinfo, readline-devel, libXt-devel, gd-devel, latex2html
 BuildRequires: librsvg2, giflib-devel, libotf, m17n-lib-flt, lua-devel
@@ -125,6 +128,7 @@ plotting tool.
 %patch2 -p1 -b .font
 %patch3 -p1 -b .mp
 %patch4 -p1 -b .tikz
+%patch5 -p1 -b .xcopygc
 sed -i -e 's:"/usr/lib/X11/app-defaults":"%{x11_app_defaults_dir}":' src/gplt_x11.c
 iconv -f windows-1252 -t utf-8 ChangeLog > ChangeLog.aux
 mv ChangeLog.aux ChangeLog
@@ -272,6 +276,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/texmf/tex/latex/gnuplot/gnuplot-lua-tikz.sty
 
 %changelog
+* Tue Nov  6 2012 Peter Schiffer <pschiffe@redhat.com> 4.4.4-4
+- resolves: #759964
+  fixed sigsegv in exec_cmd() function
+
 * Wed Jan 18 2012 Peter Schiffer <pschiffe@redhat.com> 4.4.4-3
 - resolves: #761260
   disabled wxWidgets support for RHEL
