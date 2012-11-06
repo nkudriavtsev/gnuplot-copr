@@ -32,7 +32,8 @@ Requires(preun): %{_sbindir}/alternatives
 BuildRequires: cairo-devel, emacs, gd-devel, giflib-devel, libotf, libpng-devel
 BuildRequires: librsvg2, libX11-devel, libXt-devel, lua-devel, m17n-lib-flt
 BuildRequires: pango-devel, readline-devel, tex(latex), tex(subfigure.sty)
-BuildRequires: tex(cm-super-t1.enc), tex-tex4ht, texinfo, zlib-devel
+BuildRequires: tex(cm-super-t1.enc), tex(pdftex.map), tex-tex4ht, texinfo
+BuildRequires: zlib-devel, libjpeg-turbo-devel
 %if !0%{?rhel:1}
 BuildRequires: wxGTK-devel
 %endif
@@ -266,7 +267,7 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
-* Tue Oct 23 2012 Peter Schiffer <pschiffe@redhat.com> 4.6.1-1
+* Tue Nov  6 2012 Peter Schiffer <pschiffe@redhat.com> 4.6.1-1
 - resolves: #861849
   updated to 4.6.1
 - cleaned .spec file
@@ -275,6 +276,7 @@ fi
 - resolves: #812225
   fixed sigsegv
 - fixed requires/buildrequires
+- added tex(pdftex.map) and libjpeg-turbo-devel buildrequires
 
 * Thu Jul 19 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.6.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
