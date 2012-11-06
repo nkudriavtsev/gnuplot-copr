@@ -21,6 +21,9 @@ Patch3: gnuplot-4.4.1-mp.patch
 # resolves: #759964
 # submitted upstream: http://sourceforge.net/tracker/?func=detail&aid=3558970&group_id=2055&atid=302055
 Patch4: gnuplot-4.6.1-xcopygc-sigsegv.patch
+# resolves: #812225
+# submitted upstream: http://sourceforge.net/tracker/?func=detail&aid=3558973&group_id=2055&atid=302055
+Patch5: gnuplot-4.6.1-plot-sigsegv.patch
 BuildRequires: libpng-devel, tex(latex), zlib-devel, libX11-devel, emacs
 BuildRequires: texinfo, readline-devel, libXt-devel, gd-devel, wxGTK-devel
 BuildRequires: latex2html, librsvg2, giflib-devel, libotf, m17n-lib-flt, lua-devel
@@ -123,6 +126,7 @@ plotting tool.
 %patch2 -p1 -b .font
 %patch3 -p1 -b .mp
 %patch4 -p1 -b .xcopygc
+%patch5 -p1 -b .plot-sigsegv
 sed -i -e 's:"/usr/lib/X11/app-defaults":"%{x11_app_defaults_dir}":' src/gplt_x11.c
 iconv -f windows-1252 -t utf-8 ChangeLog > ChangeLog.aux
 mv ChangeLog.aux ChangeLog
@@ -264,6 +268,8 @@ rm -rf $RPM_BUILD_ROOT
 * Tue Nov  6 2011 Peter Schiffer <pschiffe@redhat.com> 4.4.3-4
 - resolves: #759964
   fixed sigsegv in exec_cmd() function
+- resolves: #812225
+  fixed sigsegv in process_event() function
 
 * Fri Nov 04 2011 Peter Schiffer <pschiffe@redhat.com> 4.4.3-3
 - resolves: #728813
