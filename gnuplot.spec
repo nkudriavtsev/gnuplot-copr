@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 1%{?dist}
+Release: 2%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -30,7 +30,7 @@ Requires(post): %{_sbindir}/alternatives
 Requires(preun): %{_sbindir}/alternatives
 
 BuildRequires: cairo-devel, emacs, gd-devel, giflib-devel, libotf, libpng-devel
-BuildRequires: librsvg2, libX11-devel, libXt-devel, lua-devel, m17n-lib-flt
+BuildRequires: librsvg2, libX11-devel, libXt-devel, lua-devel, m17n-lib
 BuildRequires: pango-devel, readline-devel, tex(latex), tex(subfigure.sty)
 BuildRequires: tex(cm-super-t1.enc), tex(pdftex.map), tex-tex4ht, texinfo
 BuildRequires: zlib-devel, libjpeg-turbo-devel
@@ -115,7 +115,8 @@ plotting tool
 Group: Applications/Engineering
 Summary: Configuration for LaTeX typesetting using gnuplot
 Requires: %{name} = %{version}-%{release}
-Requires: tex(latex), tex(xetex), tex-preview
+Requires: tex(latex), tex(cm-super-t1.enc), tex(ecrm1000.tfm), tex(utf8x.def), tex-preview
+#tex(xetex)
 BuildArch: noarch
 Obsoletes: gnuplot-common < 4.2.5-2
 
@@ -267,6 +268,10 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Mon Nov 26 2012 Frantisek Kluknavsky <fkluknav@redhat.com> - 4.6.1-2
+- dependency m17n-lib-flt renamed to m17n-lib
+- fixed bogus dates n changelog (used my best guess)
+
 * Tue Nov  6 2012 Peter Schiffer <pschiffe@redhat.com> 4.6.1-1
 - resolves: #861849
   updated to 4.6.1
@@ -462,7 +467,7 @@ fi
 - Resolves: 173752
   gnuplot refers to /usr/X11R6/lib/fonts/Type1
 
-* Tue Dec 21 2006 Ivana Varekova <varekova@redhat.com> - 4.0.0-14
+* Thu Dec 21 2006 Ivana Varekova <varekova@redhat.com> - 4.0.0-14
 - remove --without-gd options (#173922, #172565)
 - spec file cleanup
 
@@ -574,7 +579,7 @@ fi
 * Thu Jul 13 2000 Prospector <bugzilla@redhat.com>
 - automatic rebuild
 
-* Mon Jun 18 2000 Bill Nottingham <notting@redhat.com>
+* Mon Jun 19 2000 Bill Nottingham <notting@redhat.com>
 - fix  manpage paths
 
 * Fri Jun  9 2000 Bill Nottingham <notting@redhat.com>
