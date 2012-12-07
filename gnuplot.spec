@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 2%{?dist}
+Release: 3%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -33,7 +33,7 @@ BuildRequires: cairo-devel, emacs, gd-devel, giflib-devel, libotf, libpng-devel
 BuildRequires: librsvg2, libX11-devel, libXt-devel, lua-devel, m17n-lib
 BuildRequires: pango-devel, readline-devel, tex(latex), tex(subfigure.sty)
 BuildRequires: tex(cm-super-t1.enc), tex(pdftex.map), tex-tex4ht, texinfo
-BuildRequires: zlib-devel, libjpeg-turbo-devel
+BuildRequires: zlib-devel, libjpeg-turbo-devel, tex(ecrm1000.tfm)
 %if !0%{?rhel:1}
 BuildRequires: wxGTK-devel
 %endif
@@ -116,7 +116,6 @@ Group: Applications/Engineering
 Summary: Configuration for LaTeX typesetting using gnuplot
 Requires: %{name} = %{version}-%{release}
 Requires: tex(latex), tex(cm-super-t1.enc), tex(ecrm1000.tfm), tex(utf8x.def), tex-preview
-#tex(xetex)
 BuildArch: noarch
 Obsoletes: gnuplot-common < 4.2.5-2
 
@@ -268,6 +267,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Fri Dec 07 2012 Frantisek Kluknavsky <fkluknav@redhat.com> - 4.6.1-3
+- added build dependency - latex font
+
 * Mon Nov 26 2012 Frantisek Kluknavsky <fkluknav@redhat.com> - 4.6.1-2
 - dependency m17n-lib-flt renamed to m17n-lib
 - fixed bogus dates n changelog (used my best guess)
