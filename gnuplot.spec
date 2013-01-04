@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 3%{?dist}
+Release: 4%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -31,7 +31,7 @@ Requires(preun): %{_sbindir}/alternatives
 
 BuildRequires: cairo-devel, emacs, gd-devel, giflib-devel, libotf, libpng-devel
 BuildRequires: librsvg2, libX11-devel, libXt-devel, lua-devel, m17n-lib
-BuildRequires: pango-devel, readline-devel, tex(latex), tex(subfigure.sty)
+BuildRequires: pango-devel, libedit-devel, tex(latex), tex(subfigure.sty)
 BuildRequires: tex(cm-super-t1.enc), tex(pdftex.map), tex-tex4ht, texinfo
 BuildRequires: zlib-devel, libjpeg-turbo-devel, tex(ecrm1000.tfm)
 %if !0%{?rhel:1}
@@ -139,7 +139,7 @@ chmod 644 demo/html/webify_canvas.pl
 
 %build
 # at first create minimal version of gnuplot for server SIG purposes
-%configure --with-readline=gnu --with-png --without-linux-vga \
+%configure --with-readline=bsd --with-png --without-linux-vga \
  --enable-history-file --disable-wxwidgets --without-cairo
 make %{?_smp_mflags}
 mv src/gnuplot src/gnuplot-minimal
@@ -149,11 +149,11 @@ make clean
 # create full version of gnuplot
 %if !0%{?rhel:1}
 # Fedora
-%configure --with-readline=gnu --with-png --without-linux-vga \
+%configure --with-readline=bsd --with-png --without-linux-vga \
  --enable-history-file --with-tutorial
 %else
 # RHEL - without wxWidgets support
-%configure --with-readline=gnu --with-png --without-linux-vga \
+%configure --with-readline=bsd --with-png --without-linux-vga \
  --enable-history-file --with-tutorial --disable-wxwidgets
 %endif
 make %{?_smp_mflags}
@@ -267,6 +267,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Fri Jan  4 2013 Tom Callaway <spot@fedoraproject.org> - 4.6.1-4
+- link to libedit, not readline, due to license incompatibility.
+
 * Fri Dec 07 2012 Frantisek Kluknavsky <fkluknav@redhat.com> - 4.6.1-3
 - added build dependency - latex font
 
