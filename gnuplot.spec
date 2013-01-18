@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 4%{?dist}
+Release: 5%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -267,6 +267,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Fri Jan 18 2013 Adam Tkac <atkac redhat com> - 4.6.1-5
+- rebuild due to "jpeg8-ABI" feature drop
+
 * Fri Jan  4 2013 Tom Callaway <spot@fedoraproject.org> - 4.6.1-4
 - link to libedit, not readline, due to license incompatibility.
 
