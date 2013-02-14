@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 5%{?dist}
+Release: 6%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -267,6 +267,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Thu Feb 14 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.6.1-6
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
+
 * Fri Jan 18 2013 Adam Tkac <atkac redhat com> - 4.6.1-5
 - rebuild due to "jpeg8-ABI" feature drop
 
