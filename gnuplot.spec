@@ -1,13 +1,13 @@
 %global major 4
 %global minor 6
-%global patchlevel 1
+%global patchlevel 2 
 
 %global x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 6%{?dist}
+Release: 1%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -23,6 +23,7 @@ Patch2: gnuplot-4.6.1-xcopygc-sigsegv.patch
 # resolves: #812225
 # submitted upstream: http://sourceforge.net/tracker/?func=detail&aid=3558973&group_id=2055&atid=302055
 Patch3: gnuplot-4.6.1-plot-sigsegv.patch
+Patch4: gnuplot-4.6.2-texi.patch
 
 Requires: %{name}-common = %{version}-%{release}
 Requires: dejavu-sans-fonts
@@ -34,6 +35,8 @@ BuildRequires: librsvg2, libX11-devel, libXt-devel, lua-devel, m17n-lib
 BuildRequires: pango-devel, libedit-devel, tex(latex), tex(subfigure.sty)
 BuildRequires: tex(cm-super-t1.enc), tex(pdftex.map), tex-tex4ht, texinfo
 BuildRequires: zlib-devel, libjpeg-turbo-devel, tex(ecrm1000.tfm)
+#for some reason, ImageMagick disappeared from emacs dependecies
+BuildRequires: ImageMagick
 %if !0%{?rhel:1}
 BuildRequires: wxGTK-devel
 %endif
@@ -129,6 +132,7 @@ plotting tool.
 %patch1 -p1 -b .font
 %patch2 -p1 -b .xcopygc
 %patch3 -p1 -b .plot-sigsegv
+%patch4 -p1 -b .texipatch
 sed -i -e 's:"/usr/lib/X11/app-defaults":"%{x11_app_defaults_dir}":' src/gplt_x11.c
 iconv -f windows-1252 -t utf-8 ChangeLog > ChangeLog.aux
 mv ChangeLog.aux ChangeLog
@@ -267,6 +271,11 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Thu Apr 04 2013 Frantisek Kluknavsky <fkluknav@redhat.com> - 4.6.2-1
+- Rebase to 4.6.2
+- Added explicit build dependency on ImageMagick. It somehow disappeared from emacs dependencies.
+- Patched gnuplot.texi, new latex refused to compile it.
+
 * Thu Feb 14 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.6.1-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
