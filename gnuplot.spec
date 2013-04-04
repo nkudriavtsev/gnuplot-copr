@@ -36,7 +36,7 @@ BuildRequires: pango-devel, libedit-devel, tex(latex), tex(subfigure.sty)
 BuildRequires: tex(cm-super-t1.enc), tex(pdftex.map), tex-tex4ht, texinfo
 BuildRequires: zlib-devel, libjpeg-turbo-devel, tex(ecrm1000.tfm)
 #for some reason, ImageMagick disappeared from emacs dependecies
-BuildRequires: ImageMagick
+BuildRequires: ImageMagick autoconf
 %if !0%{?rhel:1}
 BuildRequires: wxGTK-devel
 %endif
