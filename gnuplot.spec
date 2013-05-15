@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 1%{?dist}
+Release: 2%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -271,6 +271,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Wed May 15 2013 Tom Callaway <spot@fedoraproject.org> - 4.6.2-2
+- rebuild for lua 5.2
+
 * Thu Apr 04 2013 Frantisek Kluknavsky <fkluknav@redhat.com> - 4.6.2-1
 - Rebase to 4.6.2
 - Added explicit build dependency on ImageMagick. It somehow disappeared from emacs dependencies.
