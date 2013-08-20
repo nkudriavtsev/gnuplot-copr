@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 3%{?dist}
+Release: 4%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -38,7 +38,7 @@ BuildRequires: zlib-devel, libjpeg-turbo-devel, tex(ecrm1000.tfm)
 #for some reason, ImageMagick disappeared from emacs dependecies
 BuildRequires: ImageMagick
 #qt-terminal requires libqt >= 4.5
-BuildRequires: qt >= 4.5
+BuildRequires: qt-devel >= 4.5
 %if !0%{?rhel:1}
 BuildRequires: wxGTK-devel
 %endif
@@ -225,6 +225,10 @@ fi
 %files
 %doc ChangeLog Copyright
 %{_bindir}/gnuplot-wx
+%{_libexecdir}/gnuplot/%{major}.%{minor}/gnuplot_qt
+%{_datadir}/gnuplot/%{major}.%{minor}/qt/qtgnuplot_fr.qm
+%{_datadir}/gnuplot/%{major}.%{minor}/qt/qtgnuplot_ja.qm
+
 
 %files doc
 %doc ChangeLog Copyright
@@ -273,7 +277,7 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
-* Tue Aug 20 2013 Frantisek Kluknavsky <fkluknav@redhat.com> - 4.6.3-3
+* Tue Aug 20 2013 Frantisek Kluknavsky <fkluknav@redhat.com> - 4.6.3-4
 - enabled qt-terminal
 - removed autoconf build dependency
 
