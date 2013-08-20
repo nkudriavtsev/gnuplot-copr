@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 2%{?dist}
+Release: 3%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -36,7 +36,9 @@ BuildRequires: pango-devel, libedit-devel, tex(latex), tex(subfigure.sty)
 BuildRequires: tex(cm-super-t1.enc), tex(pdftex.map), tex-tex4ht, texinfo
 BuildRequires: zlib-devel, libjpeg-turbo-devel, tex(ecrm1000.tfm)
 #for some reason, ImageMagick disappeared from emacs dependecies
-BuildRequires: ImageMagick autoconf
+BuildRequires: ImageMagick
+#qt-terminal requires libqt >= 4.5
+BuildRequires: qt >= 4.5
 %if !0%{?rhel:1}
 BuildRequires: wxGTK-devel
 %endif
@@ -154,11 +156,11 @@ make clean
 %if !0%{?rhel:1}
 # Fedora
 %configure --with-readline=bsd --with-png --without-linux-vga \
- --enable-history-file --with-tutorial
+ --enable-history-file --with-tutorial --enable-qt
 %else
 # RHEL - without wxWidgets support
 %configure --with-readline=bsd --with-png --without-linux-vga \
- --enable-history-file --with-tutorial --disable-wxwidgets
+ --enable-history-file --with-tutorial --disable-wxwidgets --enable-qt
 %endif
 make %{?_smp_mflags}
 
@@ -271,6 +273,10 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Tue Aug 20 2013 Frantisek Kluknavsky <fkluknav@redhat.com> - 4.6.3-3
+- enabled qt-terminal
+- removed autoconf build dependency
+
 * Sat Aug 03 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.6.3-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 
