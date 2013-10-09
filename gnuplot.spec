@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 4%{?dist}
+Release: 5%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -34,6 +34,7 @@ BuildRequires: cairo-devel, emacs, gd-devel, giflib-devel, libotf, libpng-devel
 BuildRequires: librsvg2, libX11-devel, libXt-devel, lua-devel, m17n-lib
 BuildRequires: pango-devel, libedit-devel, tex(latex), tex(subfigure.sty)
 BuildRequires: tex(cm-super-t1.enc), tex(pdftex.map), tex-tex4ht, texinfo
+BuildRequires: /usr/bin/texi2dvi
 BuildRequires: zlib-devel, libjpeg-turbo-devel, tex(ecrm1000.tfm)
 #for some reason, ImageMagick disappeared from emacs dependecies
 BuildRequires: ImageMagick
@@ -81,6 +82,21 @@ dimensions and in many different formats.
 
 Install gnuplot-minimal if you need a minimal version of graphics package
 for scientific data representation.
+
+%package qt
+Group: Applications/Engineering
+Summary: Qt interface for gnuplot
+Requires: %{name}-common = %{version}-%{release}
+Requires(post): %{_sbindir}/alternatives
+Requires(preun): %{_sbindir}/alternatives
+
+%description qt
+Gnuplot is a command-line driven, interactive function plotting
+program especially suited for scientific data representation.  Gnuplot
+can be used to plot functions and data points in both two and three
+dimensions and in many different formats.
+
+This package provides a Qt based terminal version of gnuplot
 
 %package -n emacs-%{name}
 Group: Applications/Engineering
@@ -144,36 +160,57 @@ chmod 644 demo/html/webify_svg.pl
 chmod 644 demo/html/webify_canvas.pl
 
 %build
+%global configure_opts --with-readline=bsd --with-png --without-linux-vga \\\
+ --enable-history-file
 # at first create minimal version of gnuplot for server SIG purposes
-%configure --with-readline=bsd --with-png --without-linux-vga \
- --enable-history-file --disable-wxwidgets --without-cairo
+mkdir minimal
+cd minimal
+ln -s ../configure .
+%configure %{configure_opts} --disable-wxwidgets --without-cairo
 make %{?_smp_mflags}
-mv src/gnuplot src/gnuplot-minimal
+cd -
 
-# clean all settings
-make clean
 # create full version of gnuplot
 %if !0%{?rhel:1}
-# Fedora
-%configure --with-readline=bsd --with-png --without-linux-vga \
- --enable-history-file --with-tutorial --enable-qt
-%else
-# RHEL - without wxWidgets support
-%configure --with-readline=bsd --with-png --without-linux-vga \
- --enable-history-file --with-tutorial --disable-wxwidgets --enable-qt
-%endif
+# Fedora only - wx
+mkdir wx
+cd wx
+ln -s ../configure .
+%configure %{configure_opts}
 make %{?_smp_mflags}
+cd -
+%endif
+mkdir qt
+cd qt
+ln -s ../configure .
+%configure %{configure_opts} --disable-wxwidgets --enable-qt
+make %{?_smp_mflags}
+cd -
 
-cd docs
-make html
-cd psdoc
+# Docs don't build properly out of tree
+%configure  %{configure_opts} --with-tutorial
+ln -s ../minimal/src/gnuplot src/
+make -C docs html
 export GNUPLOT_PS_DIR=../../term/PostScript
-make ps_symbols.ps ps_fontfile_doc.pdf
-cd ../..
+make -C docs/psdoc ps_symbols.ps ps_fontfile_doc.pdf
 rm -rf docs/htmldocs/images.idx
+make -C tutorial
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT INSTALL='install -p'
+%if !0%{?rhel:1}
+# install wx
+make -C wx install DESTDIR=$RPM_BUILD_ROOT INSTALL='install -p'
+# rename binary
+mv $RPM_BUILD_ROOT%{_bindir}/gnuplot $RPM_BUILD_ROOT%{_bindir}/gnuplot-wx
+%endif
+# install qt
+make -C qt install DESTDIR=$RPM_BUILD_ROOT INSTALL='install -p'
+# rename binary
+mv $RPM_BUILD_ROOT%{_bindir}/gnuplot $RPM_BUILD_ROOT%{_bindir}/gnuplot-qt
+# install minimal binary
+install -p -m 755 minimal/src/gnuplot $RPM_BUILD_ROOT%{_bindir}/gnuplot-minimal
+
+# install emacs files
 install -d ${RPM_BUILD_ROOT}/%{_emacs_sitestartdir}/
 install -p -m 644 %SOURCE1 ${RPM_BUILD_ROOT}/%{_emacs_sitestartdir}/gnuplot-init.el
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
@@ -186,11 +223,6 @@ mkdir -p $RPM_BUILD_ROOT%{x11_app_defaults_dir}
 mv $RPM_BUILD_ROOT%{_datadir}/gnuplot/%{major}.%{minor}/app-defaults/Gnuplot $RPM_BUILD_ROOT%{x11_app_defaults_dir}/Gnuplot
 rm -rf $RPM_BUILD_ROOT%{_libdir}/
 
-# rename binary
-mv $RPM_BUILD_ROOT%{_bindir}/gnuplot $RPM_BUILD_ROOT%{_bindir}/gnuplot-wx
-# install minimal binary
-install -p -m 755 ./src/gnuplot-minimal $RPM_BUILD_ROOT%{_bindir}/gnuplot-minimal
-
 %posttrans
 %{_sbindir}/alternatives --install %{_bindir}/gnuplot gnuplot %{_bindir}/gnuplot-wx 60
 
@@ -201,6 +233,9 @@ fi
 
 %posttrans minimal
 %{_sbindir}/alternatives --install %{_bindir}/gnuplot gnuplot %{_bindir}/gnuplot-minimal 40
+
+%posttrans qt
+%{_sbindir}/alternatives --install %{_bindir}/gnuplot gnuplot %{_bindir}/gnuplot-qt 50
 
 %preun
 if [ $1 = 0 ]; then
@@ -219,16 +254,17 @@ if [ $1 = 0 ]; then
     %{_sbindir}/alternatives --remove gnuplot %{_bindir}/gnuplot-minimal || :
 fi
 
+%preun qt
+if [ $1 = 0 ]; then
+    %{_sbindir}/alternatives --remove gnuplot %{_bindir}/gnuplot-qt || :
+fi
+
 %post latex
 [ -e %{_bindir}/texhash ] && %{_bindir}/texhash 2> /dev/null;
 
 %files
 %doc ChangeLog Copyright
 %{_bindir}/gnuplot-wx
-%{_libexecdir}/gnuplot/%{major}.%{minor}/gnuplot_qt
-%{_datadir}/gnuplot/%{major}.%{minor}/qt/qtgnuplot_fr.qm
-%{_datadir}/gnuplot/%{major}.%{minor}/qt/qtgnuplot_ja.qm
-
 
 %files doc
 %doc ChangeLog Copyright
@@ -260,6 +296,12 @@ fi
 %doc ChangeLog Copyright
 %{_bindir}/gnuplot-minimal
 
+%files qt
+%doc ChangeLog Copyright
+%{_bindir}/gnuplot-qt
+%{_libexecdir}/gnuplot/%{major}.%{minor}/gnuplot_qt
+%{_datadir}/gnuplot/%{major}.%{minor}/qt/
+
 %files -n emacs-%{name}
 %doc ChangeLog Copyright
 %dir %{_emacs_sitelispdir}/%{name}
@@ -277,6 +319,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Wed Oct 9 2013 Orion Poplawski <orion@cora.nwra.com> - 4.6.3-5
+- Split qt interface into separate alternative sub-package
+
 * Tue Aug 20 2013 Frantisek Kluknavsky <fkluknav@redhat.com> - 4.6.3-4
 - enabled qt-terminal
 - removed autoconf build dependency
