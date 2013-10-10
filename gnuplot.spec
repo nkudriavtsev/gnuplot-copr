@@ -188,7 +188,7 @@ cd -
 # Docs don't build properly out of tree
 %configure  %{configure_opts} --with-tutorial
 ln -s ../minimal/src/gnuplot src/
-make -C docs html
+make -C docs html info
 export GNUPLOT_PS_DIR=../../term/PostScript
 make -C docs/psdoc ps_symbols.ps ps_fontfile_doc.pdf
 rm -rf docs/htmldocs/images.idx
@@ -207,6 +207,9 @@ make -C qt install DESTDIR=$RPM_BUILD_ROOT INSTALL='install -p'
 mv $RPM_BUILD_ROOT%{_bindir}/gnuplot $RPM_BUILD_ROOT%{_bindir}/gnuplot-qt
 # install minimal binary
 install -p -m 755 minimal/src/gnuplot $RPM_BUILD_ROOT%{_bindir}/gnuplot-minimal
+
+# install info
+make -C docs install-info DESTDIR=$RPM_BUILD_ROOT INSTALL='install -p'
 
 # install emacs files
 install -d ${RPM_BUILD_ROOT}/%{_emacs_sitestartdir}/
