@@ -1,13 +1,13 @@
 %global major 4
 %global minor 6
-%global patchlevel 3
+%global patchlevel 4
 
 %global x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 5%{?dist}
+Release: 1%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -23,7 +23,6 @@ Patch2: gnuplot-4.6.1-xcopygc-sigsegv.patch
 # resolves: #812225
 # submitted upstream: http://sourceforge.net/tracker/?func=detail&aid=3558973&group_id=2055&atid=302055
 Patch3: gnuplot-4.6.1-plot-sigsegv.patch
-Patch4: gnuplot-4.6.2-texi.patch
 
 Requires: %{name}-common = %{version}-%{release}
 Requires: dejavu-sans-fonts
@@ -150,7 +149,6 @@ plotting tool.
 %patch1 -p1 -b .font
 %patch2 -p1 -b .xcopygc
 %patch3 -p1 -b .plot-sigsegv
-%patch4 -p1 -b .texipatch
 sed -i -e 's:"/usr/lib/X11/app-defaults":"%{x11_app_defaults_dir}":' src/gplt_x11.c
 iconv -f windows-1252 -t utf-8 ChangeLog > ChangeLog.aux
 mv ChangeLog.aux ChangeLog
@@ -319,6 +317,10 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Wed Oct 9 2013 Orion Poplawski <orion@cora.nwra.com> - 4.6.4-1
+- Update to 4.6.4
+- Drop texi patch applied upstream
+
 * Wed Oct 9 2013 Orion Poplawski <orion@cora.nwra.com> - 4.6.3-5
 - Split qt interface into separate alternative sub-package
 
