@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 1%{?dist}
+Release: 2%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -105,7 +105,6 @@ Requires: emacs >= %{_emacs_version}
 BuildRequires: emacs-el pkgconfig
 BuildArch: noarch
 Provides: gnuplot-emacs = %{version}-%{release}
-Obsoletes: gnuplot-emacs < 4.2.2-3
 
 %description -n emacs-%{name}
 The gnuplot-emacs package contains the emacs related .elc files so that gnuplot
@@ -125,7 +124,6 @@ nicely interacts and integrates into emacs.
 Group: Applications/Engineering
 Summary: Documentation fo bindings for the gnuplot main application
 BuildArch: noarch
-Obsoletes: gnuplot-common < 4.2.4-5
 
 %description doc
 The gnuplot-doc package contains the documentation related to gnuplot
@@ -137,7 +135,6 @@ Summary: Configuration for LaTeX typesetting using gnuplot
 Requires: %{name} = %{version}-%{release}
 Requires: tex(latex), tex(cm-super-t1.enc), tex(ecrm1000.tfm), tex(utf8x.def), tex-preview
 BuildArch: noarch
-Obsoletes: gnuplot-common < 4.2.5-2
 
 %description latex
 The gnuplot-latex package contains LaTeX configuration file related to gnuplot
@@ -320,6 +317,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Wed Nov 13 2013 Frantisek Kluknavsky <fkluknav@redhat.com> - 4.6.4-2
+- dropped ancient "Obsoletes:"
+
 * Wed Oct 9 2013 Orion Poplawski <orion@cora.nwra.com> - 4.6.4-1
 - Update to 4.6.4
 - Drop texi patch applied upstream
