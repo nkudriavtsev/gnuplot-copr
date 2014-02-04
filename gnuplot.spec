@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 2%{?dist}
+Release: 3%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -23,6 +23,7 @@ Patch2: gnuplot-4.6.1-xcopygc-sigsegv.patch
 # resolves: #812225
 # submitted upstream: http://sourceforge.net/tracker/?func=detail&aid=3558973&group_id=2055&atid=302055
 Patch3: gnuplot-4.6.1-plot-sigsegv.patch
+Patch4: gnuplot-4.6.4-singlethread.patch
 
 Requires: %{name}-common = %{version}-%{release}
 Requires: dejavu-sans-fonts
@@ -146,6 +147,7 @@ plotting tool.
 %patch1 -p1 -b .font
 %patch2 -p1 -b .xcopygc
 %patch3 -p1 -b .plot-sigsegv
+%patch4 -p1 -b .isinglethread
 sed -i -e 's:"/usr/lib/X11/app-defaults":"%{x11_app_defaults_dir}":' src/gplt_x11.c
 iconv -f windows-1252 -t utf-8 ChangeLog > ChangeLog.aux
 mv ChangeLog.aux ChangeLog
@@ -317,6 +319,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Tue Feb 04 2014 Frantisek Kluknavsky <fkluknav@redhat.com> - 4.6.4-3
+- changed wxt terminal to monothreaded - avoid crash when unlocking a free mutex
+
 * Wed Nov 13 2013 Frantisek Kluknavsky <fkluknav@redhat.com> - 4.6.4-2
 - dropped ancient "Obsoletes:"
 
