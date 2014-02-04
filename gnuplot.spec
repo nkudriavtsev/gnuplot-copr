@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 5%{?dist}
+Release: 6%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -321,7 +321,7 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
-* Tue Feb 04 2014 Frantisek Kluknavsky <fkluknav@redhat.com> - 4.6.4-3
+* Tue Feb 04 2014 Frantisek Kluknavsky <fkluknav@redhat.com> - 4.6.3-6
 - changed wxt terminal to monothreaded - avoid crash when unlocking a free mutex
 
 * Wed Oct 9 2013 Orion Poplawski <orion@cora.nwra.com> - 4.6.3-5
