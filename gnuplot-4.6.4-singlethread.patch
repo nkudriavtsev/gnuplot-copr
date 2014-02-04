@@ -1,0 +1,15 @@
+diff -up wrk/src/wxterminal/wxt_gui.h.wrk wrk/src/wxterminal/wxt_gui.h
+--- wrk/src/wxterminal/wxt_gui.h.wrk	2014-02-04 10:48:36.086237421 +0100
++++ wrk/src/wxterminal/wxt_gui.h	2014-02-04 10:51:22.246931141 +0100
+@@ -154,8 +154,9 @@ extern "C" {
+ /* depending on the platform, and mostly because of the Windows terminal which
+  * already has its event loop, we may or may not be multithreaded */
+ #if defined(__WXGTK__)
+-# define WXT_MULTITHREADED
+-#elif defined(__WXMSW__) || defined(__WXMAC__)
++//avoid a crash when unlocking a not-locked mutex, do not use threads
++//# define WXT_MULTITHREADED
++//#elif defined(__WXMSW__) || defined(__WXMAC__)
+ # define WXT_MONOTHREADED
+ #else
+ # error "wxt does not know if this platform has to be mono- or multi-threaded"
