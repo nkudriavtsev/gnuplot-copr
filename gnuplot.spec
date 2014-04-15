@@ -1,13 +1,13 @@
 %global major 4
 %global minor 6
-%global patchlevel 4
+%global patchlevel 5
 
 %global x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 3%{?dist}
+Release: 1%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -319,6 +319,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Tue Apr 15 2014 Frantisek Kluknavsky <fkluknav@redhat.com> - 4.6.5-1
+- rebase
+
 * Tue Feb 04 2014 Frantisek Kluknavsky <fkluknav@redhat.com> - 4.6.4-3
 - changed wxt terminal to monothreaded - avoid crash when unlocking a free mutex
 
