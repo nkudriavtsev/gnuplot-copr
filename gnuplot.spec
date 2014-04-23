@@ -1,13 +1,13 @@
 %global major 4
 %global minor 6
-%global patchlevel 3
+%global patchlevel 5
 
 %global x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 6%{?dist}
+Release: 1%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -23,8 +23,7 @@ Patch2: gnuplot-4.6.1-xcopygc-sigsegv.patch
 # resolves: #812225
 # submitted upstream: http://sourceforge.net/tracker/?func=detail&aid=3558973&group_id=2055&atid=302055
 Patch3: gnuplot-4.6.1-plot-sigsegv.patch
-Patch4: gnuplot-4.6.2-texi.patch
-Patch5: gnuplot-4.6.4-singlethread.patch
+Patch4: gnuplot-4.6.4-singlethread.patch
 
 Requires: %{name}-common = %{version}-%{release}
 Requires: dejavu-sans-fonts
@@ -107,7 +106,6 @@ Requires: emacs >= %{_emacs_version}
 BuildRequires: emacs-el pkgconfig
 BuildArch: noarch
 Provides: gnuplot-emacs = %{version}-%{release}
-Obsoletes: gnuplot-emacs < 4.2.2-3
 
 %description -n emacs-%{name}
 The gnuplot-emacs package contains the emacs related .elc files so that gnuplot
@@ -127,7 +125,6 @@ nicely interacts and integrates into emacs.
 Group: Applications/Engineering
 Summary: Documentation fo bindings for the gnuplot main application
 BuildArch: noarch
-Obsoletes: gnuplot-common < 4.2.4-5
 
 %description doc
 The gnuplot-doc package contains the documentation related to gnuplot
@@ -139,7 +136,6 @@ Summary: Configuration for LaTeX typesetting using gnuplot
 Requires: %{name} = %{version}-%{release}
 Requires: tex(latex), tex(cm-super-t1.enc), tex(ecrm1000.tfm), tex(utf8x.def), tex-preview
 BuildArch: noarch
-Obsoletes: gnuplot-common < 4.2.5-2
 
 %description latex
 The gnuplot-latex package contains LaTeX configuration file related to gnuplot
@@ -151,8 +147,7 @@ plotting tool.
 %patch1 -p1 -b .font
 %patch2 -p1 -b .xcopygc
 %patch3 -p1 -b .plot-sigsegv
-%patch4 -p1 -b .texipatch
-%patch5 -p1 -b .singlethread
+%patch4 -p1 -b .isinglethread
 sed -i -e 's:"/usr/lib/X11/app-defaults":"%{x11_app_defaults_dir}":' src/gplt_x11.c
 iconv -f windows-1252 -t utf-8 ChangeLog > ChangeLog.aux
 mv ChangeLog.aux ChangeLog
@@ -192,7 +187,7 @@ cd -
 # Docs don't build properly out of tree
 %configure  %{configure_opts} --with-tutorial
 ln -s ../minimal/src/gnuplot src/
-make -C docs html
+make -C docs html info
 export GNUPLOT_PS_DIR=../../term/PostScript
 make -C docs/psdoc ps_symbols.ps ps_fontfile_doc.pdf
 rm -rf docs/htmldocs/images.idx
@@ -211,6 +206,9 @@ make -C qt install DESTDIR=$RPM_BUILD_ROOT INSTALL='install -p'
 mv $RPM_BUILD_ROOT%{_bindir}/gnuplot $RPM_BUILD_ROOT%{_bindir}/gnuplot-qt
 # install minimal binary
 install -p -m 755 minimal/src/gnuplot $RPM_BUILD_ROOT%{_bindir}/gnuplot-minimal
+
+# install info
+make -C docs install-info DESTDIR=$RPM_BUILD_ROOT INSTALL='install -p'
 
 # install emacs files
 install -d ${RPM_BUILD_ROOT}/%{_emacs_sitestartdir}/
@@ -321,6 +319,11 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Wed Apr 23 2014 Orion Poplawski <orion@cora.nwra.com> - 4.6.5-1
+- Update to 4.6.5
+- Drop texi patch applied upstream
+- dropped ancient "Obsoletes:"
+
 * Tue Feb 04 2014 Frantisek Kluknavsky <fkluknav@redhat.com> - 4.6.3-6
 - changed wxt terminal to monothreaded - avoid crash when unlocking a free mutex
 
