@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 3%{?dist}
+Release: 4%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -30,9 +30,10 @@ Requires: dejavu-sans-fonts
 Requires(post): %{_sbindir}/alternatives
 Requires(preun): %{_sbindir}/alternatives
 
+#libedit-devel can not handle utf8, readline-devel is not legal with gnuplot, stick to builtin
 BuildRequires: cairo-devel, emacs, gd-devel, giflib-devel, libotf, libpng-devel
 BuildRequires: librsvg2, libX11-devel, libXt-devel, lua-devel, m17n-lib
-BuildRequires: pango-devel, libedit-devel, tex(latex), tex(subfigure.sty)
+BuildRequires: pango-devel, tex(latex), tex(subfigure.sty)
 BuildRequires: tex(cm-super-t1.enc), tex(pdftex.map), tex-tex4ht, texinfo
 BuildRequires: /usr/bin/texi2dvi
 BuildRequires: zlib-devel, libjpeg-turbo-devel, tex(ecrm1000.tfm)
@@ -157,7 +158,7 @@ chmod 644 demo/html/webify_svg.pl
 chmod 644 demo/html/webify_canvas.pl
 
 %build
-%global configure_opts --with-readline=bsd --with-png --without-linux-vga \\\
+%global configure_opts --with-readline=builtin --with-png --without-linux-vga \\\
  --enable-history-file
 # at first create minimal version of gnuplot for server SIG purposes
 mkdir minimal
@@ -319,6 +320,10 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Wed Nov 19 2014 Frantisek Kluknavsky <fkluknav@redhat.com> - 4.6.5-4
+- libedit-devel can not handle utf8, readline-devel is not legal with gnuplot, stick to builtin
+  https://bugzilla.redhat.com/show_bug.cgi?id=1039102
+
 * Sat Aug 16 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.6.5-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
