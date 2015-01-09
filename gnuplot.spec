@@ -1,13 +1,13 @@
-%global major 4
-%global minor 6
-%global patchlevel 5
+%global major 5
+%global minor 0
+%global patchlevel 0
 
 %global x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 4%{?dist}
+Release: 1%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -17,9 +17,6 @@ Source1: gnuplot-init.el
 
 Patch0: gnuplot-4.2.0-refers_to.patch
 Patch1: gnuplot-4.2.0-fonts.patch
-# resolves: #759964
-# submitted upstream: http://sourceforge.net/tracker/?func=detail&aid=3558970&group_id=2055&atid=302055
-Patch2: gnuplot-4.6.1-xcopygc-sigsegv.patch
 # resolves: #812225
 # submitted upstream: http://sourceforge.net/tracker/?func=detail&aid=3558973&group_id=2055&atid=302055
 Patch3: gnuplot-4.6.1-plot-sigsegv.patch
@@ -36,7 +33,7 @@ BuildRequires: librsvg2, libX11-devel, libXt-devel, lua-devel, m17n-lib
 BuildRequires: pango-devel, tex(latex), tex(subfigure.sty)
 BuildRequires: tex(cm-super-t1.enc), tex(pdftex.map), tex-tex4ht, texinfo
 BuildRequires: /usr/bin/texi2dvi
-BuildRequires: zlib-devel, libjpeg-turbo-devel, tex(ecrm1000.tfm)
+BuildRequires: zlib-devel, libjpeg-turbo-devel, tex(ecrm1000.tfm), latex2html
 #for some reason, ImageMagick disappeared from emacs dependecies
 BuildRequires: ImageMagick
 #qt-terminal requires libqt >= 4.5
@@ -99,33 +96,34 @@ dimensions and in many different formats.
 
 This package provides a Qt based terminal version of gnuplot
 
-%package -n emacs-%{name}
-Group: Applications/Engineering
-Summary: Emacs bindings for the gnuplot main application
-Requires: %{name} = %{version}-%{release}
-Requires: emacs >= %{_emacs_version}
-BuildRequires: emacs-el pkgconfig
-BuildArch: noarch
-Provides: gnuplot-emacs = %{version}-%{release}
+#%package -n emacs-%{name}
+#Group: Applications/Engineering
+#Summary: Emacs bindings for the gnuplot main application
+#Requires: %{name} = %{version}-%{release}
+#Requires: emacs >= %{_emacs_version}
+#BuildRequires: emacs-el pkgconfig
+#BuildArch: noarch
+#Provides: gnuplot-emacs = %{version}-%{release}
 
-%description -n emacs-%{name}
-The gnuplot-emacs package contains the emacs related .elc files so that gnuplot
-nicely interacts and integrates into emacs.
+#%description -n emacs-%{name}
+#The gnuplot-emacs package contains the emacs related .elc files so that gnuplot
+#nicely interacts and integrates into emacs.
 
-%package -n emacs-%{name}-el
-Group: Applications/Engineering
-Summary: Emacs bindings for the gnuplot main application
-Requires: emacs-%{name} = %{version}-%{release}
-BuildArch: noarch
+#%package -n emacs-%{name}-el
+#Group: Applications/Engineering
+#Summary: Emacs bindings for the gnuplot main application
+#Requires: emacs-%{name} = %{version}-%{release}
+#BuildArch: noarch
 
-%description -n emacs-%{name}-el
-The gnuplot-emacs package contains the emacs related .el files so that gnuplot
-nicely interacts and integrates into emacs.
+#%description -n emacs-%{name}-el
+#The gnuplot-emacs package contains the emacs related .el files so that gnuplot
+#nicely interacts and integrates into emacs.
 
 %package doc
 Group: Applications/Engineering
 Summary: Documentation fo bindings for the gnuplot main application
-BuildArch: noarch
+#no longer noarch, demo contains compiled binary plugin
+#BuildArch: noarch
 
 %description doc
 The gnuplot-doc package contains the documentation related to gnuplot
@@ -146,7 +144,6 @@ plotting tool.
 %setup -q
 %patch0 -p1 -b .refto
 %patch1 -p1 -b .font
-%patch2 -p1 -b .xcopygc
 %patch3 -p1 -b .plot-sigsegv
 %patch4 -p1 -b .isinglethread
 sed -i -e 's:"/usr/lib/X11/app-defaults":"%{x11_app_defaults_dir}":' src/gplt_x11.c
@@ -177,13 +174,14 @@ ln -s ../configure .
 %configure %{configure_opts}
 make %{?_smp_mflags}
 cd -
-%endif
 mkdir qt
 cd qt
 ln -s ../configure .
 %configure %{configure_opts} --disable-wxwidgets --enable-qt
 make %{?_smp_mflags}
 cd -
+%endif
+
 
 # Docs don't build properly out of tree
 %configure  %{configure_opts} --with-tutorial
@@ -200,29 +198,32 @@ make -C tutorial
 make -C wx install DESTDIR=$RPM_BUILD_ROOT INSTALL='install -p'
 # rename binary
 mv $RPM_BUILD_ROOT%{_bindir}/gnuplot $RPM_BUILD_ROOT%{_bindir}/gnuplot-wx
-%endif
 # install qt
 make -C qt install DESTDIR=$RPM_BUILD_ROOT INSTALL='install -p'
 # rename binary
 mv $RPM_BUILD_ROOT%{_bindir}/gnuplot $RPM_BUILD_ROOT%{_bindir}/gnuplot-qt
 # install minimal binary
 install -p -m 755 minimal/src/gnuplot $RPM_BUILD_ROOT%{_bindir}/gnuplot-minimal
+%endif
 
 # install info
 make -C docs install-info DESTDIR=$RPM_BUILD_ROOT INSTALL='install -p'
 
 # install emacs files
-install -d ${RPM_BUILD_ROOT}/%{_emacs_sitestartdir}/
-install -p -m 644 %SOURCE1 ${RPM_BUILD_ROOT}/%{_emacs_sitestartdir}/gnuplot-init.el
-rm -f $RPM_BUILD_ROOT%{_infodir}/dir
-rm -f $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/info-look*.el*
-install -d ${RPM_BUILD_ROOT}/%{_emacs_sitelispdir}/%{name}
-mv $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/gnuplot.el{,c} $RPM_BUILD_ROOT/%{_emacs_sitelispdir}/%{name}
-mv $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/gnuplot-gui.el{,c} $RPM_BUILD_ROOT/%{_emacs_sitelispdir}/%{name}
+#install -d ${RPM_BUILD_ROOT}/%{_emacs_sitestartdir}/
+#install -p -m 644 %SOURCE1 ${RPM_BUILD_ROOT}/%{_emacs_sitestartdir}/gnuplot-init.el
+#rm -f $RPM_BUILD_ROOT%{_infodir}/dir
+#rm -f $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/info-look*.el*
+#install -d ${RPM_BUILD_ROOT}/%{_emacs_sitelispdir}/%{name}
+#mv $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/gnuplot.el{,c} $RPM_BUILD_ROOT/%{_emacs_sitelispdir}/%{name}
+#mv $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/gnuplot-gui.el{,c} $RPM_BUILD_ROOT/%{_emacs_sitelispdir}/%{name}
 
 mkdir -p $RPM_BUILD_ROOT%{x11_app_defaults_dir}
 mv $RPM_BUILD_ROOT%{_datadir}/gnuplot/%{major}.%{minor}/app-defaults/Gnuplot $RPM_BUILD_ROOT%{x11_app_defaults_dir}/Gnuplot
 rm -rf $RPM_BUILD_ROOT%{_libdir}/
+
+mkdir -p $RPM_BUILD_ROOT/%{_mandir}/ja/man1
+mv $RPM_BUILD_ROOT%{_mandir}/man1/gnuplot-ja.1 $RPM_BUILD_ROOT/%{_mandir}/ja/man1/
 
 %posttrans
 %{_sbindir}/alternatives --install %{_bindir}/gnuplot gnuplot %{_bindir}/gnuplot-wx 60
@@ -269,7 +270,7 @@ fi
 
 %files doc
 %doc ChangeLog Copyright
-%doc docs/psdoc/ps_guide.ps docs/psdoc/ps_symbols.ps tutorial/tutorial.dvi demo docs/psdoc/ps_file.doc
+%doc docs/psdoc/ps_guide.ps docs/psdoc/ps_symbols.ps tutorial/tutorial.dvi docs/psdoc/ps_file.doc demo
 %doc docs/psdoc/ps_fontfile_doc.pdf docs/htmldocs tutorial/eg7.eps
 
 %files common
@@ -292,6 +293,8 @@ fi
 %{_libexecdir}/gnuplot/%{major}.%{minor}/gnuplot_x11
 %{x11_app_defaults_dir}/Gnuplot
 %{_infodir}/gnuplot.info.gz
+%{_infodir}/dir
+%{_mandir}/ja/man1/gnuplot-ja.1.gz
 
 %files minimal
 %doc ChangeLog Copyright
@@ -303,23 +306,31 @@ fi
 %{_libexecdir}/gnuplot/%{major}.%{minor}/gnuplot_qt
 %{_datadir}/gnuplot/%{major}.%{minor}/qt/
 
-%files -n emacs-%{name}
-%doc ChangeLog Copyright
-%dir %{_emacs_sitelispdir}/%{name}
-%{_emacs_sitelispdir}/*.elc
-%{_emacs_sitelispdir}/%{name}/*.elc
-%{_emacs_sitestartdir}/*.el
+#%files -n emacs-%{name}
+#%doc ChangeLog Copyright
+#%dir %{_emacs_sitelispdir}/%{name}
+#%{_emacs_sitelispdir}/*.elc
+#%{_emacs_sitelispdir}/%{name}/*.elc
+#%{_emacs_sitestartdir}/*.el
 
-%files -n emacs-%{name}-el
-%doc ChangeLog Copyright
-%{_emacs_sitelispdir}/%{name}/*.el
-%{_emacs_sitelispdir}/*.el
+#%files -n emacs-%{name}-el
+#%doc ChangeLog Copyright
+#%{_emacs_sitelispdir}/%{name}/*.el
+#%{_emacs_sitelispdir}/*.el
 
 %files latex
 %doc ChangeLog Copyright
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Thu Jan 08 2015 Frantisek Kluknavsky <fkluknav@redhat.com> - 5.0.0-1
+- rebase
+- rhbz#759964 submitted upstream: http://sourceforge.net/tracker/?func=detail&aid=3558970&group_id=2055&atid=302055
+  patch gnuplot-4.6.1-xcopygc-sigsegv.patch dropped, hopefully resolved by now
+- added buildrequires: latex2html
+- emacs bindings are separate project now - https://github.com/rudi/gnuplot-el
+
+
 * Wed Nov 19 2014 Frantisek Kluknavsky <fkluknav@redhat.com> - 4.6.5-4
 - libedit-devel can not handle utf8, readline-devel is not legal with gnuplot, stick to builtin
   https://bugzilla.redhat.com/show_bug.cgi?id=1039102
