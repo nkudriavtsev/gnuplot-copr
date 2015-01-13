@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 1%{?dist}
+Release: 2%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -212,11 +212,13 @@ make -C docs install-info DESTDIR=$RPM_BUILD_ROOT INSTALL='install -p'
 # install emacs files
 #install -d ${RPM_BUILD_ROOT}/%{_emacs_sitestartdir}/
 #install -p -m 644 %SOURCE1 ${RPM_BUILD_ROOT}/%{_emacs_sitestartdir}/gnuplot-init.el
-#rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 #rm -f $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/info-look*.el*
 #install -d ${RPM_BUILD_ROOT}/%{_emacs_sitelispdir}/%{name}
 #mv $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/gnuplot.el{,c} $RPM_BUILD_ROOT/%{_emacs_sitelispdir}/%{name}
 #mv $RPM_BUILD_ROOT%{_datadir}/emacs/site-lisp/gnuplot-gui.el{,c} $RPM_BUILD_ROOT/%{_emacs_sitelispdir}/%{name}
+
+#packaged by info package, updated by post-installation script, do not package here
+rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 
 mkdir -p $RPM_BUILD_ROOT%{x11_app_defaults_dir}
 mv $RPM_BUILD_ROOT%{_datadir}/gnuplot/%{major}.%{minor}/app-defaults/Gnuplot $RPM_BUILD_ROOT%{x11_app_defaults_dir}/Gnuplot
@@ -293,7 +295,6 @@ fi
 %{_libexecdir}/gnuplot/%{major}.%{minor}/gnuplot_x11
 %{x11_app_defaults_dir}/Gnuplot
 %{_infodir}/gnuplot.info.gz
-%{_infodir}/dir
 %{_mandir}/ja/man1/gnuplot-ja.1.gz
 
 %files minimal
@@ -323,13 +324,15 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Tue Jan 13 2015 Frantisek Kluknavsky <fkluknav@redhat.com> - 5.0.0-2
+- do not package /usr/share/info/dir, bug#1181271
+
 * Thu Jan 08 2015 Frantisek Kluknavsky <fkluknav@redhat.com> - 5.0.0-1
 - rebase
 - rhbz#759964 submitted upstream: http://sourceforge.net/tracker/?func=detail&aid=3558970&group_id=2055&atid=302055
   patch gnuplot-4.6.1-xcopygc-sigsegv.patch dropped, hopefully resolved by now
 - added buildrequires: latex2html
 - emacs bindings are separate project now - https://github.com/rudi/gnuplot-el
-
 
 * Wed Nov 19 2014 Frantisek Kluknavsky <fkluknav@redhat.com> - 4.6.5-4
 - libedit-devel can not handle utf8, readline-devel is not legal with gnuplot, stick to builtin
