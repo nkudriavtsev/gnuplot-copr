@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 2%{?dist}
+Release: 3%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -34,11 +34,9 @@ BuildRequires: pango-devel, tex(latex), tex(subfigure.sty)
 BuildRequires: tex(cm-super-t1.enc), tex(pdftex.map), tex-tex4ht, texinfo
 BuildRequires: /usr/bin/texi2dvi
 BuildRequires: zlib-devel, libjpeg-turbo-devel, tex(ecrm1000.tfm), latex2html
-#for some reason, ImageMagick disappeared from emacs dependecies
-BuildRequires: ImageMagick
+%if !0%{?rhel:1}
 #qt-terminal requires libqt >= 4.5
 BuildRequires: qt-devel >= 4.5
-%if !0%{?rhel:1}
 BuildRequires: wxGTK-devel
 %endif
 
@@ -161,7 +159,7 @@ chmod 644 demo/html/webify_canvas.pl
 mkdir minimal
 cd minimal
 ln -s ../configure .
-%configure %{configure_opts} --disable-wxwidgets --without-cairo
+%configure %{configure_opts} --disable-wxwidgets --without-cairo --without-qt
 make %{?_smp_mflags}
 cd -
 
@@ -171,7 +169,7 @@ cd -
 mkdir wx
 cd wx
 ln -s ../configure .
-%configure %{configure_opts}
+%configure %{configure_opts} --without-qt
 make %{?_smp_mflags}
 cd -
 mkdir qt
@@ -324,6 +322,11 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Tue Jan 13 2015 Frantisek Kluknavsky <fkluknav@redhat.com> - 5.0.0-3
+- qt should not be enabled automatically
+- remove BuildRequires: ImageMagick
+- gnuplot-init.el not needed now without emacs subpackage
+
 * Tue Jan 13 2015 Frantisek Kluknavsky <fkluknav@redhat.com> - 5.0.0-2
 - do not package /usr/share/info/dir, bug#1181271
 
