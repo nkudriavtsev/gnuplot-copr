@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 3%{?dist}
+Release: 4%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -79,20 +79,20 @@ dimensions and in many different formats.
 Install gnuplot-minimal if you need a minimal version of graphics package
 for scientific data representation.
 
-%package qt
+%package wx
 Group: Applications/Engineering
 Summary: Qt interface for gnuplot
 Requires: %{name}-common = %{version}-%{release}
 Requires(post): %{_sbindir}/alternatives
 Requires(preun): %{_sbindir}/alternatives
 
-%description qt
+%description wx
 Gnuplot is a command-line driven, interactive function plotting
 program especially suited for scientific data representation.  Gnuplot
 can be used to plot functions and data points in both two and three
 dimensions and in many different formats.
 
-This package provides a Qt based terminal version of gnuplot
+This package provides a wxGTK based terminal version of gnuplot
 
 #%package -n emacs-%{name}
 #Group: Applications/Engineering
@@ -226,7 +226,7 @@ mkdir -p $RPM_BUILD_ROOT/%{_mandir}/ja/man1
 mv $RPM_BUILD_ROOT%{_mandir}/man1/gnuplot-ja.1 $RPM_BUILD_ROOT/%{_mandir}/ja/man1/
 
 %posttrans
-%{_sbindir}/alternatives --install %{_bindir}/gnuplot gnuplot %{_bindir}/gnuplot-wx 60
+%{_sbindir}/alternatives --install %{_bindir}/gnuplot gnuplot %{_bindir}/gnuplot-qt 60
 
 %post common
 if [ -f %{_infodir}/gnuplot.info* ]; then
@@ -236,12 +236,12 @@ fi
 %posttrans minimal
 %{_sbindir}/alternatives --install %{_bindir}/gnuplot gnuplot %{_bindir}/gnuplot-minimal 40
 
-%posttrans qt
-%{_sbindir}/alternatives --install %{_bindir}/gnuplot gnuplot %{_bindir}/gnuplot-qt 50
+%posttrans wx
+%{_sbindir}/alternatives --install %{_bindir}/gnuplot gnuplot %{_bindir}/gnuplot-wx 50
 
 %preun
 if [ $1 = 0 ]; then
-    %{_sbindir}/alternatives --remove gnuplot %{_bindir}/gnuplot-wx || :
+    %{_sbindir}/alternatives --remove gnuplot %{_bindir}/gnuplot-qt || :
 fi
 
 %preun common
@@ -256,9 +256,9 @@ if [ $1 = 0 ]; then
     %{_sbindir}/alternatives --remove gnuplot %{_bindir}/gnuplot-minimal || :
 fi
 
-%preun qt
+%preun wx
 if [ $1 = 0 ]; then
-    %{_sbindir}/alternatives --remove gnuplot %{_bindir}/gnuplot-qt || :
+    %{_sbindir}/alternatives --remove gnuplot %{_bindir}/gnuplot-wx || :
 fi
 
 %post latex
@@ -266,7 +266,9 @@ fi
 
 %files
 %doc ChangeLog Copyright
-%{_bindir}/gnuplot-wx
+%{_bindir}/gnuplot-qt
+%{_libexecdir}/gnuplot/%{major}.%{minor}/gnuplot_qt
+%{_datadir}/gnuplot/%{major}.%{minor}/qt/
 
 %files doc
 %doc ChangeLog Copyright
@@ -299,11 +301,9 @@ fi
 %doc ChangeLog Copyright
 %{_bindir}/gnuplot-minimal
 
-%files qt
+%files wx
 %doc ChangeLog Copyright
-%{_bindir}/gnuplot-qt
-%{_libexecdir}/gnuplot/%{major}.%{minor}/gnuplot_qt
-%{_datadir}/gnuplot/%{major}.%{minor}/qt/
+%{_bindir}/gnuplot-wx
 
 #%files -n emacs-%{name}
 #%doc ChangeLog Copyright
@@ -322,6 +322,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Fri Jan 23 2015 Frantisek Kluknavsky <fkluknav@redhat.com> - 5.0.0-4
+- make qt terminal default instead of outdated wx
+
 * Tue Jan 13 2015 Frantisek Kluknavsky <fkluknav@redhat.com> - 5.0.0-3
 - qt should not be enabled automatically
 - remove BuildRequires: ImageMagick
