@@ -21,6 +21,7 @@ Patch1: gnuplot-4.2.0-fonts.patch
 # submitted upstream: http://sourceforge.net/tracker/?func=detail&aid=3558973&group_id=2055&atid=302055
 Patch3: gnuplot-4.6.1-plot-sigsegv.patch
 Patch4: gnuplot-4.6.4-singlethread.patch
+Patch5: gnuplot-5.0.0-lua_checkint.patch
 
 Requires: %{name}-common = %{version}-%{release}
 Requires: dejavu-sans-fonts
@@ -54,6 +55,9 @@ Group: Applications/Engineering
 Summary: The common gnuplot parts
 Requires(post): /sbin/install-info
 Requires(preun): /sbin/install-info
+#lets obsolete emacs-gnuplot until new upstream is found and package reintroduced
+Obsoletes: emacs-gnuplot <= 5.0.0-3
+Obsoletes: emacs-gnuplot-el <= 5.0.0-3
 
 %description common
 Gnuplot is a command-line driven, interactive function plotting
@@ -120,8 +124,7 @@ This package provides a wxGTK based terminal version of gnuplot
 %package doc
 Group: Applications/Engineering
 Summary: Documentation fo bindings for the gnuplot main application
-#no longer noarch, demo contains compiled binary plugin
-#BuildArch: noarch
+BuildArch: noarch
 
 %description doc
 The gnuplot-doc package contains the documentation related to gnuplot
@@ -144,6 +147,7 @@ plotting tool.
 %patch1 -p1 -b .font
 %patch3 -p1 -b .plot-sigsegv
 %patch4 -p1 -b .isinglethread
+%patch5 -p1 -b .checkint
 sed -i -e 's:"/usr/lib/X11/app-defaults":"%{x11_app_defaults_dir}":' src/gplt_x11.c
 iconv -f windows-1252 -t utf-8 ChangeLog > ChangeLog.aux
 mv ChangeLog.aux ChangeLog
@@ -153,6 +157,9 @@ chmod 644 demo/html/webify_svg.pl
 chmod 644 demo/html/webify_canvas.pl
 
 %build
+#remove binaries from source tarball
+rm -rf demo/plugin/*.so demo/plugin/*.o
+
 %global configure_opts --with-readline=builtin --with-png --without-linux-vga \\\
  --enable-history-file
 # at first create minimal version of gnuplot for server SIG purposes
@@ -324,6 +331,7 @@ fi
 %changelog
 * Fri Jan 23 2015 Frantisek Kluknavsky <fkluknav@redhat.com> - 5.0.0-4
 - make qt terminal default instead of outdated wx
+- luaL_checkint macro disappeared from lua headers
 
 * Tue Jan 13 2015 Frantisek Kluknavsky <fkluknav@redhat.com> - 5.0.0-3
 - qt should not be enabled automatically
