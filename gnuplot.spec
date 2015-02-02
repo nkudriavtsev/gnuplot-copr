@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 4%{?dist}
+Release: 5%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -233,7 +233,7 @@ mkdir -p $RPM_BUILD_ROOT/%{_mandir}/ja/man1
 mv $RPM_BUILD_ROOT%{_mandir}/man1/gnuplot-ja.1 $RPM_BUILD_ROOT/%{_mandir}/ja/man1/
 
 %posttrans
-%{_sbindir}/alternatives --install %{_bindir}/gnuplot gnuplot %{_bindir}/gnuplot-qt 60
+%{_sbindir}/alternatives --install %{_bindir}/gnuplot gnuplot %{_bindir}/gnuplot-qt 61
 
 %post common
 if [ -f %{_infodir}/gnuplot.info* ]; then
@@ -329,6 +329,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Mon Feb 02 2015 Frantisek Kluknavsky <fkluknav@redhat.com> - 5.0.0-5
+- work around broken alternatives until better solution is found
+
 * Fri Jan 23 2015 Frantisek Kluknavsky <fkluknav@redhat.com> - 5.0.0-4
 - make qt terminal default instead of outdated wx
 - luaL_checkint macro disappeared from lua headers
