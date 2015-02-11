@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 5%{?dist}
+Release: 6%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -40,6 +40,8 @@ BuildRequires: zlib-devel, libjpeg-turbo-devel, tex(ecrm1000.tfm), latex2html
 BuildRequires: qt-devel >= 4.5
 BuildRequires: wxGTK-devel
 %endif
+
+Obsoletes: gnuplot-qt < 5.0.0-4
 
 %description
 Gnuplot is a command-line driven, interactive function plotting
@@ -89,6 +91,8 @@ Summary: Qt interface for gnuplot
 Requires: %{name}-common = %{version}-%{release}
 Requires(post): %{_sbindir}/alternatives
 Requires(preun): %{_sbindir}/alternatives
+Provides: gnuplot
+Obsoletes: gnuplot < 5.0.0-4
 
 %description wx
 Gnuplot is a command-line driven, interactive function plotting
@@ -329,6 +333,10 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Wed Feb 11 2015 Frantisek Kluknavsky <fkluknav@redhat.com> - 5.0.0-6
+- gnuplot-wx now Provides:gnuplot
+- gnuplot now obsoletes old gnuplot-qt and gnuplot-wx obsoletes old gnuplot
+
 * Mon Feb 02 2015 Frantisek Kluknavsky <fkluknav@redhat.com> - 5.0.0-5
 - work around broken alternatives until better solution is found
 
