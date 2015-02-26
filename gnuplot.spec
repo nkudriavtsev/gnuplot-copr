@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 4%{?dist}
+Release: 5%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -103,7 +103,7 @@ This package provides a Qt based terminal version of gnuplot
 Group: Applications/Engineering
 Summary: Emacs bindings for the gnuplot main application
 Requires: %{name} = %{version}-%{release}
-Requires: emacs >= %{_emacs_version}
+Requires: emacs(bin) >= %{_emacs_version}
 BuildRequires: emacs-el pkgconfig
 BuildArch: noarch
 Provides: gnuplot-emacs = %{version}-%{release}
@@ -320,6 +320,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Thu Feb 26 2015 Frantisek Kluknavsky <fkluknav@redhat.com> - 4.6.5-5
+- Requires:emacs changed to Requires:emacs(bin), https://bugzilla.redhat.com/show_bug.cgi?id=1154498
+
 * Wed Nov 19 2014 Frantisek Kluknavsky <fkluknav@redhat.com> - 4.6.5-4
 - libedit-devel can not handle utf8, readline-devel is not legal with gnuplot, stick to builtin
   https://bugzilla.redhat.com/show_bug.cgi?id=1039102
