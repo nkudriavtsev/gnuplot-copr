@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 6%{?dist}
+Release: 7%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -333,6 +333,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Mon Apr  6 2015 Tom Callaway <spot@fedoraproject.org> - 5.0.0-7
+- rebuild for libvpx 1.4.0
+
 * Wed Feb 11 2015 Frantisek Kluknavsky <fkluknav@redhat.com> - 5.0.0-6
 - gnuplot-wx now Provides:gnuplot
 - gnuplot now obsoletes old gnuplot-qt and gnuplot-wx obsoletes old gnuplot
