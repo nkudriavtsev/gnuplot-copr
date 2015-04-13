@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 7%{?dist}
+Release: 8%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -236,6 +236,9 @@ rm -rf $RPM_BUILD_ROOT%{_libdir}/
 mkdir -p $RPM_BUILD_ROOT/%{_mandir}/ja/man1
 mv $RPM_BUILD_ROOT%{_mandir}/man1/gnuplot-ja.1 $RPM_BUILD_ROOT/%{_mandir}/ja/man1/
 
+#ghost provide /usr/bin/gnuplot
+touch $RPM_BUILD_ROOT%{_bindir}/gnuplot 
+
 %posttrans
 %{_sbindir}/alternatives --install %{_bindir}/gnuplot gnuplot %{_bindir}/gnuplot-qt 61
 
@@ -276,6 +279,7 @@ fi
 [ -e %{_bindir}/texhash ] && %{_bindir}/texhash 2> /dev/null;
 
 %files
+%ghost %attr(0755,-,-) %{_bindir}/gnuplot
 %doc ChangeLog Copyright
 %{_bindir}/gnuplot-qt
 %{_libexecdir}/gnuplot/%{major}.%{minor}/gnuplot_qt
@@ -309,10 +313,12 @@ fi
 %{_mandir}/ja/man1/gnuplot-ja.1.gz
 
 %files minimal
+%ghost %attr(0755,-,-) %{_bindir}/gnuplot
 %doc ChangeLog Copyright
 %{_bindir}/gnuplot-minimal
 
 %files wx
+%ghost %attr(0755,-,-) %{_bindir}/gnuplot
 %doc ChangeLog Copyright
 %{_bindir}/gnuplot-wx
 
@@ -333,6 +339,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Mon Apr 13 2015 Frantisek Kluknavsky <fkluknav@redhat.com> - 5.0.0-8
+- ghost /usr/bin/gnuplot, bz#1210437
+
 * Mon Apr  6 2015 Tom Callaway <spot@fedoraproject.org> - 5.0.0-7
 - rebuild for libvpx 1.4.0
 
