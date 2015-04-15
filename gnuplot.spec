@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 5%{?dist}
+Release: 6%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -224,6 +224,10 @@ mkdir -p $RPM_BUILD_ROOT%{x11_app_defaults_dir}
 mv $RPM_BUILD_ROOT%{_datadir}/gnuplot/%{major}.%{minor}/app-defaults/Gnuplot $RPM_BUILD_ROOT%{x11_app_defaults_dir}/Gnuplot
 rm -rf $RPM_BUILD_ROOT%{_libdir}/
 
+#ghost provide /usr/bin/gnuplot
+touch $RPM_BUILD_ROOT%{_bindir}/gnuplot 
+
+
 %posttrans
 %{_sbindir}/alternatives --install %{_bindir}/gnuplot gnuplot %{_bindir}/gnuplot-wx 60
 
@@ -264,6 +268,7 @@ fi
 [ -e %{_bindir}/texhash ] && %{_bindir}/texhash 2> /dev/null;
 
 %files
+%ghost %attr(0755,-,-) %{_bindir}/gnuplot
 %doc ChangeLog Copyright
 %{_bindir}/gnuplot-wx
 
@@ -294,10 +299,12 @@ fi
 %{_infodir}/gnuplot.info.gz
 
 %files minimal
+%ghost %attr(0755,-,-) %{_bindir}/gnuplot
 %doc ChangeLog Copyright
 %{_bindir}/gnuplot-minimal
 
 %files qt
+%ghost %attr(0755,-,-) %{_bindir}/gnuplot
 %doc ChangeLog Copyright
 %{_bindir}/gnuplot-qt
 %{_libexecdir}/gnuplot/%{major}.%{minor}/gnuplot_qt
@@ -320,6 +327,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Wed Apr 15 2015 Frantisek Kluknavsky <fkluknav@redhat.com> - 4.6.5-6
+- ghost provide /usr/bin/gnuplot, bz#1210437
+
 * Thu Feb 26 2015 Frantisek Kluknavsky <fkluknav@redhat.com> - 4.6.5-5
 - Requires:emacs changed to Requires:emacs(bin), https://bugzilla.redhat.com/show_bug.cgi?id=1154498
 
