@@ -1,13 +1,13 @@
 %global major 5
 %global minor 0
-%global patchlevel 1
+%global patchlevel 2
 
 %global x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 4%{?dist}
+Release: 1%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -164,13 +164,13 @@ chmod 644 demo/html/webify_canvas.pl
 #remove binaries from source tarball
 rm -rf demo/plugin/*.so demo/plugin/*.o
 
-%global configure_opts --with-readline=builtin --with-png --without-linux-vga \\\
+%global configure_opts --with-readline=builtin --without-linux-vga \\\
  --enable-history-file
 # at first create minimal version of gnuplot for server SIG purposes
 mkdir minimal
 cd minimal
 ln -s ../configure .
-%configure %{configure_opts} --disable-wxwidgets --without-cairo --without-qt
+%configure %{configure_opts} --disable-wxwidgets --without-qt
 make %{?_smp_mflags}
 cd -
 
@@ -339,6 +339,12 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Tue Feb 23 2016 Frantisek Kluknavsky <fkluknav@redhat.com> - 5.0.2-1
+- Rebase to 5.0.2
+- Compile gnuplot-minimal with cairo support. It is needed to build docs.
+  It is pulled in anyway by gnuplot-common (gnuplot_x11 binary is taken from a fat build)
+- configure --with-png is unknown - flag removed
+
 * Wed Feb 03 2016 Fedora Release Engineering <releng@fedoraproject.org> - 5.0.1-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
