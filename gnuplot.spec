@@ -1,6 +1,6 @@
 %global major 5
 %global minor 0
-%global patchlevel 2
+%global patchlevel 3
 
 %global x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
@@ -339,6 +339,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Thu Feb 25 2016 Frantisek Kluknavsky <fkluknav@redhat.com> - 5.0.3-1
+- Rebase to 5.0.3
+
 * Tue Feb 23 2016 Frantisek Kluknavsky <fkluknav@redhat.com> - 5.0.2-1
 - Rebase to 5.0.2
 - Compile gnuplot-minimal with cairo support. It is needed to build docs.
