@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 1%{?dist}
+Release: 2%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -37,7 +37,9 @@ BuildRequires: /usr/bin/texi2dvi
 BuildRequires: zlib-devel, libjpeg-turbo-devel, tex(ecrm1000.tfm), latex2html
 %if !0%{?rhel:1}
 #qt-terminal requires libqt >= 4.5
-BuildRequires: qt-devel >= 4.5
+BuildRequires: qt5-qtbase-devel
+BuildRequires: qt5-qtsvg-devel
+BuildRequires: qt5-linguist
 BuildRequires: wxGTK-devel
 %endif
 
@@ -339,6 +341,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Tue May 24 2016 Frantisek Kluknavsky <fkluknav@redhat.com> - 5.0.3-2
+- use qt5 instead of qt4
+
 * Thu Feb 25 2016 Frantisek Kluknavsky <fkluknav@redhat.com> - 5.0.3-1
 - Rebase to 5.0.3
 
