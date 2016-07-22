@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 2%{?dist}
+Release: 3%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -341,6 +341,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Fri Jul 22 2016 Tom Callaway <spot@fedoraproject.org> - 5.0.3-3
+- rebuild to drop libvpx dep
+
 * Tue May 24 2016 Frantisek Kluknavsky <fkluknav@redhat.com> - 5.0.3-2
 - use qt5 instead of qt4
 
