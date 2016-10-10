@@ -1,13 +1,13 @@
 %global major 5
 %global minor 0
-%global patchlevel 3
+%global patchlevel 5
 
 %global x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 3%{?dist}
+Release: 1%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -341,6 +341,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Mon Oct 10 2016 Frantisek Kluknavsky <fkluknav@redhat.com> - 5.0.5-1
+- rebase
+
 * Fri Jul 22 2016 Tom Callaway <spot@fedoraproject.org> - 5.0.3-3
 - rebuild to drop libvpx dep
 
