@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 1%{?dist}
+Release: 2%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -341,6 +341,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Wed Feb 01 2017 Sandro Mani <manisandro@gmail.com> - 5.0.5-2
+- Rebuild (libwebp)
+
 * Mon Oct 10 2016 Frantisek Kluknavsky <fkluknav@redhat.com> - 5.0.5-1
 - rebase
 
