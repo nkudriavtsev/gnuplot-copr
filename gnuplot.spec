@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 3%{?dist}
+Release: 1%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
