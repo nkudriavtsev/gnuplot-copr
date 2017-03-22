@@ -1,6 +1,6 @@
 %global major 5
 %global minor 0
-%global patchlevel 5
+%global patchlevel 6
 
 %global x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
@@ -341,6 +341,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Wed Mar 22 2017 Frantisek Kluknavsky <fkluknav@redhat.com> - 5.0.6-1
+- rebase
+
 * Fri Feb 10 2017 Fedora Release Engineering <releng@fedoraproject.org> - 5.0.5-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
