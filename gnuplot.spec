@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 3%{?dist}
+Release: 4%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -346,6 +346,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Wed Jul 26 2017 Fedora Release Engineering <releng@fedoraproject.org> - 5.0.6-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
 * Mon Jun 26 2017 Tom Callaway <spot@fedoraproject.org> - 5.0.6-3
 - remove non-free lena images (and adjust demos) (bz1295324)
 
