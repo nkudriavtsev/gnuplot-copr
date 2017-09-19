@@ -7,7 +7,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 5%{?dist}
+Release: 6%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -39,7 +39,7 @@ BuildRequires: pango-devel, tex(latex), tex(subfigure.sty)
 BuildRequires: tex(cm-super-t1.enc), tex(pdftex.map), tex-tex4ht, texinfo
 BuildRequires: /usr/bin/texi2dvi
 BuildRequires: zlib-devel, libjpeg-turbo-devel, tex(ecrm1000.tfm), latex2html
-%if !0%{?rhel:1}
+%if 0%{?fedora} || 0%{?rhel} > 7
 #qt-terminal requires libqt >= 4.5
 BuildRequires: qt5-qtbase-devel
 BuildRequires: qt5-qtsvg-devel
@@ -182,7 +182,7 @@ make %{?_smp_mflags}
 cd -
 
 # create full version of gnuplot
-%if !0%{?rhel:1}
+%if 0%{?fedora} || 0%{?rhel} > 7
 # Fedora only - wx
 mkdir wx
 cd wx
@@ -209,7 +209,7 @@ rm -rf docs/htmldocs/images.idx
 make -C tutorial
 
 %install
-%if !0%{?rhel:1}
+%if 0%{?fedora} || 0%{?rhel} > 7
 # install wx
 make -C wx install DESTDIR=$RPM_BUILD_ROOT INSTALL='install -p'
 # rename binary
@@ -346,6 +346,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Tue Sep 19 2017 Troy Dawson <tdawson@redhat.com> - 5.0.6-6
+- Cleanup spec file conditionals
+
 * Wed Aug 02 2017 Fedora Release Engineering <releng@fedoraproject.org> - 5.0.6-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
 
