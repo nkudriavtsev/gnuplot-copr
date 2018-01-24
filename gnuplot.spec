@@ -4,10 +4,16 @@
 
 %global x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
+%if 0%{?fedora}
+%bcond_without wx
+%else
+%bcond_with wx
+%endif
+
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 6%{?dist}
+Release: 7%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -39,11 +45,11 @@ BuildRequires: pango-devel, tex(latex), tex(subfigure.sty)
 BuildRequires: tex(cm-super-t1.enc), tex(pdftex.map), tex-tex4ht, texinfo
 BuildRequires: /usr/bin/texi2dvi
 BuildRequires: zlib-devel, libjpeg-turbo-devel, tex(ecrm1000.tfm), latex2html
-%if 0%{?fedora} || 0%{?rhel} > 7
 #qt-terminal requires libqt >= 4.5
 BuildRequires: qt5-qtbase-devel
 BuildRequires: qt5-qtsvg-devel
 BuildRequires: qt5-linguist
+%if %{with wx}
 BuildRequires: wxGTK-devel
 %endif
 
@@ -57,6 +63,8 @@ dimensions and in many different formats.
 
 Install gnuplot if you need a graphics package for scientific data
 representation.
+
+This package provides a Qt based terminal version of gnuplot.
 
 %package common
 Group: Applications/Engineering
@@ -73,7 +81,7 @@ program especially suited for scientific data representation.  Gnuplot
 can be used to plot functions and data points in both two and three
 dimensions and in many different formats.
 
-This subpackage contains common parts needed for arbitrary version of gnuplot
+This subpackage contains common parts needed for all versions of gnuplot.
 
 %package minimal
 Group: Applications/Engineering
@@ -91,9 +99,10 @@ dimensions and in many different formats.
 Install gnuplot-minimal if you need a minimal version of graphics package
 for scientific data representation.
 
+%if %{with wx}
 %package wx
 Group: Applications/Engineering
-Summary: Qt interface for gnuplot
+Summary: wxGTK interface for gnuplot
 Requires: %{name}-common = %{version}-%{release}
 Requires(post): %{_sbindir}/alternatives
 Requires(preun): %{_sbindir}/alternatives
@@ -106,7 +115,8 @@ program especially suited for scientific data representation.  Gnuplot
 can be used to plot functions and data points in both two and three
 dimensions and in many different formats.
 
-This package provides a wxGTK based terminal version of gnuplot
+This package provides a wxGTK based terminal version of gnuplot.
+%endif
 
 #%package -n emacs-%{name}
 #Group: Applications/Engineering
@@ -173,6 +183,7 @@ rm -rf demo/plugin/*.so demo/plugin/*.o
 
 %global configure_opts --with-readline=builtin --without-linux-vga \\\
  --enable-history-file
+
 # at first create minimal version of gnuplot for server SIG purposes
 mkdir minimal
 cd minimal
@@ -182,21 +193,23 @@ make %{?_smp_mflags}
 cd -
 
 # create full version of gnuplot
-%if 0%{?fedora} || 0%{?rhel} > 7
-# Fedora only - wx
+%if %{with wx}
+# With wxGTK support (Fedora only)
 mkdir wx
 cd wx
 ln -s ../configure .
 %configure %{configure_opts} --without-qt
 make %{?_smp_mflags}
 cd -
+%endif
+
+# With Qt support
 mkdir qt
 cd qt
 ln -s ../configure .
 %configure %{configure_opts} --disable-wxwidgets --enable-qt
 make %{?_smp_mflags}
 cd -
-%endif
 
 
 # Docs don't build properly out of tree
@@ -209,18 +222,20 @@ rm -rf docs/htmldocs/images.idx
 make -C tutorial
 
 %install
-%if 0%{?fedora} || 0%{?rhel} > 7
+%if %{with wx}
 # install wx
 make -C wx install DESTDIR=$RPM_BUILD_ROOT INSTALL='install -p'
 # rename binary
 mv $RPM_BUILD_ROOT%{_bindir}/gnuplot $RPM_BUILD_ROOT%{_bindir}/gnuplot-wx
+%endif
+
 # install qt
 make -C qt install DESTDIR=$RPM_BUILD_ROOT INSTALL='install -p'
 # rename binary
 mv $RPM_BUILD_ROOT%{_bindir}/gnuplot $RPM_BUILD_ROOT%{_bindir}/gnuplot-qt
+
 # install minimal binary
 install -p -m 755 minimal/src/gnuplot $RPM_BUILD_ROOT%{_bindir}/gnuplot-minimal
-%endif
 
 # install info
 make -C docs install-info DESTDIR=$RPM_BUILD_ROOT INSTALL='install -p'
@@ -257,8 +272,10 @@ fi
 %posttrans minimal
 %{_sbindir}/alternatives --install %{_bindir}/gnuplot gnuplot %{_bindir}/gnuplot-minimal 40
 
+%if %{with wx}
 %posttrans wx
 %{_sbindir}/alternatives --install %{_bindir}/gnuplot gnuplot %{_bindir}/gnuplot-wx 50
+%endif
 
 %preun
 if [ $1 = 0 ]; then
@@ -277,10 +294,12 @@ if [ $1 = 0 ]; then
     %{_sbindir}/alternatives --remove gnuplot %{_bindir}/gnuplot-minimal || :
 fi
 
+%if %{with wx}
 %preun wx
 if [ $1 = 0 ]; then
     %{_sbindir}/alternatives --remove gnuplot %{_bindir}/gnuplot-wx || :
 fi
+%endif
 
 %post latex
 [ -e %{_bindir}/texhash ] && %{_bindir}/texhash 2> /dev/null;
@@ -324,10 +343,12 @@ fi
 %doc ChangeLog Copyright
 %{_bindir}/gnuplot-minimal
 
+%if %{with wx}
 %files wx
 %ghost %attr(0755,-,-) %{_bindir}/gnuplot
 %doc ChangeLog Copyright
 %{_bindir}/gnuplot-wx
+%endif
 
 #%files -n emacs-%{name}
 #%doc ChangeLog Copyright
@@ -346,6 +367,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Wed Jan 24 2018 Tomas Hoger <thoger@redhat.com> - 5.0.6-7
+- Fix conditionals for building with(out) wxGTK support
+
 * Tue Sep 19 2017 Troy Dawson <tdawson@redhat.com> - 5.0.6-6
 - Cleanup spec file conditionals
 
