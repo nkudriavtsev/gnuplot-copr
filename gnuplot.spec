@@ -13,7 +13,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 9%{?dist}
+Release: 10%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 Group: Applications/Engineering
@@ -50,7 +50,7 @@ BuildRequires: qt5-qtbase-devel
 BuildRequires: qt5-qtsvg-devel
 BuildRequires: qt5-linguist
 %if %{with wx}
-BuildRequires: wxGTK-devel
+BuildRequires: compat-wxGTK3-gtk2-devel
 %endif
 
 Obsoletes: gnuplot-qt < 5.0.0-4
@@ -367,6 +367,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Mon Aug 06 2018 Scott Talbert <swt@techie.net> - 5.0.6-10
+- Build against wxGTK3 (wx 3.0 GTK+ 2) instead of wxGTK (wx 2.8)
+
 * Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 5.0.6-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
