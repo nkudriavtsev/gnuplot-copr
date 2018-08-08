@@ -1,6 +1,6 @@
 %global major 5
-%global minor 0
-%global patchlevel 6
+%global minor 2
+%global patchlevel 4
 
 %global x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
@@ -13,7 +13,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 14%{?dist}
+Release: 1%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 URL: http://www.gnuplot.info/
@@ -30,7 +30,8 @@ Patch1: gnuplot-4.2.0-fonts.patch
 Patch3: gnuplot-4.6.1-plot-sigsegv.patch
 Patch4: gnuplot-4.6.4-singlethread.patch
 Patch5: gnuplot-5.0.0-lua_checkint.patch
-Patch6: gnuplot-5.0.6-no-lena.patch
+Patch6: gnuplot-5.2.4-no-lena.patch
+Patch7: gnuplot-5.2.2-doc.patch
 
 Requires: %{name}-common = %{version}-%{release}
 Requires: dejavu-sans-fonts
@@ -161,6 +162,7 @@ plotting tool.
 %patch4 -p1 -b .isinglethread
 %patch5 -p1 -b .checkint
 %patch6 -p1 -b .nolena
+%patch7 -p1 -b .doc
 sed -i -e 's:"/usr/lib/X11/app-defaults":"%{x11_app_defaults_dir}":' src/gplt_x11.c
 iconv -f windows-1252 -t utf-8 ChangeLog > ChangeLog.aux
 mv ChangeLog.aux ChangeLog
@@ -174,7 +176,7 @@ chmod 644 demo/html/webify_canvas.pl
 rm -rf demo/plugin/*.so demo/plugin/*.o
 
 %global configure_opts --with-readline=builtin --without-linux-vga \\\
- --enable-history-file
+ --enable-history-file --with-texdir=/usr/share/texlive/texmf-dist/tex/latex/gnuplot
 
 # at first create minimal version of gnuplot for server SIG purposes
 mkdir minimal
@@ -344,9 +346,15 @@ fi
 
 %files latex
 %doc ChangeLog Copyright
-%{_datadir}/texmf/tex/latex/gnuplot/
+%{_datadir}/texlive/texmf-dist/tex/latex/gnuplot/
 
 %changelog
+* Thu Feb  6 2020 Pavel Cahyna <pcahyna@redhat.com> - 5.2.4-1
+- Rebase to upstream release 5.2.4
+- Add workaround for broken info generation (upstream bug
+  https://sourceforge.net/p/gnuplot/bugs/1963/) from Debian
+- Use explicit path for texdir
+
 * Tue Jan 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 5.0.6-14
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
 

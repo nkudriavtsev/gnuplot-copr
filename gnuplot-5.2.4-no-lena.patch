@@ -1,6 +1,6 @@
-diff -up gnuplot-5.0.6/demo/circles.dem.nolena gnuplot-5.0.6/demo/circles.dem
---- gnuplot-5.0.6/demo/circles.dem.nolena	2017-06-26 12:44:54.497798902 -0400
-+++ gnuplot-5.0.6/demo/circles.dem	2017-06-26 12:45:05.006547459 -0400
+diff -up gnuplot-5.2.4/demo/circles.dem.nolena gnuplot-5.2.4/demo/circles.dem
+--- gnuplot-5.2.4/demo/circles.dem.nolena	2017-12-22 18:32:30.000000000 +0100
++++ gnuplot-5.2.4/demo/circles.dem	2018-08-08 10:14:21.308379527 +0200
 @@ -98,21 +98,6 @@ pause -1 "Hit return to continue"
  
  reset
@@ -23,10 +23,10 @@ diff -up gnuplot-5.0.6/demo/circles.dem.nolena gnuplot-5.0.6/demo/circles.dem
  set title "Delaunay triangulation of Hemisphere points, some empty circles in red"
  unset key
  
-diff -up gnuplot-5.0.6/demo/Makefile.am.nolena gnuplot-5.0.6/demo/Makefile.am
---- gnuplot-5.0.6/demo/Makefile.am.nolena	2017-06-26 12:44:33.146309782 -0400
-+++ gnuplot-5.0.6/demo/Makefile.am	2017-06-26 12:44:43.322066306 -0400
-@@ -64,7 +64,7 @@ epslatex:
+diff -up gnuplot-5.2.4/demo/Makefile.am.nolena gnuplot-5.2.4/demo/Makefile.am
+--- gnuplot-5.2.4/demo/Makefile.am.nolena	2017-12-23 07:29:12.000000000 +0100
++++ gnuplot-5.2.4/demo/Makefile.am	2018-08-08 10:18:08.787797877 +0200
+@@ -68,7 +68,7 @@ epslatex:
  	dvips epslatex
  
  ##m4-files-begin
@@ -35,19 +35,19 @@ diff -up gnuplot-5.0.6/demo/Makefile.am.nolena gnuplot-5.0.6/demo/Makefile.am
  using.bin gnuplot.cfg world.cor 1.dat 2.dat 3.dat arrowstyle.dat \
  asciimat.dat battery.dat big_peak.dat candlesticks.dat cities.dat \
  clip14in.dat ctg-y2.dat delaunay-edges.dat ellipses.dat empty-circles.dat \
-@@ -97,7 +97,7 @@ stringvar.dem surface1.dem surface2.dem
- tics.dem timedat.dem transparent.dem transparent_solids.dem using.dem \
- utf8.dem varcolor.dem vector.dem world2.dem world.dem demo.edf density.fnc \
+@@ -107,7 +107,7 @@ textrotate.dem tics.dem timedat.dem tran
+ ttics.dem using.dem utf8.dem varcolor.dem vector.dem violinplot.dem \
+ volatile.dem world2.dem world.dem zerror.dem demo.edf density.fnc \
  hexa.fnc line.fnc reflect.fnc gen-random.inc stat.inc GM1_sugar.pdb \
 -bldg.png GM1_bonds.r3d blutux.rgb lena.rgb sound.par sound2.par start.par \
 +bldg.png GM1_bonds.r3d blutux.rgb sound.par sound2.par start.par \
  gnuplot.rot gnu-valley random-points gpdemos.tcl html 
  ##m4-files-end
  
-diff -up gnuplot-5.0.6/demo/Makefile.in.nolena gnuplot-5.0.6/demo/Makefile.in
---- gnuplot-5.0.6/demo/Makefile.in.nolena	2017-06-26 12:43:56.569184965 -0400
-+++ gnuplot-5.0.6/demo/Makefile.in	2017-06-26 12:44:17.562682652 -0400
-@@ -331,7 +331,7 @@ SUBDIRS = $(PLUGIN_DIR)
+diff -up gnuplot-5.2.4/demo/Makefile.in.nolena gnuplot-5.2.4/demo/Makefile.in
+--- gnuplot-5.2.4/demo/Makefile.in.nolena	2018-06-01 03:51:13.000000000 +0200
++++ gnuplot-5.2.4/demo/Makefile.in	2018-08-08 10:18:14.455683660 +0200
+@@ -330,7 +330,7 @@ SUBDIRS = $(PLUGIN_DIR)
  DIST_SUBDIRS = plugin
  DEMO = all.dem
  GNUPLOT = gnuplot
@@ -56,18 +56,18 @@ diff -up gnuplot-5.0.6/demo/Makefile.in.nolena gnuplot-5.0.6/demo/Makefile.in
  using.bin gnuplot.cfg world.cor 1.dat 2.dat 3.dat arrowstyle.dat \
  asciimat.dat battery.dat big_peak.dat candlesticks.dat cities.dat \
  clip14in.dat ctg-y2.dat delaunay-edges.dat ellipses.dat empty-circles.dat \
-@@ -364,7 +364,7 @@ stringvar.dem surface1.dem surface2.dem
- tics.dem timedat.dem transparent.dem transparent_solids.dem using.dem \
- utf8.dem varcolor.dem vector.dem world2.dem world.dem demo.edf density.fnc \
+@@ -369,7 +369,7 @@ textrotate.dem tics.dem timedat.dem tran
+ ttics.dem using.dem utf8.dem varcolor.dem vector.dem violinplot.dem \
+ volatile.dem world2.dem world.dem zerror.dem demo.edf density.fnc \
  hexa.fnc line.fnc reflect.fnc gen-random.inc stat.inc GM1_sugar.pdb \
 -bldg.png GM1_bonds.r3d blutux.rgb lena.rgb sound.par sound2.par start.par \
 +bldg.png GM1_bonds.r3d blutux.rgb sound.par sound2.par start.par \
  gnuplot.rot gnu-valley random-points gpdemos.tcl html 
  
  @BUILD_PLUGIN_TRUE@PLUGIN_DIR = plugin
-diff -up gnuplot-5.0.6/demo/rgbalpha.dem.nolena gnuplot-5.0.6/demo/rgbalpha.dem
---- gnuplot-5.0.6/demo/rgbalpha.dem.nolena	2017-06-26 12:46:06.232082511 -0400
-+++ gnuplot-5.0.6/demo/rgbalpha.dem	2017-06-26 12:46:37.431336005 -0400
+diff -up gnuplot-5.2.4/demo/rgbalpha.dem.nolena gnuplot-5.2.4/demo/rgbalpha.dem
+--- gnuplot-5.2.4/demo/rgbalpha.dem.nolena	2017-12-22 18:32:30.000000000 +0100
++++ gnuplot-5.2.4/demo/rgbalpha.dem	2018-08-08 10:14:21.309379507 +0200
 @@ -18,8 +18,8 @@ set yrange [ 0. : 128. ]
  # Alpha =  linear gradient on x
  
