@@ -32,6 +32,7 @@ Patch4: gnuplot-4.6.4-singlethread.patch
 Patch5: gnuplot-5.0.0-lua_checkint.patch
 Patch6: gnuplot-5.2.4-no-lena.patch
 Patch7: gnuplot-5.2.2-doc.patch
+patch8: gnuplot-5.2.4-cmd-opts.patch
 
 Requires: %{name}-common = %{version}-%{release}
 Requires: dejavu-sans-fonts
@@ -163,6 +164,7 @@ plotting tool.
 %patch5 -p1 -b .checkint
 %patch6 -p1 -b .nolena
 %patch7 -p1 -b .doc
+%patch8 -p1 -b .cmd-opts
 sed -i -e 's:"/usr/lib/X11/app-defaults":"%{x11_app_defaults_dir}":' src/gplt_x11.c
 iconv -f windows-1252 -t utf-8 ChangeLog > ChangeLog.aux
 mv ChangeLog.aux ChangeLog
@@ -251,6 +253,10 @@ rm -rf $RPM_BUILD_ROOT%{_libdir}/
 
 mkdir -p $RPM_BUILD_ROOT/%{_mandir}/ja/man1
 mv $RPM_BUILD_ROOT%{_mandir}/man1/gnuplot-ja.1 $RPM_BUILD_ROOT/%{_mandir}/ja/man1/
+ln -s gnuplot.1 $RPM_BUILD_ROOT/%{_mandir}/man1/gnuplot-qt.1
+%if %{with wx}
+ln -s gnuplot.1 $RPM_BUILD_ROOT/%{_mandir}/man1/gnuplot-wx.1
+%endif
 
 #ghost provide /usr/bin/gnuplot
 touch $RPM_BUILD_ROOT%{_bindir}/gnuplot 
@@ -301,6 +307,7 @@ fi
 %files common
 %doc BUGS ChangeLog Copyright NEWS README
 %{_mandir}/man1/gnuplot.1.gz
+%{_mandir}/man1/gnuplot-qt.1.gz
 %dir %{_datadir}/gnuplot
 %dir %{_datadir}/gnuplot/%{major}.%{minor}
 %dir %{_datadir}/gnuplot/%{major}.%{minor}/PostScript
@@ -328,6 +335,7 @@ fi
 %if %{with wx}
 %files wx
 %ghost %attr(0755,-,-) %{_bindir}/gnuplot
+%{_mandir}/man1/gnuplot-wx.1.gz
 %doc ChangeLog Copyright
 %{_bindir}/gnuplot-wx
 %endif
@@ -354,6 +362,8 @@ fi
 - Add workaround for broken info generation (upstream bug
   https://sourceforge.net/p/gnuplot/bugs/1963/) from Debian
 - Use explicit path for texdir
+- Correct the description of command line options in manpage, bz#1611336
+- Install gnuplot-qt and gnuplot-wx manpage links, bz#1611336
 
 * Tue Jan 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 5.0.6-14
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
