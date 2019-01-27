@@ -69,8 +69,6 @@ This package provides a Qt based terminal version of gnuplot.
 %package common
 Group: Applications/Engineering
 Summary: The common gnuplot parts
-Requires(post): /sbin/install-info
-Requires(preun): /sbin/install-info
 #lets obsolete emacs-gnuplot until new upstream is found and package reintroduced
 Obsoletes: emacs-gnuplot <= 5.0.0-3
 Obsoletes: emacs-gnuplot-el <= 5.0.0-3
@@ -264,11 +262,6 @@ touch $RPM_BUILD_ROOT%{_bindir}/gnuplot
 %posttrans
 %{_sbindir}/alternatives --install %{_bindir}/gnuplot gnuplot %{_bindir}/gnuplot-qt 61
 
-%post common
-if [ -f %{_infodir}/gnuplot.info* ]; then
-    /sbin/install-info %{_infodir}/gnuplot.info %{_infodir}/dir || :
-fi
-
 %posttrans minimal
 %{_sbindir}/alternatives --install %{_bindir}/gnuplot gnuplot %{_bindir}/gnuplot-minimal 40
 
@@ -280,13 +273,6 @@ fi
 %preun
 if [ $1 = 0 ]; then
     %{_sbindir}/alternatives --remove gnuplot %{_bindir}/gnuplot-qt || :
-fi
-
-%preun common
-if [ $1 = 0 ] ; then # last uninstall
-    if [ -f %{_infodir}/gnuplot.info* ]; then
-        /sbin/install-info --delete %{_infodir}/gnuplot.info %{_infodir}/dir || :
-    fi
 fi
 
 %preun minimal
