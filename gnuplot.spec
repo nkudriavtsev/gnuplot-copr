@@ -16,7 +16,6 @@ Version: %{major}.%{minor}.%{patchlevel}
 Release: 10%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
-Group: Applications/Engineering
 URL: http://www.gnuplot.info/
 # Need to remove non-free lena files
 # rm -rf demo/lena*
@@ -67,7 +66,6 @@ representation.
 This package provides a Qt based terminal version of gnuplot.
 
 %package common
-Group: Applications/Engineering
 Summary: The common gnuplot parts
 #lets obsolete emacs-gnuplot until new upstream is found and package reintroduced
 Obsoletes: emacs-gnuplot <= 5.0.0-3
@@ -82,7 +80,6 @@ dimensions and in many different formats.
 This subpackage contains common parts needed for all versions of gnuplot.
 
 %package minimal
-Group: Applications/Engineering
 Summary: Minimal version of program for plotting mathematical expressions and data
 Requires: %{name}-common = %{version}-%{release}
 Requires(post): %{_sbindir}/alternatives
@@ -99,7 +96,6 @@ for scientific data representation.
 
 %if %{with wx}
 %package wx
-Group: Applications/Engineering
 Summary: wxGTK interface for gnuplot
 Requires: %{name}-common = %{version}-%{release}
 Requires(post): %{_sbindir}/alternatives
@@ -140,7 +136,6 @@ This package provides a wxGTK based terminal version of gnuplot.
 #nicely interacts and integrates into emacs.
 
 %package doc
-Group: Applications/Engineering
 Summary: Documentation fo bindings for the gnuplot main application
 BuildArch: noarch
 
@@ -149,7 +144,6 @@ The gnuplot-doc package contains the documentation related to gnuplot
 plotting tool
 
 %package latex
-Group: Applications/Engineering
 Summary: Configuration for LaTeX typesetting using gnuplot
 Requires: %{name} = %{version}-%{release}
 Requires: tex(latex), tex(cm-super-t1.enc), tex(ecrm1000.tfm), tex(utf8x.def), tex-preview
