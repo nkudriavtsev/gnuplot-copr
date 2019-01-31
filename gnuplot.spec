@@ -13,7 +13,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 10%{?dist}
+Release: 11%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 URL: http://www.gnuplot.info/
@@ -347,6 +347,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Thu Jan 31 2019 Fedora Release Engineering <releng@fedoraproject.org> - 5.0.6-11
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
 * Mon Aug 06 2018 Scott Talbert <swt@techie.net> - 5.0.6-10
 - Build against wxGTK3 (wx 3.0 GTK+ 2) instead of wxGTK (wx 2.8)
 
