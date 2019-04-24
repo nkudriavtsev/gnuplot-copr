@@ -13,7 +13,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 11%{?dist}
+Release: 12%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 URL: http://www.gnuplot.info/
@@ -315,7 +315,7 @@ fi
 %dir %{_libexecdir}/gnuplot/%{major}.%{minor}
 %{_libexecdir}/gnuplot/%{major}.%{minor}/gnuplot_x11
 %{x11_app_defaults_dir}/Gnuplot
-%{_infodir}/gnuplot.info.gz
+%{_infodir}/gnuplot.info.*
 %{_mandir}/ja/man1/gnuplot-ja.1.gz
 
 %files minimal
@@ -347,6 +347,9 @@ fi
 %{_datadir}/texmf/tex/latex/gnuplot/
 
 %changelog
+* Wed Apr 24 2019 Björn Esser <besser82@fedoraproject.org> - 5.0.6-12
+- Remove hardcoded gzip suffix from GNU info pages
+
 * Thu Jan 31 2019 Fedora Release Engineering <releng@fedoraproject.org> - 5.0.6-11
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
