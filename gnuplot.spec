@@ -10,10 +10,16 @@
 %bcond_with wx
 %endif
 
+%if 0%{?fedora} >= 28
+%bcond_without libcerf
+%else
+%bcond_with libcerf
+%endif
+
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 1%{?dist}
+Release: 2%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 URL: http://www.gnuplot.info/
@@ -50,6 +56,9 @@ BuildRequires: zlib-devel, libjpeg-turbo-devel, tex(ecrm1000.tfm), latex2html
 BuildRequires: qt5-qtbase-devel
 BuildRequires: qt5-qtsvg-devel
 BuildRequires: qt5-linguist
+%if %{with libcerf}
+BuildRequires: libcerf-devel >= 1.11
+%endif
 %if %{with wx}
 BuildRequires: compat-wxGTK3-gtk2-devel
 %endif
@@ -184,7 +193,7 @@ rm -rf demo/plugin/*.so demo/plugin/*.o
 mkdir minimal
 cd minimal
 ln -s ../configure .
-%configure %{configure_opts} --disable-wxwidgets --without-qt
+%configure %{configure_opts} --disable-wxwidgets --without-qt %{?with_libcerf:--with-libcerf} %{!?with_libcerf:--without-libcerf}
 make %{?_smp_mflags}
 cd -
 
@@ -194,7 +203,7 @@ cd -
 mkdir wx
 cd wx
 ln -s ../configure .
-%configure %{configure_opts} --without-qt
+%configure %{configure_opts} --without-qt %{?with_libcerf:--with-libcerf} %{!?with_libcerf:--without-libcerf}
 make %{?_smp_mflags}
 cd -
 %endif
@@ -203,7 +212,7 @@ cd -
 mkdir qt
 cd qt
 ln -s ../configure .
-%configure %{configure_opts} --disable-wxwidgets --enable-qt
+%configure %{configure_opts} --disable-wxwidgets --enable-qt %{?with_libcerf:--with-libcerf} %{!?with_libcerf:--without-libcerf}
 make %{?_smp_mflags}
 cd -
 
@@ -357,6 +366,9 @@ fi
 %{_datadir}/texlive/texmf-dist/tex/latex/gnuplot/
 
 %changelog
+* Tue Feb 25 2020 Pavel Cahyna <pcahyna@redhat.com> - 5.2.8-2
+- Enable libcerf (bz#1476616)
+
 * Thu Feb  6 2020 Orion Poplawski <orion@nwra.com> - 5.2.8-1
 - Update to 5.2.8 (bz#1457252)
 
