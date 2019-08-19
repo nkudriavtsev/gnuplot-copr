@@ -32,7 +32,7 @@ Patch4: gnuplot-4.6.4-singlethread.patch
 Patch5: gnuplot-5.0.0-lua_checkint.patch
 Patch6: gnuplot-5.2.4-no-lena.patch
 Patch7: gnuplot-5.2.2-doc.patch
-patch8: gnuplot-5.2.8-cmd-opts.patch
+Patch8: gnuplot-5.2.8-cmd-opts.patch
 
 Requires: %{name}-common = %{version}-%{release}
 Requires: dejavu-sans-fonts
