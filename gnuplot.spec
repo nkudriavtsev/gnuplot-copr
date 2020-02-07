@@ -1,6 +1,6 @@
 %global major 5
 %global minor 2
-%global patchlevel 4
+%global patchlevel 8
 
 %global x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
@@ -32,7 +32,7 @@ Patch4: gnuplot-4.6.4-singlethread.patch
 Patch5: gnuplot-5.0.0-lua_checkint.patch
 Patch6: gnuplot-5.2.4-no-lena.patch
 Patch7: gnuplot-5.2.2-doc.patch
-patch8: gnuplot-5.2.4-cmd-opts.patch
+patch8: gnuplot-5.2.8-cmd-opts.patch
 
 Requires: %{name}-common = %{version}-%{release}
 Requires: dejavu-sans-fonts
@@ -357,6 +357,9 @@ fi
 %{_datadir}/texlive/texmf-dist/tex/latex/gnuplot/
 
 %changelog
+* Thu Feb  6 2020 Orion Poplawski <orion@nwra.com> - 5.2.8-1
+- Update to 5.2.8 (bz#1457252)
+
 * Thu Feb  6 2020 Pavel Cahyna <pcahyna@redhat.com> - 5.2.4-1
 - Rebase to upstream release 5.2.4
 - Add workaround for broken info generation (upstream bug
