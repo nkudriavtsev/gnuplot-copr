@@ -4,13 +4,13 @@
 
 %global x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >= 9
 %bcond_without wx
 %else
 %bcond_with wx
 %endif
 
-%if 0%{?fedora} >= 28
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 9
 %bcond_without libcerf
 %else
 %bcond_with libcerf
@@ -19,7 +19,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 5%{?dist}
+Release: 6%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 URL: http://www.gnuplot.info/
@@ -368,6 +368,9 @@ fi
 %{_datadir}/texlive/texmf-dist/tex/latex/gnuplot/
 
 %changelog
+* Wed Aug 05 2020 Merlin Mathesius <mmathesi@redhat.com> - 5.2.8-6
+- Minor conditional fixes for ELN
+
 * Sat Aug 01 2020 Fedora Release Engineering <releng@fedoraproject.org> - 5.2.8-5
 - Second attempt - Rebuilt for
   https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
