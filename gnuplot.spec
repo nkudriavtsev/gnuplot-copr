@@ -19,7 +19,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 2%{?dist}
+Release: 3%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 URL: http://www.gnuplot.info/
@@ -39,6 +39,7 @@ Patch5: gnuplot-5.0.0-lua_checkint.patch
 Patch6: gnuplot-5.2.4-no-lena.patch
 Patch7: gnuplot-5.2.2-doc.patch
 Patch8: gnuplot-5.2.8-cmd-opts.patch
+Patch9: gnuplot-config.patch
 
 Requires: %{name}-common = %{version}-%{release}
 Requires: dejavu-sans-fonts
@@ -174,6 +175,7 @@ plotting tool.
 %patch6 -p1 -b .nolena
 %patch7 -p1 -b .doc
 %patch8 -p1 -b .cmd-opts
+%patch9 -p1 -b .config
 sed -i -e 's:"/usr/lib/X11/app-defaults":"%{x11_app_defaults_dir}":' src/gplt_x11.c
 iconv -f windows-1252 -t utf-8 ChangeLog > ChangeLog.aux
 mv ChangeLog.aux ChangeLog
@@ -366,6 +368,9 @@ fi
 %{_datadir}/texlive/texmf-dist/tex/latex/gnuplot/
 
 %changelog
+* Thu Jul 23 2020 Jeff Law <law@redhat.com> - 5.2.8-3
+- Fix broken configure test compromised by LTO
+
 * Tue Feb 25 2020 Pavel Cahyna <pcahyna@redhat.com> - 5.2.8-2
 - Enable libcerf (bz#1476616)
 
