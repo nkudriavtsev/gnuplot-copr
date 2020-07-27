@@ -19,7 +19,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 3%{?dist}
+Release: 4%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 URL: http://www.gnuplot.info/
@@ -368,6 +368,9 @@ fi
 %{_datadir}/texlive/texmf-dist/tex/latex/gnuplot/
 
 %changelog
+* Mon Jul 27 2020 Fedora Release Engineering <releng@fedoraproject.org> - 5.2.8-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
+
 * Thu Jul 23 2020 Jeff Law <law@redhat.com> - 5.2.8-3
 - Fix broken configure test compromised by LTO
 
