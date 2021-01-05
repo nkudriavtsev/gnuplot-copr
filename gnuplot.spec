@@ -63,6 +63,7 @@ BuildRequires: libcerf-devel >= 1.11
 %if %{with wx}
 BuildRequires: compat-wxGTK3-gtk2-devel
 %endif
+BuildRequires: make
 
 Obsoletes: gnuplot-qt < 5.0.0-4
 
