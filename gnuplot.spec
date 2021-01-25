@@ -4,7 +4,7 @@
 
 %global x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
-%if 0%{?fedora} || 0%{?rhel} >= 9
+%if 0%{?fedora}
 %bcond_without wx
 %else
 %bcond_with wx
@@ -19,7 +19,7 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 6%{?dist}
+Release: 7%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 URL: http://www.gnuplot.info/
@@ -369,6 +369,9 @@ fi
 %{_datadir}/texlive/texmf-dist/tex/latex/gnuplot/
 
 %changelog
+* Mon Jan 25 2021 Tomas Popela <tpopela@redhat.com> - 5.2.8-7
+- Don't enable wxGTK support on RHEL
+
 * Wed Aug 05 2020 Merlin Mathesius <mmathesi@redhat.com> - 5.2.8-6
 - Minor conditional fixes for ELN
 
