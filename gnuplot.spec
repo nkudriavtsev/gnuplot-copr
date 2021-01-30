@@ -260,8 +260,8 @@ mkdir -p $RPM_BUILD_ROOT%{x11_app_defaults_dir}
 mv $RPM_BUILD_ROOT%{_datadir}/gnuplot/%{major}.%{minor}/app-defaults/Gnuplot $RPM_BUILD_ROOT%{x11_app_defaults_dir}/Gnuplot
 rm -rf $RPM_BUILD_ROOT%{_libdir}/
 
-mkdir -p $RPM_BUILD_ROOT/%{_mandir}/ja/man1
-mv $RPM_BUILD_ROOT%{_mandir}/man1/gnuplot-ja.1 $RPM_BUILD_ROOT/%{_mandir}/ja/man1/
+%dnl mkdir -p $RPM_BUILD_ROOT/%{_mandir}/ja/man1
+%dnl mv $RPM_BUILD_ROOT%{_mandir}/man1/gnuplot-ja.1 $RPM_BUILD_ROOT/%{_mandir}/ja/man1/
 ln -s gnuplot.1 $RPM_BUILD_ROOT/%{_mandir}/man1/gnuplot-qt.1
 %if %{with wx}
 ln -s gnuplot.1 $RPM_BUILD_ROOT/%{_mandir}/man1/gnuplot-wx.1
@@ -334,7 +334,7 @@ fi
 %{_libexecdir}/gnuplot/%{major}.%{minor}/gnuplot_x11
 %{x11_app_defaults_dir}/Gnuplot
 %{_infodir}/gnuplot.info.*
-%{_mandir}/ja/man1/gnuplot-ja.1.gz
+%dnl %{_mandir}/ja/man1/gnuplot-ja.1.gz
 
 %files minimal
 %ghost %attr(0755,-,-) %{_bindir}/gnuplot
