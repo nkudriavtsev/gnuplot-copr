@@ -219,13 +219,12 @@ cd -
 
 
 # Docs don't build properly out of tree
-%configure  %{configure_opts} --with-tutorial
+%configure  %{configure_opts}
 ln -s ../minimal/src/gnuplot src/
 make -C docs html info
 export GNUPLOT_PS_DIR=../../term/PostScript
 make -C docs/psdoc ps_symbols.ps ps_fontfile_doc.pdf
 rm -rf docs/htmldocs/images.idx
-make -C tutorial
 
 %install
 %if %{with wx}
@@ -311,8 +310,8 @@ fi
 
 %files doc
 %doc Copyright
-%doc docs/psdoc/ps_guide.ps docs/psdoc/ps_symbols.ps tutorial/tutorial.dvi docs/psdoc/ps_file.doc demo
-%doc docs/psdoc/ps_fontfile_doc.pdf docs/htmldocs tutorial/eg7.eps
+%doc docs/psdoc/ps_guide.ps docs/psdoc/ps_symbols.ps docs/psdoc/ps_file.doc demo
+%doc docs/psdoc/ps_fontfile_doc.pdf docs/htmldocs
 
 %files common
 %doc BUGS Copyright NEWS README
