@@ -25,7 +25,7 @@ License: gnuplot and MIT
 URL: http://www.gnuplot.info/
 # Need to remove non-free lena files
 # rm -rf demo/lena*
-Source0: https://download.sourceforge.net/projects/gnuplot/files/%{name}/%{version}/gnuplot-%{version}.tar.gz
+Source0: https://sourceforge.net/projects/%{name}/files/gnuplot/%{version}/%{name}-%{version}.tar.gz
 %dnl Source0: %{name}-%{version}-clean.tar.gz
 Source1: gnuplot-init.el
 
