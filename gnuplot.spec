@@ -36,7 +36,7 @@ Patch1: gnuplot-4.2.0-fonts.patch
 Patch3: gnuplot-4.6.1-plot-sigsegv.patch
 Patch4: gnuplot-4.6.4-singlethread.patch
 Patch5: gnuplot-5.0.0-lua_checkint.patch
-Patch6: gnuplot-5.2.4-no-lena.patch
+Patch6: gnuplot-5.4.1-no-lena.patch
 Patch7: gnuplot-5.2.2-doc.patch
 Patch8: gnuplot-5.2.8-cmd-opts.patch
 Patch9: gnuplot-config.patch
