@@ -1,0 +1,91 @@
+--- gnuplot-5.4.1/demo/circles.dem	2020-10-14 00:14:48.000000000 +0300
++++ gnuplot-5.4.1/demo/circles.dem.nolena	2021-01-30 11:17:02.923243793 +0300
+@@ -64,24 +64,6 @@ plot 'optimize.dat' with circles lc rgb
+ pause -1 "Hit return to continue"
+ 
+ 
+-reset
+-set size ratio -1
+-set title "Lena's key points"
+-unset xlabel
+-unset xtics
+-unset ytics
+-unset key
+-unset border
+-set yrange [] reverse
+-
+-plot 'lena.rgb' binary array=(128,128) dx=4 dy=4 format='%uchar' with rgbimage, \
+-     'lena-keypoints.bin' binary format='%double' with circles lc rgb "yellow"
+-
+-pause -1 "Hit return to continue"
+-
+-
+-reset
+-set size ratio -1
+ set title "Delaunay triangulation of Hemisphere points, some empty circles in red"
+ unset key
+ 
+--- gnuplot-5.4.1/demo/Makefile.am	2020-03-18 23:45:03.000000000 +0300
++++ gnuplot-5.4.1/demo/Makefile.am.nolena	2021-01-30 11:20:22.959567094 +0300
+@@ -68,7 +68,7 @@ epslatex:
+ 	dvips epslatex
+ 
+ ##m4-files-begin
+-EXTRA_DIST = Makefile.am.in lena-keypoints.bin scatter2.bin sine.bin \
++EXTRA_DIST = Makefile.am.in scatter2.bin sine.bin \
+ using.bin gnuplot.cfg world.cor 1.dat 2.dat 3.dat arrowstyle.dat \
+ asciimat.dat battery.dat big_peak.dat candlesticks.dat cities.dat \
+ clip14in.dat ctg-y2.dat delaunay-edges.dat dodecahedron.dat ellipses.dat \
+@@ -114,7 +114,7 @@ ttics.dem unicode.dem using.dem utf8.dem
+ violinplot.dem volatile.dem voxel.dem vplot.dem walls.dem world2.dem \
+ world.dem zerror.dem demo.edf density.fnc hexa.fnc line.fnc reflect.fnc \
+ gen-random.inc stat.inc GM1_sugar.pdb aries.png bldg.png gradient.png \
+-icon64x64.png GM1_bonds.r3d blutux.rgb lena.rgb sound.par sound2.par \
++icon64x64.png GM1_bonds.r3d blutux.rgb sound.par sound2.par \
+ start.par gnuplot.rot gnu-valley random-points gpdemos.tcl html 
+ ##m4-files-end
+ 
+--- gnuplot-5.4.1/demo/Makefile.in	2020-11-27 03:12:01.000000000 +0300
++++ gnuplot-5.4.1/demo/Makefile.in.nolena	2021-01-30 11:21:30.401024675 +0300
+@@ -340,7 +340,7 @@ SUBDIRS = $(PLUGIN_DIR)
+ DIST_SUBDIRS = plugin
+ DEMO = all.dem
+ GNUPLOT = gnuplot
+-EXTRA_DIST = Makefile.am.in lena-keypoints.bin scatter2.bin sine.bin \
++EXTRA_DIST = Makefile.am.in scatter2.bin sine.bin \
+ using.bin gnuplot.cfg world.cor 1.dat 2.dat 3.dat arrowstyle.dat \
+ asciimat.dat battery.dat big_peak.dat candlesticks.dat cities.dat \
+ clip14in.dat ctg-y2.dat delaunay-edges.dat dodecahedron.dat ellipses.dat \
+@@ -386,7 +386,7 @@ ttics.dem unicode.dem using.dem utf8.dem
+ violinplot.dem volatile.dem voxel.dem vplot.dem walls.dem world2.dem \
+ world.dem zerror.dem demo.edf density.fnc hexa.fnc line.fnc reflect.fnc \
+ gen-random.inc stat.inc GM1_sugar.pdb aries.png bldg.png gradient.png \
+-icon64x64.png GM1_bonds.r3d blutux.rgb lena.rgb sound.par sound2.par \
++icon64x64.png GM1_bonds.r3d blutux.rgb sound.par sound2.par \
+ start.par gnuplot.rot gnu-valley random-points gpdemos.tcl html 
+ 
+ @BUILD_PLUGIN_TRUE@PLUGIN_DIR = plugin
+--- gnuplot-5.4.1/demo/rgbalpha.dem	2017-12-22 20:32:30.000000000 +0300
++++ gnuplot-5.4.1/demo/rgbalpha.dem.nolena	2021-01-30 11:24:15.996603625 +0300
+@@ -18,8 +18,8 @@ set yrange [ 0. : 128. ]
+ # Alpha =  linear gradient on x
+ 
+ plot 100.*(.4+sin(x/5.)/(x/5.)) lw 5 title 'solid line', \
+-     'lena.rgb' binary array=(128,128) format="%uchar" flipy using 1:2:3:(2.*column(0)) \
+-                with rgbalpha title "Lena with linear\nalpha gradient"
++     'blutux.rgb' binary array=(128,128) format="%uchar" flipy using 1:2:3:(2.*column(0)) \
++                with rgbalpha title "Tux with linear\nalpha gradient"
+ 
+ pause -1 "Hit return to continue"
+ 
+@@ -28,8 +28,8 @@ pause -1 "Hit return to continue"
+ focus(x,y) = ((column(0)-x)**2 + (column(-1)-(127-y))**2) > 400 ? 0 : 255
+ 
+ plot 100.*(.4+sin(x/5.)/(x/5.)) lw 5 title 'solid line', \
+-     'lena.rgb' binary array=(128,128) format="%uchar" flipy using 1:2:3:(focus(70,50)) \
+-                with rgbalpha title "Lena with circular mask"
++     'blutux.rgb' binary array=(128,128) format="%uchar" flipy using 1:2:3:(focus(70,50)) \
++                with rgbalpha title "Tux with circular mask"
+ 
+ pause -1 "Hit return to continue"
+ reset
