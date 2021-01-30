@@ -178,8 +178,6 @@ plotting tool.
 %patch8 -p1 -b .cmd-opts
 %patch9 -p1 -b .config
 sed -i -e 's:"/usr/lib/X11/app-defaults":"%{x11_app_defaults_dir}":' src/gplt_x11.c
-iconv -f windows-1252 -t utf-8 ChangeLog > ChangeLog.aux
-mv ChangeLog.aux ChangeLog
 chmod 644 src/getcolor.h
 chmod 644 demo/html/webify.pl
 chmod 644 demo/html/webify_svg.pl
@@ -306,18 +304,18 @@ fi
 
 %files
 %ghost %attr(0755,-,-) %{_bindir}/gnuplot
-%doc ChangeLog Copyright
+%doc Copyright
 %{_bindir}/gnuplot-qt
 %{_libexecdir}/gnuplot/%{major}.%{minor}/gnuplot_qt
 %{_datadir}/gnuplot/%{major}.%{minor}/qt/
 
 %files doc
-%doc ChangeLog Copyright
+%doc Copyright
 %doc docs/psdoc/ps_guide.ps docs/psdoc/ps_symbols.ps tutorial/tutorial.dvi docs/psdoc/ps_file.doc demo
 %doc docs/psdoc/ps_fontfile_doc.pdf docs/htmldocs tutorial/eg7.eps
 
 %files common
-%doc BUGS ChangeLog Copyright NEWS README
+%doc BUGS Copyright NEWS README
 %{_mandir}/man1/gnuplot.1.gz
 %{_mandir}/man1/gnuplot-qt.1.gz
 %dir %{_datadir}/gnuplot
@@ -341,31 +339,31 @@ fi
 
 %files minimal
 %ghost %attr(0755,-,-) %{_bindir}/gnuplot
-%doc ChangeLog Copyright
+%doc Copyright
 %{_bindir}/gnuplot-minimal
 
 %if %{with wx}
 %files wx
 %ghost %attr(0755,-,-) %{_bindir}/gnuplot
 %{_mandir}/man1/gnuplot-wx.1.gz
-%doc ChangeLog Copyright
+%doc Copyright
 %{_bindir}/gnuplot-wx
 %endif
 
 %dnl %files -n emacs-%{name}
-%dnl %doc ChangeLog Copyright
+%dnl %doc Copyright
 %dnl %dir %{_emacs_sitelispdir}/%{name}
 %dnl %{_emacs_sitelispdir}/*.elc
 %dnl %{_emacs_sitelispdir}/%{name}/*.elc
 %dnl %{_emacs_sitestartdir}/*.el
 
 %dnl %files -n emacs-%{name}-el
-%dnl %doc ChangeLog Copyright
+%dnl %doc Copyright
 %dnl %{_emacs_sitelispdir}/%{name}/*.el
 %dnl %{_emacs_sitelispdir}/*.el
 
 %files latex
-%doc ChangeLog Copyright
+%doc Copyright
 %{_datadir}/texlive/texmf-dist/tex/latex/gnuplot/
 
 %changelog
