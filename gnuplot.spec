@@ -26,7 +26,7 @@ URL: http://www.gnuplot.info/
 # Need to remove non-free lena files
 # rm -rf demo/lena*
 Source0: https://download.sourceforge.net/projects/gnuplot/files/%{name}/%{version}/gnuplot-%{version}.tar.gz
-# Source0: %{name}-%{version}-clean.tar.gz
+%dnl Source0: %{name}-%{version}-clean.tar.gz
 Source1: gnuplot-init.el
 
 Patch0: gnuplot-4.2.0-refers_to.patch
@@ -125,26 +125,26 @@ dimensions and in many different formats.
 This package provides a wxGTK based terminal version of gnuplot.
 %endif
 
-#%package -n emacs-%{name}
-#Group: Applications/Engineering
-#Summary: Emacs bindings for the gnuplot main application
-#Requires: %{name} = %{version}-%{release}
-#Requires: emacs >= %{_emacs_version}
-#BuildRequires: emacs-el pkgconfig
-#BuildArch: noarch
-#Provides: gnuplot-emacs = %{version}-%{release}
+%dnl %package -n emacs-%{name}
+%dnl Group: Applications/Engineering
+%dnl Summary: Emacs bindings for the gnuplot main application
+%dnl Requires: %{name} = %{version}-%{release}
+%dnl Requires: emacs >= %{_emacs_version}
+%dnl BuildRequires: emacs-el pkgconfig
+%dnl BuildArch: noarch
+%dnl Provides: gnuplot-emacs = %{version}-%{release}
 
-#%description -n emacs-%{name}
+%dnl %description -n emacs-%{name}
 #The gnuplot-emacs package contains the emacs related .elc files so that gnuplot
 #nicely interacts and integrates into emacs.
 
-#%package -n emacs-%{name}-el
-#Group: Applications/Engineering
-#Summary: Emacs bindings for the gnuplot main application
-#Requires: emacs-%{name} = %{version}-%{release}
-#BuildArch: noarch
+%dnl %package -n emacs-%{name}-el
+%dnl Group: Applications/Engineering
+%dnl Summary: Emacs bindings for the gnuplot main application
+%dnl Requires: emacs-%{name} = %{version}-%{release}
+%dnl BuildArch: noarch
 
-#%description -n emacs-%{name}-el
+%dnl %description -n emacs-%{name}-el
 #The gnuplot-emacs package contains the emacs related .el files so that gnuplot
 #nicely interacts and integrates into emacs.
 
@@ -352,17 +352,17 @@ fi
 %{_bindir}/gnuplot-wx
 %endif
 
-#%files -n emacs-%{name}
-#%doc ChangeLog Copyright
-#%dir %{_emacs_sitelispdir}/%{name}
-#%{_emacs_sitelispdir}/*.elc
-#%{_emacs_sitelispdir}/%{name}/*.elc
-#%{_emacs_sitestartdir}/*.el
+%dnl %files -n emacs-%{name}
+%dnl %doc ChangeLog Copyright
+%dnl %dir %{_emacs_sitelispdir}/%{name}
+%dnl %{_emacs_sitelispdir}/*.elc
+%dnl %{_emacs_sitelispdir}/%{name}/*.elc
+%dnl %{_emacs_sitestartdir}/*.el
 
-#%files -n emacs-%{name}-el
-#%doc ChangeLog Copyright
-#%{_emacs_sitelispdir}/%{name}/*.el
-#%{_emacs_sitelispdir}/*.el
+%dnl %files -n emacs-%{name}-el
+%dnl %doc ChangeLog Copyright
+%dnl %{_emacs_sitelispdir}/%{name}/*.el
+%dnl %{_emacs_sitelispdir}/*.el
 
 %files latex
 %doc ChangeLog Copyright
