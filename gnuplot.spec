@@ -168,7 +168,7 @@ plotting tool.
 
 %prep
 %setup -q
-%patch0 -p1 -b .refto
+%dnl %patch0 -p1 -b .refto
 %patch1 -p1 -b .font
 %patch3 -p1 -b .plot-sigsegv
 %patch4 -p1 -b .isinglethread
