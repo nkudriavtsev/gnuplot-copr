@@ -1,6 +1,6 @@
 %global major 5
-%global minor 2
-%global patchlevel 8
+%global minor 4
+%global patchlevel 1
 
 %global x11_app_defaults_dir %{_datadir}/X11/app-defaults
 
@@ -19,14 +19,14 @@
 Summary: A program for plotting mathematical expressions and data
 Name: gnuplot
 Version: %{major}.%{minor}.%{patchlevel}
-Release: 8%{?dist}
+Release: 1%{?dist}
 # MIT .. term/PostScript/aglfn.txt
 License: gnuplot and MIT
 URL: http://www.gnuplot.info/
 # Need to remove non-free lena files
 # rm -rf demo/lena*
-# Source0: https://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
-Source0: %{name}-%{version}-clean.tar.gz
+Source0: https://download.sourceforge.net/projects/gnuplot/files/%{name}/%{version}/gnuplot-%{version}.tar.gz
+# Source0: %{name}-%{version}-clean.tar.gz
 Source1: gnuplot-init.el
 
 Patch0: gnuplot-4.2.0-refers_to.patch
@@ -369,6 +369,9 @@ fi
 %{_datadir}/texlive/texmf-dist/tex/latex/gnuplot/
 
 %changelog
+* Sat Jan 30 2021 Nicholas Kudriavtsev <nkudravtsev@gmail.com> - 5.4.1-1
+- Update to 5.4.1
+
 * Tue Jan 26 2021 Tomas Popela <tpopela@redhat.com> - 5.2.8-8
 - Don't enable wxGTK support on RHEL
 
